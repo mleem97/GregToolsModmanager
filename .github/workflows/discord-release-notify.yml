@@ -1,0 +1,91 @@
+name: Discord Release Notification
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  notify-discord:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    if: ${{ secrets.DISCORD_WEBHOOK_URL != '' }}
+
+    steps:
+      - name: Send Discord webhook (release published)
+        shell: pwsh
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          RELEASE_NAME: ${{ github.event.release.name }}
+          TAG_NAME: ${{ github.event.release.tag_name }}
+          RELEASE_URL: ${{ github.event.release.html_url }}
+          REPO: ${{ github.repository }}
+          RELEASE_BODY: ${{ github.event.release.body }}
+          RELEASE_ASSETS: ${{ toJson(github.event.release.assets) }}
+        run: |
+          $appName = 'GregTools Modmanager'
+          $version = if ([string]::IsNullOrWhiteSpace($env:TAG_NAME)) { 'unknown' } else { $env:TAG_NAME }
+          $releaseTitle = if ([string]::IsNullOrWhiteSpace($env:RELEASE_NAME)) { $version } else { $env:RELEASE_NAME }
+
+          $downloadUrl = $env:RELEASE_URL
+          try {
+            if (-not [string]::IsNullOrWhiteSpace($env:RELEASE_ASSETS)) {
+              $assets = $env:RELEASE_ASSETS | ConvertFrom-Json
+              if ($assets -and $assets.Count -gt 0) {
+                $preferred = $assets | Where-Object {
+                  $_.name -match 'Setup\.exe$' -or $_.name -match '\.exe$' -or $_.name -match '\.zip$'
+                } | Select-Object -First 1
+
+                if (-not $preferred) {
+                  $preferred = $assets | Select-Object -First 1
+                }
+
+                if ($preferred -and $preferred.browser_download_url) {
+                  $downloadUrl = $preferred.browser_download_url
+                }
+              }
+            }
+          }
+          catch {
+            # fallback to release page URL
+          }
+
+          $description = "New $appName Release: $version"
+
+          $payload = @{
+            username = 'GitHub Releases'
+            avatar_url = 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png'
+            content = "🚀 **New release published** for `$env:REPO`"
+            embeds = @(
+              @{
+                title = "New $appName Release: $version"
+                description = $description
+                url = $env:RELEASE_URL
+                color = 5763719
+                fields = @(
+                  @{
+                    name = 'Release'
+                    value = $releaseTitle
+                    inline = $false
+                  }
+                )
+              }
+            )
+            components = @(
+              @{
+                type = 1
+                components = @(
+                  @{
+                    type = 2
+                    style = 5
+                    label = 'Download'
+                    url = $downloadUrl
+                  }
+                )
+              }
+            )
+          }
+
+          $json = $payload | ConvertTo-Json -Depth 15
+
+          Invoke-RestMethod -Uri $env:DISCORD_WEBHOOK_URL -Method Post -ContentType 'application/json' -Body $json
