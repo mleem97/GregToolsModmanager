@@ -61,11 +61,33 @@ public static class MauiProgram
 
 			try
 			{
+				try
+				{
+					var webViewDataDir = Path.Combine(
+						Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+						"GregToolsModmanager",
+						"webview2");
+					Directory.CreateDirectory(webViewDataDir);
+					Environment.SetEnvironmentVariable("WEBVIEW2_USER_DATA_FOLDER", webViewDataDir);
+					AppFileLog.Info($"WEBVIEW2_USER_DATA_FOLDER={webViewDataDir}");
+				}
+				catch (Exception ex)
+				{
+					AppFileLog.Error("Failed to configure WebView2 user data folder.", ex);
+				}
+
 				var baseDir = AppContext.BaseDirectory;
 				if (!string.IsNullOrEmpty(baseDir))
 				{
-					Directory.SetCurrentDirectory(baseDir);
-					AppFileLog.Info($"CurrentDirectory set to: {baseDir}");
+					if (IsDirectoryWritable(baseDir))
+					{
+						Directory.SetCurrentDirectory(baseDir);
+						AppFileLog.Info($"CurrentDirectory set to: {baseDir}");
+					}
+					else
+					{
+						AppFileLog.Warn($"Skip SetCurrentDirectory for non-writable path: {baseDir}");
+					}
 				}
 			}
 			catch
@@ -148,6 +170,21 @@ public static class MauiProgram
 			DebugSessionLog.Write("H1", "MauiProgram.CreateMauiApp", "exception", new { ex.Message, ex.StackTrace });
 			// #endregion
 			throw;
+		}
+	}
+
+	private static bool IsDirectoryWritable(string directoryPath)
+	{
+		try
+		{
+			var testFile = Path.Combine(directoryPath, $".write-test-{Environment.ProcessId}.tmp");
+			File.WriteAllText(testFile, "ok");
+			File.Delete(testFile);
+			return true;
+		}
+		catch
+		{
+			return false;
 		}
 	}
 }
