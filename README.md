@@ -8,13 +8,13 @@
 
 Desktop app for **Steam Workshop** management, mod browsing, and publishing for **Data Center** (Steamworks API, App ID `4170200`).
 
-## Open-source and external dependencies
+## 📦 Open-source and external dependencies
 
 This project is developed in the open and uses many open-source libraries (.NET, MAUI, Facepunch.Steamworks, and more). It also ships Valve’s closed-source `steam_api64.dll` (Steamworks), which is governed by Valve terms.
 
 See [EXTERNAL_DEPENDENCIES.md](./EXTERNAL_DEPENDENCIES.md) for a full license and redistribution breakdown.
 
-## Features
+## ✨ Features
 
 - **Mod Store:** Browse, search, subscribe, favorite, and vote on Workshop items.
 - **Mod Manager:** Dependency health checks, MelonLoader status, and FMF plugin channels.
@@ -24,13 +24,13 @@ See [EXTERNAL_DEPENDENCIES.md](./EXTERNAL_DEPENDENCIES.md) for a full license an
 - **Headless CLI:** Supports scripted/CI publish flows.
 - **Pagination:** All major list views support paging.
 
-## Open in Visual Studio
+## 🧰 Open in Visual Studio
 
 Use `WorkshopUploader.sln` in this repository root.
 
 If you open only `WorkshopUploader.csproj` from another solution context, Visual Studio may pick a different solution unexpectedly.
 
-## Build
+## 🏗️ Build
 
 ```powershell
 dotnet build WorkshopUploader.csproj -c Debug
@@ -44,14 +44,14 @@ dotnet build WorkshopUploader.sln -c Debug
 
 Target: **.NET 9 + .NET MAUI (Windows)**. The project uses `WindowsAppSDKSelfContained` so required Windows App SDK components are shipped with the app.
 
-## Run (recommended)
+## ▶️ Run (recommended)
 
 - Use **Visual Studio 2022** with the **.NET MAUI workload** and **Windows App SDK** components.
 - Open `WorkshopUploader.sln`.
 - Set `WorkshopUploader` as startup project.
 - Press `F5`.
 
-## Publish (`win10-x64`)
+## 📤 Publish (`win10-x64`)
 
 ```powershell
 dotnet publish WorkshopUploader.csproj -c Release
@@ -67,7 +67,7 @@ Output:
 dotnet publish WorkshopUploader.csproj -c Release -p:SelfContained=true -p:WindowsPackageType=None -p:WindowsAppSDKSelfContained=true -o .\publish-out
 ```
 
-## Create installer (`Setup.exe` via Inno Setup)
+## 🧱 Create installer (`Setup.exe` via Inno Setup)
 
 1. Install [Inno Setup 6](https://jrsoftware.org/isdl.php) (includes `ISCC.exe`).
 2. Run:
@@ -102,7 +102,15 @@ Useful options:
 - The installer runs elevated, but final launch uses `runasoriginaluser` so the app starts non-elevated (important for WinUI/WebView2/MAUI stability).
 - If problems continue, check Event Viewer and test `CloseApplications=no` in `GregToolsModmanager.iss`.
 
-## Code signing
+## 🔐 Code signing, SmartScreen, and trust notice
+
+- **Current state:** We currently use **self-signed** code signing for CI/community builds.
+- **Why:** I cannot afford an official OV/EV certificate at the moment.
+- **Impact for users:** Windows/SmartScreen may still show warnings (for example, *Unknown Publisher* or reputation prompts), even when the file is signed.
+- **Runtime note:** This app targets **.NET 9 + .NET MAUI (Windows)** and depends on Windows runtime components; if startup fails on end-user systems, install/repair the Visual C++ Redistributable and Windows App SDK runtime (see troubleshooting below).
+- **Rotation policy:** CI rotates/recreates self-signed certificates on a **7-day cadence** (or earlier if close to expiry), and refreshes the rolling `latest` prerelease artifacts after successful signing.
+
+### Signing commands and references
 
 - Official OV/EV code signing is currently not enabled due to certificate cost.
 - A self-signed CI path is available for community/testing builds.
@@ -121,7 +129,7 @@ Useful options:
 
 Set `CODE_SIGN_THUMBPRINT` (or use `-SetupPath` when needed).
 
-## Portable install (no Setup.exe)
+## 💼 Portable install (no Setup.exe)
 
 ```powershell
 .\install-local.ps1
@@ -135,7 +143,7 @@ Uninstall:
 .\install-local.ps1 -Uninstall
 ```
 
-## Crash dumps (WER LocalDumps)
+## 🧯 Crash dumps (WER LocalDumps)
 
 Enable local dumps:
 
@@ -160,7 +168,7 @@ Default dump directories:
 - Current user: `%LOCALAPPDATA%\GregToolsModmanager\dumps`
 - Machine: `C:\ProgramData\GregToolsModmanager\dumps`
 
-## Deploy all mods to Workshop folders
+## 🚚 Deploy all mods to Workshop folders
 
 ```powershell
 pwsh -File scripts/Deploy-Release-ToWorkshop.ps1
@@ -168,7 +176,7 @@ pwsh -File scripts/Deploy-Release-ToWorkshop.ps1
 
 Builds framework/plugins/mods and creates Steamworks-compatible project folders under `<GameRoot>/workshop/`.
 
-## Troubleshooting
+## 🩺 Troubleshooting
 
 1. Open **Event Viewer** → **Windows Logs** → **Application** and look for `WorkshopUploader.exe` faults.
 2. Install/repair the [Microsoft Visual C++ Redistributable](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist).
@@ -176,7 +184,7 @@ Builds framework/plugins/mods and creates Steamworks-compatible project folders 
 4. Prefer running with `F5` from Visual Studio on the same machine you use to build.
 5. Ensure Windows 10 version 1809+ (OS build `17763+`).
 
-## Deploy next to the game
+## 🎮 Deploy next to the game
 
 Copy the publish output to:
 
@@ -184,20 +192,20 @@ Copy the publish output to:
 
 Place it next to the game executable (not inside `Mods` or `MelonLoader`).
 
-## VirusTotal
+## 🛡️ VirusTotal
 
 Third-party scan for transparency (self-contained .NET apps may be flagged heuristically; always compare checksums from official releases):
 
 - **SHA-256:** `c0ea7929eee9d754e81363e9ec81c601e763e65f7db1eb0d971edf2c2036f0af`
 - **Report:** [VirusTotal file relations](https://www.virustotal.com/gui/file/c0ea7929eee9d754e81363e9ec81c601e763e65f7db1eb0d971edf2c2036f0af/relations)
 
-## Sponsorship
+## ❤️ Sponsorship
 
 If this project helps you and you want to support ongoing maintenance and improvements:
 
 - **Sponsor:** [github.com/sponsors/mleem97](https://github.com/sponsors/mleem97)
 
-## See also
+## 🔗 See also
 
 - [External dependencies and distribution notes](./EXTERNAL_DEPENDENCIES.md)
 - [Workshop wiki page](../docs/wiki/tools/workshop-uploader.md)

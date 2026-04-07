@@ -7,6 +7,8 @@ on:
     branches: ["main"]
   release:
     types: [published]
+  schedule:
+    - cron: "0 3 * * 1"
   workflow_dispatch:
 
 env:
@@ -161,16 +163,30 @@ jobs:
       - name: Create self-signed code-signing certificate
         shell: pwsh
         run: |
-          $cert = New-SelfSignedCertificate `
-            -Type CodeSigningCert `
-            -Subject "CN=mleem97, O=Greg Modding Team" `
-            -KeyUsage DigitalSignature `
-            -KeyAlgorithm RSA `
-            -KeyLength 2048 `
-            -HashAlgorithm SHA256 `
-            -NotAfter (Get-Date).AddYears(2) `
-            -CertStoreLocation Cert:\CurrentUser\My `
-            -FriendlyName "GregTools CI Self-Signed Code Signing"
+          $friendlyName = "GregTools CI Self-Signed Code Signing"
+          $reuseThreshold = (Get-Date).AddDays(1)
+
+          $cert = Get-ChildItem Cert:\CurrentUser\My |
+            Where-Object { $_.FriendlyName -eq $friendlyName -and $_.NotAfter -gt $reuseThreshold } |
+            Sort-Object NotAfter -Descending |
+            Select-Object -First 1
+
+          if (-not $cert) {
+            Write-Host "No reusable self-signed cert found (or expiring soon). Creating new 7-day cert..."
+            $cert = New-SelfSignedCertificate `
+              -Type CodeSigningCert `
+              -Subject "CN=mleem97, O=Greg Modding Team" `
+              -KeyUsage DigitalSignature `
+              -KeyAlgorithm RSA `
+              -KeyLength 2048 `
+              -HashAlgorithm SHA256 `
+              -NotAfter (Get-Date).AddDays(7) `
+              -CertStoreLocation Cert:\CurrentUser\My `
+              -FriendlyName $friendlyName
+          }
+          else {
+            Write-Host "Reusing self-signed cert valid until $($cert.NotAfter.ToString('u'))."
+          }
 
           "CODE_SIGN_THUMBPRINT=$($cert.Thumbprint)" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
           Write-Host "Using certificate thumbprint: $($cert.Thumbprint)"
@@ -278,6 +294,23 @@ jobs:
             ### Assets
             - Windows setup (`*.exe`)
             - Portable publish (`*-Portable.zip`)
+
+      - name: Refresh rolling latest prerelease
+        if: ${{ github.event_name == 'release' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+        uses: ncipollo/release-action@v1
+        with:
+          tag: latest
+          name: Latest Self-Signed Build
+          prerelease: true
+          allowUpdates: true
+          removeArtifacts: true
+          replacesArtifacts: true
+          makeLatest: false
+          artifacts: |
+            installer/Output/GregToolsModmanager-*-Setup.exe
+            installer/Output/GregToolsModmanager-*-Portable.zip
+          artifactErrorsFailBuild: true
+          generateReleaseNotes: true
 
       - name: Job summary
         shell: pwsh
