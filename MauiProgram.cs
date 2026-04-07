@@ -9,6 +9,8 @@ public static class MauiProgram
 {
 	public static MauiApp CreateMauiApp()
 	{
+		AppFileLog.StartSession();
+		AppDomain.CurrentDomain.ProcessExit += (_, _) => AppFileLog.EndSession();
 		AppFileLog.Info("CreateMauiApp entry");
 		// #region agent log
 		DebugNdjsonSessionLog.Write("H1", "MauiProgram.CreateMauiApp", "entry", new
@@ -23,6 +25,7 @@ public static class MauiProgram
 		AppDomain.CurrentDomain.UnhandledException += (_, e) =>
 		{
 			var ex = e.ExceptionObject as Exception;
+			AppFileLog.MarkCrash("AppDomain.UnhandledException", ex);
 			AppFileLog.Error($"UnhandledException (terminating={e.IsTerminating})", ex);
 			DebugSessionLog.Write("H1", "MauiProgram.UnhandledException", "unhandled", new
 			{
@@ -33,6 +36,7 @@ public static class MauiProgram
 		};
 		TaskScheduler.UnobservedTaskException += (_, e) =>
 		{
+			AppFileLog.MarkCrash("TaskScheduler.UnobservedTaskException", e.Exception);
 			AppFileLog.Error("UnobservedTaskException", e.Exception);
 			DebugSessionLog.Write("H1", "MauiProgram.UnobservedTaskException", "unobserved", new
 			{

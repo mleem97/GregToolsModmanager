@@ -56,6 +56,11 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 ; ignoreversion: Dateien immer durch die neue Version ersetzen (auch gleiche Versionsnummer).
 Source: "..\bin\Release\net9.0-windows10.0.19041.0\win10-x64\publish\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
+[InstallDelete]
+; Wichtig für self-contained MAUI/WinAppSDK: alte Runtime-Dateien vor dem Kopieren entfernen,
+; damit kein gemischter DLL-Bestand zwischen Releases übrig bleibt (sonst Start-/UI-Crashes).
+Type: filesandordirs; Name: "{app}\*"
+
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"

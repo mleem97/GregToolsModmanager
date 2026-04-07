@@ -32,6 +32,31 @@ After this folder is its **own repository**, edit that workflow (or copy it to `
 - For testing/community builds, a **self-signed setup workflow** exists at `.github/workflows/selfsigned-setup.yml`.
 - If you want to support the project: once GitHub Sponsors is enabled for this account/repo, you can use the **Sponsor** feature.
 
+## Crash dumps (WER LocalDumps)
+
+If the app hard-crashes (native exception / process abort), Windows can write `.dmp` files automatically:
+
+```powershell
+.\installer\configure-localdumps.ps1
+```
+
+Machine-wide (requires elevated PowerShell):
+
+```powershell
+.\installer\configure-localdumps.ps1 -Scope Machine
+```
+
+Disable again:
+
+```powershell
+.\installer\configure-localdumps.ps1 -Disable
+```
+
+Default dump folders:
+
+- CurrentUser: `%LOCALAPPDATA%\GregToolsModmanager\dumps`
+- Machine: `C:\ProgramData\GregToolsModmanager\dumps`
+
 ## Open source & external dependencies
 
 See **[EXTERNAL_DEPENDENCIES.md](./EXTERNAL_DEPENDENCIES.md)** for licenses, **Steamworks** / **steam_api64.dll**, and distribution notes.

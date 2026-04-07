@@ -70,6 +70,31 @@ Nur neu kompilieren, wenn Publish schon da ist: `.\build.ps1 -SkipPublish`. Das 
 
 **Signatur:** Mit einer **öffentlichen CA** verschwindet der „Unbekannter Herausgeber“-Eindruck für Nutzer weitgehend; mit **Self-Signed** kannst du trotzdem z. B. **mleem97 / Greg Modding Team** im Zertifikat anzeigen — siehe **`installer\CODE_SIGNING.md`**. Self-Signed anlegen: **`.\installer\create-selfsigned-codesign-cert.ps1`**. Nur signieren **ohne Inno Setup**: **`.\build.ps1 -SignOnly`** (`CODE_SIGN_THUMBPRINT` setzen, Setup-EXE in `installer\Output\` oder `-SetupPath`).
 
+### Crash dumps (WER LocalDumps)
+
+Wenn die App hart abstürzt (native Exception / Prozessabbruch), kann Windows automatisch `.dmp`-Dateien erzeugen:
+
+```powershell
+.\installer\configure-localdumps.ps1
+```
+
+Optional maschinenweit (Admin-PowerShell):
+
+```powershell
+.\installer\configure-localdumps.ps1 -Scope Machine
+```
+
+Deaktivieren:
+
+```powershell
+.\installer\configure-localdumps.ps1 -Disable
+```
+
+Standardpfade:
+
+- CurrentUser: `%LOCALAPPDATA%\GregToolsModmanager\dumps`
+- Machine: `C:\ProgramData\GregToolsModmanager\dumps`
+
 ### Code-Signing Status
 
 - **Offizielles CA-Code-Signing (OV/EV)** ist aktuell **nicht aktiv**, da die laufenden Kosten für ein Zertifikat derzeit zu hoch sind.
