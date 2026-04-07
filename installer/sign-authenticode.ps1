@@ -19,6 +19,10 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
+if (-not $IsWindows) {
+    throw "Authenticode signing is only supported on Windows hosts. Use a Windows runner for this step."
+}
+
 if (-not (Test-Path -LiteralPath $Path)) {
     throw "Datei nicht gefunden: $Path"
 }

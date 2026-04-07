@@ -4,8 +4,90 @@ on:
   workflow_dispatch:
 
 jobs:
+  select-linux-runner:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    outputs:
+      runs_on: ${{ steps.select.outputs.runs_on }}
+    permissions:
+      actions: read
+
+    steps:
+      - name: Select Linux runner (max 10m wait)
+        id: select
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const sleep = ms => new Promise(r => setTimeout(r, ms));
+            const wantedLabels = ['self-hosted', 'linux'];
+            const attempts = 20;
+            const intervalMs = 30000;
+
+            function hasLabels(runner, labels) {
+              const runnerLabels = (runner.labels || []).map(l => String(l.name).toLowerCase());
+              return labels.every(l => runnerLabels.includes(l));
+            }
+
+            let selected = JSON.stringify('ubuntu-latest');
+            for (let i = 0; i < attempts; i++) {
+              const res = await github.rest.actions.listSelfHostedRunnersForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                per_page: 100,
+              });
+
+              const idle = (res.data.runners || []).find(r =>
+                r.status === 'online' && !r.busy && hasLabels(r, wantedLabels)
+              );
+
+              if (idle) {
+                selected = JSON.stringify(['self-hosted', 'linux']);
+                core.info(`Using self-hosted linux runner: ${idle.name}`);
+                break;
+              }
+
+              if (i < attempts - 1) {
+                core.info(`No idle self-hosted linux runner yet (attempt ${i + 1}/${attempts}), waiting 30s...`);
+                await sleep(intervalMs);
+              }
+            }
+
+            if (selected === JSON.stringify('ubuntu-latest')) {
+              core.warning('No idle self-hosted linux runner within 10 minutes, falling back to ubuntu-latest.');
+            }
+
+            core.setOutput('runs_on', selected);
+
+  preflight-linux:
+    needs: [select-linux-runner]
+    runs-on: ${{ fromJSON(needs.select-linux-runner.outputs.runs_on) }}
+    timeout-minutes: 10
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Linux preflight (malicious scan)
+        shell: bash
+        run: |
+          python3 .github/scripts/malicious_scan.py \
+            --days 3 \
+            --output malicious-scan.sarif \
+            --summary malicious-scan-summary.txt
+
   build-selfsigned-setup:
     runs-on: windows-latest
+    needs: [preflight-linux]
+    if: ${{ needs.preflight-linux.result == 'success' }}
     permissions:
       contents: read
 

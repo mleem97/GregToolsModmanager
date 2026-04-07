@@ -1,156 +1,205 @@
-# WorkshopManager
+# GregTools Modmanager
 
 [![Sponsor mleem97](https://img.shields.io/badge/Sponsor-mleem97-EA4AAA?style=for-the-badge&logo=GitHub-Sponsors&logoColor=white)](https://github.com/sponsors/mleem97)
+[![Desktop Build](https://img.shields.io/github/actions/workflow/status/mleem97/GregToolsModmanager/dotnet-desktop.yml?branch=main&style=for-the-badge&label=Desktop%20Build)](https://github.com/mleem97/GregToolsModmanager/actions/workflows/dotnet-desktop.yml)
+[![Discord Notify](https://img.shields.io/github/actions/workflow/status/mleem97/GregToolsModmanager/discord-release-notify.yml?branch=main&style=for-the-badge&label=Discord%20Notify)](https://github.com/mleem97/GregToolsModmanager/actions/workflows/discord-release-notify.yml)
+[![Daily Security Scan](https://img.shields.io/github/actions/workflow/status/mleem97/GregToolsModmanager/daily-malicious-code-scan.yml?branch=main&style=for-the-badge&label=Daily%20Security%20Scan)](https://github.com/mleem97/GregToolsModmanager/actions/workflows/daily-malicious-code-scan.yml)
+[![Self-Signed Setup](https://img.shields.io/github/actions/workflow/status/mleem97/GregToolsModmanager/selfsigned-setup.yml?branch=main&style=for-the-badge&label=Self-Signed%20Setup)](https://github.com/mleem97/GregToolsModmanager/actions/workflows/selfsigned-setup.yml)
 
-Desktop app for **Steam Workshop** management, mod browsing, and publishing for **Data Center** (Steamworks API, App ID 4170200).
+Desktop app for **Steam Workshop** management, mod browsing, and publishing for **Data Center** (Steamworks API, App ID `4170200`).
 
-### Open source and external dependencies
+## Open-source and external dependencies
 
-This project is developed in the open alongside **many open-source libraries** (.NET, MAUI, Facepunch.Steamworks, etc.). It also **ships Valve’s closed-source `steam_api64.dll`** (Steamworks) subject to Valve’s terms—not everything in the distributed app is “open source” in the OSI sense. See **[EXTERNAL_DEPENDENCIES.md](./EXTERNAL_DEPENDENCIES.md)** for a full breakdown, licenses, and redistribution notes.
+This project is developed in the open and uses many open-source libraries (.NET, MAUI, Facepunch.Steamworks, and more). It also ships Valve’s closed-source `steam_api64.dll` (Steamworks), which is governed by Valve terms.
+
+See [EXTERNAL_DEPENDENCIES.md](./EXTERNAL_DEPENDENCIES.md) for a full license and redistribution breakdown.
 
 ## Features
 
-- **Mod Store** — browse, search, subscribe, favorite, and vote on Workshop items.
-- **Mod Manager** — dependency health checks, MelonLoader status, FMF plugin channels.
-- **Author tools** — create workshop projects from templates, edit metadata, publish with change notes. Modded templates scaffold **`content/Mods`**, **`content/Plugins`**, and **`content/ModFramework/`** (including **`ModFramework/FMF/Plugins`**) so the uploaded tree mirrors **`{GameRoot}`** layout; Steam still receives only the **`content/`** folder — the game copies it into **`WorkshopUploadContent`** (junctions from the game root to those paths remain the player’s responsibility).
-- **Post-upload sync** — after publishing, re-downloads from Steam to keep your local copy in sync.
-- **Headless CLI** — publish from scripts or CI.
-- **Pagination** — all list views support paging through results.
+- **Mod Store:** Browse, search, subscribe, favorite, and vote on Workshop items.
+- **Mod Manager:** Dependency health checks, MelonLoader status, and FMF plugin channels.
+- **Authoring tools:** Create projects from templates, edit metadata, and publish with change notes.
+- **Template scaffolding:** Modded templates create `content/Mods`, `content/Plugins`, and `content/ModFramework/` (including `ModFramework/FMF/Plugins`) to mirror `{GameRoot}` layout.
+- **Post-upload sync:** Re-downloads from Steam after publish to keep local content in sync.
+- **Headless CLI:** Supports scripted/CI publish flows.
+- **Pagination:** All major list views support paging.
 
-## Open in Visual Studio (without the full monorepo solution)
+## Open in Visual Studio
 
-Use **`WorkshopUploader\WorkshopUploader.sln`** — it contains only this project. Opening **`WorkshopUploader.csproj`** from the repo root can make Visual Studio pick **`FrikaMF.sln`** instead.
+Use `WorkshopUploader.sln` in this repository root.
+
+If you open only `WorkshopUploader.csproj` from another solution context, Visual Studio may pick a different solution unexpectedly.
 
 ## Build
 
-```bash
+```powershell
 dotnet build WorkshopUploader.csproj -c Debug
 ```
 
-Or from this folder:
+Or:
 
-```bash
+```powershell
 dotnet build WorkshopUploader.sln -c Debug
 ```
 
-Targets **.NET 9** with **.NET MAUI** (Windows). The project sets **`WindowsAppSDKSelfContained`** so the **Windows App SDK** is copied next to the app.
+Target: **.NET 9 + .NET MAUI (Windows)**. The project uses `WindowsAppSDKSelfContained` so required Windows App SDK components are shipped with the app.
 
 ## Run (recommended)
 
-- **Visual Studio 2022** with the **.NET Multi-platform App UI workload** and **Windows App SDK** components: open **`WorkshopUploader.sln`**, confirm **WorkshopUploader** is the startup project, press **F5**.
+- Use **Visual Studio 2022** with the **.NET MAUI workload** and **Windows App SDK** components.
+- Open `WorkshopUploader.sln`.
+- Set `WorkshopUploader` as startup project.
+- Press `F5`.
 
-## Publish (single-file, win10-x64)
+## Publish (`win10-x64`)
 
-```bash
+```powershell
 dotnet publish WorkshopUploader.csproj -c Release
 ```
 
-Output: `bin/Release/net9.0-windows10.0.19041.0/win10-x64/publish/WorkshopUploader.exe`
+Output:
 
-### Fully self-contained folder
+`bin/Release/net9.0-windows10.0.19041.0/win10-x64/publish/WorkshopUploader.exe`
 
-```bash
-dotnet publish WorkshopUploader.csproj -c Release -p:SelfContained=true -p:WindowsPackageType=None -p:WindowsAppSDKSelfContained=true -o ./publish-out
+### Publish to a custom self-contained folder
+
+```powershell
+dotnet publish WorkshopUploader.csproj -c Release -p:SelfContained=true -p:WindowsPackageType=None -p:WindowsAppSDKSelfContained=true -o .\publish-out
 ```
 
-### Setup-EXE (Inno Setup — echter Installer)
+## Create installer (`Setup.exe` via Inno Setup)
 
-1. [Inno Setup 6](https://jrsoftware.org/isdl.php) installieren (liefert `ISCC.exe`).
-2. Im Ordner `WorkshopUploader`:
+1. Install [Inno Setup 6](https://jrsoftware.org/isdl.php) (includes `ISCC.exe`).
+2. Run:
 
 ```powershell
 .\build.ps1
 ```
 
-Führt `dotnet publish` aus und erzeugt **`installer\Output\GregToolsModmanager-<Version>-Setup.exe`** (Assistent, **Deinstallieren** unter Windows-Einstellungen → Apps, Startmenü-Eintrag, optionale Desktop-Verknüpfung). Standardinstallationspfad: **`Program Files\GregTools Modmanager`** (Administrator nötig).
+This runs `dotnet publish` and creates:
 
-Nur neu kompilieren, wenn Publish schon da ist: `.\build.ps1 -SkipPublish`. Das Inno-Skript liegt unter **`installer\GregToolsModmanager.iss`**.
+`installer\Output\GregToolsModmanager-<Version>-Setup.exe`
 
-**Update / Neuinstallation:** Gleiche **`AppId`** wie zuvor — Setup erkennt die bestehende Installation und **überschreibt** den Zielordner (`Program Files\GregTools Modmanager`). Vorher wird eine **laufende** `WorkshopUploader.exe` über den Windows-Restart-Manager geschlossen (`CloseApplications`). Die portable Variante **`install-local.ps1`** beendet die App ebenfalls und ersetzt den Installationsordner komplett.
+Installer behavior:
 
-**Startet nach dem Setup nicht:** Der Assistent läuft mit Admin-Rechten; die **Abschluss-Aktion** startet die App mit **`runasoriginaluser`**, damit sie **nicht** im erhöhten Kontext läuft (WinUI/WebView2/MAUI verträgt das oft nicht). Verknüpfungen starten ohnehin normal. Wenn es weiter hakt: Ereignisanzeige, und testweise `CloseApplications=no` in `GregToolsModmanager.iss`.
+- Wizard install/uninstall integration in Windows Apps settings.
+- Start menu entry and optional desktop shortcut.
+- Default install path: `C:\Program Files\GregTools Modmanager` (admin required).
 
-**Signatur:** Mit einer **öffentlichen CA** verschwindet der „Unbekannter Herausgeber“-Eindruck für Nutzer weitgehend; mit **Self-Signed** kannst du trotzdem z. B. **mleem97 / Greg Modding Team** im Zertifikat anzeigen — siehe **`installer\CODE_SIGNING.md`**. Self-Signed anlegen: **`.\installer\create-selfsigned-codesign-cert.ps1`**. Nur signieren **ohne Inno Setup**: **`.\build.ps1 -SignOnly`** (`CODE_SIGN_THUMBPRINT` setzen, Setup-EXE in `installer\Output\` oder `-SetupPath`).
+Useful options:
 
-### Crash dumps (WER LocalDumps)
+- Skip publish and only rebuild setup: `./build.ps1 -SkipPublish`
+- Inno script path: `installer\GregToolsModmanager.iss`
 
-Wenn die App hart abstürzt (native Exception / Prozessabbruch), kann Windows automatisch `.dmp`-Dateien erzeugen:
+### Update/reinstall behavior
+
+- Setup uses the same `AppId`, detects existing installs, and overwrites the target folder.
+- Running `WorkshopUploader.exe` is closed through Windows Restart Manager (`CloseApplications`).
+- Portable install via `install-local.ps1` also closes the app and replaces the install directory.
+
+### App does not start after setup
+
+- The installer runs elevated, but final launch uses `runasoriginaluser` so the app starts non-elevated (important for WinUI/WebView2/MAUI stability).
+- If problems continue, check Event Viewer and test `CloseApplications=no` in `GregToolsModmanager.iss`.
+
+## Code signing
+
+- Official OV/EV code signing is currently not enabled due to certificate cost.
+- A self-signed CI path is available for community/testing builds.
+- Manual signing docs: `installer\CODE_SIGNING.md`.
+- Create a self-signed certificate:
 
 ```powershell
-.\installer\configure-localdumps.ps1
+.\installer\create-selfsigned-codesign-cert.ps1
 ```
 
-Optional maschinenweit (Admin-PowerShell):
+- Sign only (without rebuilding setup):
 
 ```powershell
-.\installer\configure-localdumps.ps1 -Scope Machine
+.\build.ps1 -SignOnly
 ```
 
-Deaktivieren:
+Set `CODE_SIGN_THUMBPRINT` (or use `-SetupPath` when needed).
 
-```powershell
-.\installer\configure-localdumps.ps1 -Disable
-```
-
-Standardpfade:
-
-- CurrentUser: `%LOCALAPPDATA%\GregToolsModmanager\dumps`
-- Machine: `C:\ProgramData\GregToolsModmanager\dumps`
-
-### Code-Signing Status
-
-- **Offizielles CA-Code-Signing (OV/EV)** ist aktuell **nicht aktiv**, da die laufenden Kosten für ein Zertifikat derzeit zu hoch sind.
-- Es gibt einen optionalen **Self-Signed CI-Workflow** unter **`.github/workflows/selfsigned-setup.yml`** (nur für Test-/Community-Builds, weiterhin mögliche SmartScreen-Warnungen).
-- Wenn du das Projekt unterstützen möchtest, ist GitHub Sponsors jetzt aktiv: **[github.com/sponsors/mleem97](https://github.com/sponsors/mleem97)**.
-
-### Sponsoring
-
-Wenn dir das Projekt hilft und du regelmäßige Updates/Qualitätssicherung unterstützen möchtest:
-
-- **Sponsor:** [github.com/sponsors/mleem97](https://github.com/sponsors/mleem97)
-
-### Schnell ohne Setup-EXE (nur Kopie + Verknüpfungen)
+## Portable install (no Setup.exe)
 
 ```powershell
 .\install-local.ps1
 ```
 
-Installiert benutzerweit nach `%LOCALAPPDATA%\Programs\GregTools Modmanager\` (ohne Admin). Deinstallation: `.\install-local.ps1 -Uninstall`.
+Installs per-user to `%LOCALAPPDATA%\Programs\GregTools Modmanager\` (no admin).
+
+Uninstall:
+
+```powershell
+.\install-local.ps1 -Uninstall
+```
+
+## Crash dumps (WER LocalDumps)
+
+Enable local dumps:
+
+```powershell
+.\installer\configure-localdumps.ps1
+```
+
+Enable machine-wide (elevated shell):
+
+```powershell
+.\installer\configure-localdumps.ps1 -Scope Machine
+```
+
+Disable:
+
+```powershell
+.\installer\configure-localdumps.ps1 -Disable
+```
+
+Default dump directories:
+
+- Current user: `%LOCALAPPDATA%\GregToolsModmanager\dumps`
+- Machine: `C:\ProgramData\GregToolsModmanager\dumps`
 
 ## Deploy all mods to Workshop folders
 
-```bash
+```powershell
 pwsh -File scripts/Deploy-Release-ToWorkshop.ps1
 ```
 
-Builds framework + plugins + mods and creates Steamworks-compatible project folders under `<GameRoot>/workshop/`.
+Builds framework/plugins/mods and creates Steamworks-compatible project folders under `<GameRoot>/workshop/`.
 
 ## Troubleshooting
 
-1. **Windows Event Viewer** -> *Windows Logs* -> *Application* -> look for **WorkshopUploader.exe** faults.
-2. Install or repair: **[Microsoft Visual C++ Redistributable](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist)**.
-3. Install the **[Windows App SDK runtime](https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/downloads)**.
-4. Prefer **F5 from Visual Studio** on the same machine where you build.
-5. Ensure **Windows 10 version 1809+** (OS build **17763+**).
+1. Open **Event Viewer** → **Windows Logs** → **Application** and look for `WorkshopUploader.exe` faults.
+2. Install/repair the [Microsoft Visual C++ Redistributable](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist).
+3. Install the [Windows App SDK Runtime](https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/downloads).
+4. Prefer running with `F5` from Visual Studio on the same machine you use to build.
+5. Ensure Windows 10 version 1809+ (OS build `17763+`).
 
 ## Deploy next to the game
 
-Copy the publish folder to:
+Copy the publish output to:
 
 `{GameRoot}/WorkshopUploader/`
 
-so it sits alongside the game executable (not inside `Mods` or `MelonLoader`).
+Place it next to the game executable (not inside `Mods` or `MelonLoader`).
 
 ## VirusTotal
 
-A third-party scan is published for transparency (self-contained .NET builds are sometimes flagged heuristically; compare SHA-256 if you download from GitHub releases):
+Third-party scan for transparency (self-contained .NET apps may be flagged heuristically; always compare checksums from official releases):
 
 - **SHA-256:** `c0ea7929eee9d754e81363e9ec81c601e763e65f7db1eb0d971edf2c2036f0af`
-- **Report:** [VirusTotal — file relations](https://www.virustotal.com/gui/file/c0ea7929eee9d754e81363e9ec81c601e763e65f7db1eb0d971edf2c2036f0af/relations)
+- **Report:** [VirusTotal file relations](https://www.virustotal.com/gui/file/c0ea7929eee9d754e81363e9ec81c601e763e65f7db1eb0d971edf2c2036f0af/relations)
+
+## Sponsorship
+
+If this project helps you and you want to support ongoing maintenance and improvements:
+
+- **Sponsor:** [github.com/sponsors/mleem97](https://github.com/sponsors/mleem97)
 
 ## See also
 
-- [External dependencies & distribution (licenses, Steamworks)](./EXTERNAL_DEPENDENCIES.md)
+- [External dependencies and distribution notes](./EXTERNAL_DEPENDENCIES.md)
 - [Workshop wiki page](../docs/wiki/tools/workshop-uploader.md)
-- [End-User Guide](../wiki/docs/guides/enduser-workshop.md)
-- [Contributor Guide](../wiki/docs/guides/contributor-workshop.md)
+- [End-user guide](../wiki/docs/guides/enduser-workshop.md)
+- [Contributor guide](../wiki/docs/guides/contributor-workshop.md)

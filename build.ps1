@@ -19,6 +19,7 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 Set-Location $PSScriptRoot
+$isWindowsHost = $IsWindows -or [System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([System.Runtime.InteropServices.OSPlatform]::Windows)
 
 function Invoke-BuildSign {
     param([Parameter(Mandatory)][string]$TargetSetupPath)
@@ -47,6 +48,10 @@ function Invoke-BuildSign {
 }
 
 if ($SignOnly) {
+    if (-not $isWindowsHost) {
+        throw "-SignOnly is only supported on Windows (Authenticode requires Windows tooling)."
+    }
+
     $outDir = Join-Path $PSScriptRoot 'installer\Output'
     $resolved = $SetupPath
     if ([string]::IsNullOrWhiteSpace($resolved)) {
@@ -103,6 +108,36 @@ if ([string]::IsNullOrWhiteSpace($ver)) {
 $publishDir = Join-Path $PSScriptRoot 'bin\Release\net9.0-windows10.0.19041.0\win10-x64\publish'
 $iss = Join-Path $PSScriptRoot 'installer\GregToolsModmanager.iss'
 $outDir = Join-Path $PSScriptRoot 'installer\Output'
+
+if (-not $isWindowsHost) {
+    if ($Sign) {
+        throw "-Sign is only supported on Windows (Authenticode/signing certificate store is Windows-specific)."
+    }
+
+    if (Test-Path -LiteralPath $publishDir) {
+        Write-Host "[build] Cleaning old publish output: $publishDir"
+        Remove-Item -LiteralPath $publishDir -Recurse -Force
+    }
+
+    Write-Host '[build] Non-Windows environment detected: creating portable publish only.'
+    & dotnet publish $projPath -c Release
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+    if (-not (Test-Path -LiteralPath $publishDir)) {
+        throw "Publish output not found: $publishDir"
+    }
+
+    New-Item -ItemType Directory -Path $outDir -Force | Out-Null
+    $zipPath = Join-Path $outDir ("GregToolsModmanager-$ver-Portable.zip")
+    if (Test-Path -LiteralPath $zipPath) {
+        Remove-Item -LiteralPath $zipPath -Force
+    }
+
+    Compress-Archive -Path (Join-Path $publishDir '*') -DestinationPath $zipPath -CompressionLevel Optimal
+    Write-Host "[build] Portable package created: $zipPath"
+    Write-Host '[build] Setup/Authenticode signing is skipped on non-Windows hosts.'
+    exit 0
+}
 
 if (-not $SkipPublish) {
     if (Test-Path -LiteralPath $publishDir) {
