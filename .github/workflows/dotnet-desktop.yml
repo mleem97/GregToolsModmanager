@@ -78,6 +78,44 @@ jobs:
         shell: pwsh
         run: .\build.ps1 -Sign
 
+      - name: Sign primary app executable
+        shell: pwsh
+        run: |
+          $appExe = Join-Path $env:GITHUB_WORKSPACE 'bin\Release\net9.0-windows10.0.19041.0\win10-x64\publish\WorkshopUploader.exe'
+          if (-not (Test-Path -LiteralPath $appExe)) {
+            throw "Primary app executable not found: $appExe"
+          }
+
+          .\installer\sign-authenticode.ps1 -Path $appExe -Thumbprint $env:CODE_SIGN_THUMBPRINT
+
+      - name: Verify signatures (setup + app)
+        shell: pwsh
+        run: |
+          $setupExe = Get-ChildItem -LiteralPath (Join-Path $env:GITHUB_WORKSPACE 'installer\Output') -Filter 'GregToolsModmanager-*-Setup.exe' |
+            Sort-Object LastWriteTime -Descending |
+            Select-Object -First 1
+          if (-not $setupExe) {
+            throw "No setup file found in installer\\Output"
+          }
+
+          $appExe = Join-Path $env:GITHUB_WORKSPACE 'bin\Release\net9.0-windows10.0.19041.0\win10-x64\publish\WorkshopUploader.exe'
+          if (-not (Test-Path -LiteralPath $appExe)) {
+            throw "Primary app executable not found: $appExe"
+          }
+
+          $setupSig = Get-AuthenticodeSignature -FilePath $setupExe.FullName
+          $appSig = Get-AuthenticodeSignature -FilePath $appExe
+
+          Write-Host "Setup signature status: $($setupSig.Status)"
+          Write-Host "App signature status: $($appSig.Status)"
+
+          if ($setupSig.Status -ne 'Valid') {
+            throw "Setup signature is not valid: $($setupSig.Status)"
+          }
+          if ($appSig.Status -ne 'Valid') {
+            throw "App signature is not valid: $($appSig.Status)"
+          }
+
       - name: Create portable ZIP (publish output)
         shell: pwsh
         run: |
@@ -221,6 +259,44 @@ jobs:
       - name: Build setup and sign (self-signed)
         shell: pwsh
         run: .\build.ps1 -Sign
+
+      - name: Sign primary app executable
+        shell: pwsh
+        run: |
+          $appExe = Join-Path $env:GITHUB_WORKSPACE 'bin\Release\net9.0-windows10.0.19041.0\win10-x64\publish\WorkshopUploader.exe'
+          if (-not (Test-Path -LiteralPath $appExe)) {
+            throw "Primary app executable not found: $appExe"
+          }
+
+          .\installer\sign-authenticode.ps1 -Path $appExe -Thumbprint $env:CODE_SIGN_THUMBPRINT
+
+      - name: Verify signatures (setup + app)
+        shell: pwsh
+        run: |
+          $setupExe = Get-ChildItem -LiteralPath (Join-Path $env:GITHUB_WORKSPACE 'installer\Output') -Filter 'GregToolsModmanager-*-Setup.exe' |
+            Sort-Object LastWriteTime -Descending |
+            Select-Object -First 1
+          if (-not $setupExe) {
+            throw "No setup file found in installer\\Output"
+          }
+
+          $appExe = Join-Path $env:GITHUB_WORKSPACE 'bin\Release\net9.0-windows10.0.19041.0\win10-x64\publish\WorkshopUploader.exe'
+          if (-not (Test-Path -LiteralPath $appExe)) {
+            throw "Primary app executable not found: $appExe"
+          }
+
+          $setupSig = Get-AuthenticodeSignature -FilePath $setupExe.FullName
+          $appSig = Get-AuthenticodeSignature -FilePath $appExe
+
+          Write-Host "Setup signature status: $($setupSig.Status)"
+          Write-Host "App signature status: $($appSig.Status)"
+
+          if ($setupSig.Status -ne 'Valid') {
+            throw "Setup signature is not valid: $($setupSig.Status)"
+          }
+          if ($appSig.Status -ne 'Valid') {
+            throw "App signature is not valid: $($appSig.Status)"
+          }
 
       - name: Create portable ZIP (publish output)
         shell: pwsh

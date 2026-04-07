@@ -1,24 +1,88 @@
 name: Discord Release Notification
 
 on:
-  release:
-    types: [published]
+  workflow_run:
+    workflows: [".NET Desktop (Self-Signed Setup)"]
+    types: [completed]
 
 jobs:
   notify-discord-selfhosted-linux:
     runs-on: [self-hosted, linux]
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'release' }}
     permissions:
       contents: read
+      actions: read
 
     steps:
+      - name: Resolve release metadata from workflow SHA
+        id: resolve_release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const headSha = context.payload.workflow_run.head_sha;
+            const releases = await github.paginate(github.rest.repos.listReleases, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              per_page: 100,
+            });
+
+            async function resolveTagToCommitSha(tagName) {
+              const ref = await github.rest.git.getRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: `tags/${tagName}`,
+              });
+
+              if (ref.data.object.type === 'commit') {
+                return ref.data.object.sha;
+              }
+
+              if (ref.data.object.type === 'tag') {
+                const tagObj = await github.rest.git.getTag({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  tag_sha: ref.data.object.sha,
+                });
+                return tagObj.data.object.sha;
+              }
+
+              return null;
+            }
+
+            let matchedRelease = null;
+            for (const release of releases) {
+              try {
+                const commitSha = await resolveTagToCommitSha(release.tag_name);
+                if (commitSha === headSha) {
+                  matchedRelease = release;
+                  break;
+                }
+              } catch (error) {
+                core.warning(`Failed to resolve tag ${release.tag_name}: ${error.message}`);
+              }
+            }
+
+            if (!matchedRelease) {
+              core.setFailed(`No release found for workflow SHA ${headSha}`);
+              return;
+            }
+
+            core.setOutput('tag_name', matchedRelease.tag_name);
+            core.setOutput('release_url', matchedRelease.html_url);
+
       - name: Send Discord webhook (release published)
         shell: bash
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          TAG_NAME: ${{ github.event.release.tag_name }}
-          RELEASE_URL: ${{ github.event.release.html_url }}
+          TAG_NAME: ${{ steps.resolve_release.outputs.tag_name }}
+          RELEASE_URL: ${{ steps.resolve_release.outputs.release_url }}
           REPO: ${{ github.repository }}
         run: |
+          if [ -z "$DISCORD_WEBHOOK_URL" ]; then
+            echo "DISCORD_WEBHOOK_URL is empty, skipping notification."
+            exit 0
+          fi
+
           app_name="GregTools Modmanager"
           version="${TAG_NAME:-unknown}"
 
@@ -60,16 +124,73 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      actions: read
     needs: [notify-discord-selfhosted-linux]
-    if: always() && needs.notify-discord-selfhosted-linux.result != 'success'
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'release' && always() && needs.notify-discord-selfhosted-linux.result != 'success' }}
 
     steps:
+      - name: Resolve release metadata from workflow SHA
+        id: resolve_release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const headSha = context.payload.workflow_run.head_sha;
+            const releases = await github.paginate(github.rest.repos.listReleases, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              per_page: 100,
+            });
+
+            async function resolveTagToCommitSha(tagName) {
+              const ref = await github.rest.git.getRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: `tags/${tagName}`,
+              });
+
+              if (ref.data.object.type === 'commit') {
+                return ref.data.object.sha;
+              }
+
+              if (ref.data.object.type === 'tag') {
+                const tagObj = await github.rest.git.getTag({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  tag_sha: ref.data.object.sha,
+                });
+                return tagObj.data.object.sha;
+              }
+
+              return null;
+            }
+
+            let matchedRelease = null;
+            for (const release of releases) {
+              try {
+                const commitSha = await resolveTagToCommitSha(release.tag_name);
+                if (commitSha === headSha) {
+                  matchedRelease = release;
+                  break;
+                }
+              } catch (error) {
+                core.warning(`Failed to resolve tag ${release.tag_name}: ${error.message}`);
+              }
+            }
+
+            if (!matchedRelease) {
+              core.setFailed(`No release found for workflow SHA ${headSha}`);
+              return;
+            }
+
+            core.setOutput('tag_name', matchedRelease.tag_name);
+            core.setOutput('release_url', matchedRelease.html_url);
+
       - name: Send Discord webhook (fallback)
         shell: bash
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          TAG_NAME: ${{ github.event.release.tag_name }}
-          RELEASE_URL: ${{ github.event.release.html_url }}
+          TAG_NAME: ${{ steps.resolve_release.outputs.tag_name }}
+          RELEASE_URL: ${{ steps.resolve_release.outputs.release_url }}
           REPO: ${{ github.repository }}
         run: |
           if [ -z "$DISCORD_WEBHOOK_URL" ]; then
