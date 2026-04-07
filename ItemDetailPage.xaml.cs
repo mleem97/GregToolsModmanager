@@ -18,8 +18,21 @@ public partial class ItemDetailPage : ContentPage
 			if (ulong.TryParse(value, out var id))
 			{
 				_fileId = id;
-				_ = LoadItemAsync(id);
+				_ = LoadItemSafeAsync(id);
 			}
+		}
+	}
+
+	private async Task LoadItemSafeAsync(ulong id)
+	{
+		try
+		{
+			await LoadItemAsync(id);
+		}
+		catch (Exception ex)
+		{
+			AppFileLog.Error($"ItemDetailPage load failed for fileId={id}", ex);
+			await DisplayAlert(S.Get("Error"), ex.Message, S.Get("OK"));
 		}
 	}
 

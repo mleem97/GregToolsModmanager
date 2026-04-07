@@ -24,7 +24,21 @@ public partial class NativeConfigEditorPage : ContentPage
 		set
 		{
 			_projectRoot = Uri.UnescapeDataString(value ?? "");
-			_ = LoadAsync();
+			_ = LoadAsyncSafe();
+		}
+	}
+
+	private async Task LoadAsyncSafe()
+	{
+		try
+		{
+			await LoadAsync();
+		}
+		catch (Exception ex)
+		{
+			AppFileLog.Error("NativeConfigEditorPage load failed", ex);
+			await MainThread.InvokeOnMainThreadAsync(async () =>
+				await DisplayAlert(S.Get("Error"), ex.Message, S.Get("OK")));
 		}
 	}
 

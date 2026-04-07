@@ -293,5 +293,8 @@
   <data name="Settings_LanguageRestart" xml:space="preserve"><value>После смены языка требуется перезапуск.</value></data>
   <data name="Settings_RestartNow" xml:space="preserve"><value>Перезапустить</value></data>
   <data name="Settings_LanguageSystem" xml:space="preserve"><value>Как в системе</value></data>
+  <data name="Settings_Logs" xml:space="preserve"><value>Журналы</value></data>
+  <data name="Settings_OpenLogs" xml:space="preserve"><value>Открыть папку журналов</value></data>
+  <data name="Settings_OpenLogsFailed" xml:space="preserve"><value>Не удалось открыть папку журналов: {0}</value></data>
 
 </root>

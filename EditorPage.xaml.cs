@@ -45,7 +45,21 @@ public partial class EditorPage : ContentPage
 		set
 		{
 			_projectRoot = Uri.UnescapeDataString(value);
-			_ = LoadAsync();
+			_ = LoadAsyncSafe();
+		}
+	}
+
+	private async Task LoadAsyncSafe()
+	{
+		try
+		{
+			await LoadAsync();
+		}
+		catch (Exception ex)
+		{
+			_log.Append($"Failed to open project: {ex.Message}");
+			await MainThread.InvokeOnMainThreadAsync(async () =>
+				await DisplayAlert(S.Get("Error"), $"Could not open project. {ex.Message}", S.Get("OK")));
 		}
 	}
 

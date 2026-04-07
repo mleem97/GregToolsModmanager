@@ -13,6 +13,7 @@ public sealed class AppLogService
 	public void Append(string message)
 	{
 		var line = $"{DateTime.Now:HH:mm:ss} {message}";
+		AppFileLog.Info(message);
 		MainThread.BeginInvokeOnMainThread(() =>
 		{
 			Lines.Add(line);

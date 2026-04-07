@@ -293,5 +293,8 @@
   <data name="Settings_LanguageRestart" xml:space="preserve"><value>È necessario riavviare dopo aver cambiato lingua.</value></data>
   <data name="Settings_RestartNow" xml:space="preserve"><value>Riavvia ora</value></data>
   <data name="Settings_LanguageSystem" xml:space="preserve"><value>Predefinito di sistema</value></data>
+  <data name="Settings_Logs" xml:space="preserve"><value>Registri</value></data>
+  <data name="Settings_OpenLogs" xml:space="preserve"><value>Apri cartella registri</value></data>
+  <data name="Settings_OpenLogsFailed" xml:space="preserve"><value>Impossibile aprire la cartella registri: {0}</value></data>
 
 </root>

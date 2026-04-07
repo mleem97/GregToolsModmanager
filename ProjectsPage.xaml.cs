@@ -139,6 +139,14 @@ public partial class ProjectsPage : ContentPage
 		}
 
 		ProjectList.SelectedItem = null;
-		await Shell.Current.GoToAsync($"{nameof(EditorPage)}?ProjectPath={Uri.EscapeDataString(vm.RootPath)}");
+		try
+		{
+			await Shell.Current.GoToAsync($"{nameof(EditorPage)}?ProjectPath={Uri.EscapeDataString(vm.RootPath)}");
+		}
+		catch (Exception ex)
+		{
+			_log.Append($"Failed to open project: {ex.Message}");
+			await DisplayAlert(S.Get("Error"), $"Could not open project. {ex.Message}", S.Get("OK"));
+		}
 	}
 }

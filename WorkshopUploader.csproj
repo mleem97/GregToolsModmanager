@@ -11,10 +11,10 @@
     <AssemblyName>WorkshopUploader</AssemblyName>
     <ApplicationTitle>GregTools Modmanager</ApplicationTitle>
     <ApplicationId>eu.gregframework.modmanager</ApplicationId>
-    <ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
-    <ApplicationVersion>2</ApplicationVersion>
-    <Version>1.0.1</Version>
-    <InformationalVersion>1.0.1</InformationalVersion>
+    <ApplicationDisplayVersion>1.0.2</ApplicationDisplayVersion>
+    <ApplicationVersion>3</ApplicationVersion>
+    <Version>1.0.2</Version>
+    <InformationalVersion>1.0.2</InformationalVersion>
     <WindowsPackageType>None</WindowsPackageType>
     <!-- Ship Windows App SDK with the app (unpackaged); reduces Microsoft.UI.Xaml 0xc000027b when machine runtime mismatches. -->
     <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>

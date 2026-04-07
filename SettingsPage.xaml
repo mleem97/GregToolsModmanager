@@ -86,6 +86,17 @@
                 </VerticalStackLayout>
             </Border>
 
+            <!--  Logs  -->
+            <Border Padding="20" StrokeThickness="0" BackgroundColor="#001715">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="8" />
+                </Border.StrokeShape>
+                <VerticalStackLayout Spacing="12">
+                    <Label Style="{StaticResource SectionTitle}" Text="{l:Translate Key=Settings_Logs}" />
+                    <Button Text="{l:Translate Key=Settings_OpenLogs}" Clicked="OnOpenLogs" Style="{StaticResource SecondaryButton}" HorizontalOptions="Start" />
+                </VerticalStackLayout>
+            </Border>
+
             <!--  Community links  -->
             <Border Padding="20" StrokeThickness="0" BackgroundColor="#001715">
                 <Border.StrokeShape>

@@ -293,5 +293,8 @@
   <data name="Settings_LanguageRestart" xml:space="preserve"><value>Nach Sprachänderung ist ein Neustart erforderlich.</value></data>
   <data name="Settings_RestartNow" xml:space="preserve"><value>Jetzt neu starten</value></data>
   <data name="Settings_LanguageSystem" xml:space="preserve"><value>Systemstandard</value></data>
+  <data name="Settings_Logs" xml:space="preserve"><value>Protokolle</value></data>
+  <data name="Settings_OpenLogs" xml:space="preserve"><value>Protokollordner öffnen</value></data>
+  <data name="Settings_OpenLogsFailed" xml:space="preserve"><value>Protokollordner konnte nicht geöffnet werden: {0}</value></data>
 
 </root>

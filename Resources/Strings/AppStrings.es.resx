@@ -293,5 +293,8 @@
   <data name="Settings_LanguageRestart" xml:space="preserve"><value>Es necesario reiniciar tras cambiar el idioma.</value></data>
   <data name="Settings_RestartNow" xml:space="preserve"><value>Reiniciar ahora</value></data>
   <data name="Settings_LanguageSystem" xml:space="preserve"><value>Predeterminado del sistema</value></data>
+  <data name="Settings_Logs" xml:space="preserve"><value>Registros</value></data>
+  <data name="Settings_OpenLogs" xml:space="preserve"><value>Abrir carpeta de registros</value></data>
+  <data name="Settings_OpenLogsFailed" xml:space="preserve"><value>No se pudo abrir la carpeta de registros: {0}</value></data>
 
 </root>

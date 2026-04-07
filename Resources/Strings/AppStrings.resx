@@ -293,5 +293,8 @@
   <data name="Settings_LanguageRestart" xml:space="preserve"><value>Restart is required after changing the language.</value></data>
   <data name="Settings_RestartNow" xml:space="preserve"><value>Restart now</value></data>
   <data name="Settings_LanguageSystem" xml:space="preserve"><value>System default</value></data>
+  <data name="Settings_Logs" xml:space="preserve"><value>Logs</value></data>
+  <data name="Settings_OpenLogs" xml:space="preserve"><value>Open logs folder</value></data>
+  <data name="Settings_OpenLogsFailed" xml:space="preserve"><value>Could not open logs folder: {0}</value></data>
 
 </root>

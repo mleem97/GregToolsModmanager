@@ -140,6 +140,31 @@ public partial class SettingsPage : ContentPage
 		}
 	}
 
+	private async void OnOpenLogs(object? sender, EventArgs e)
+	{
+		try
+		{
+			var logPath = AppFileLog.LogPath;
+			var logDirectory = Path.GetDirectoryName(logPath);
+			if (string.IsNullOrWhiteSpace(logDirectory))
+			{
+				throw new InvalidOperationException("Log directory is unavailable.");
+			}
+
+			Directory.CreateDirectory(logDirectory);
+			Process.Start(new ProcessStartInfo
+			{
+				FileName = logDirectory,
+				UseShellExecute = true
+			});
+		}
+		catch (Exception ex)
+		{
+			AppFileLog.Error("Failed to open logs folder from settings.", ex);
+			await DisplayAlert(S.Get("Error"), S.Format("Settings_OpenLogsFailed", ex.Message), S.Get("OK"));
+		}
+	}
+
 	#endregion
 
 	#region Restart

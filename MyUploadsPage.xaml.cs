@@ -125,7 +125,15 @@ public partial class MyUploadsPage : ContentPage
 			await DisplayAlert(S.Get("Uploads_Imported"), $"{selected.Count} project(s) under:\n{_workspace.WorkspaceRoot}", S.Get("OK"));
 			if (!string.IsNullOrEmpty(lastPath))
 			{
-				await Shell.Current.GoToAsync($"{nameof(EditorPage)}?ProjectPath={Uri.EscapeDataString(lastPath)}");
+				try
+				{
+					await Shell.Current.GoToAsync($"{nameof(EditorPage)}?ProjectPath={Uri.EscapeDataString(lastPath)}");
+				}
+				catch (Exception navEx)
+				{
+					AppFileLog.Error("MyUploadsPage navigation failed after bulk import", navEx);
+					await DisplayAlert(S.Get("Error"), navEx.Message, S.Get("OK"));
+				}
 			}
 		}
 		catch (Exception ex)
@@ -162,7 +170,15 @@ public partial class MyUploadsPage : ContentPage
 			}
 
 			await DisplayAlert(S.Get("Uploads_Imported"), outcome.ProjectRoot, S.Get("OK"));
-			await Shell.Current.GoToAsync($"{nameof(EditorPage)}?ProjectPath={Uri.EscapeDataString(outcome.ProjectRoot)}");
+			try
+			{
+				await Shell.Current.GoToAsync($"{nameof(EditorPage)}?ProjectPath={Uri.EscapeDataString(outcome.ProjectRoot)}");
+			}
+			catch (Exception navEx)
+			{
+				AppFileLog.Error("MyUploadsPage navigation failed after single import", navEx);
+				await DisplayAlert(S.Get("Error"), navEx.Message, S.Get("OK"));
+			}
 		}
 		catch (Exception ex)
 		{

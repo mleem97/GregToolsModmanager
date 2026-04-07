@@ -9,6 +9,7 @@ public static class MauiProgram
 {
 	public static MauiApp CreateMauiApp()
 	{
+		AppFileLog.Info("CreateMauiApp entry");
 		// #region agent log
 		DebugNdjsonSessionLog.Write("H1", "MauiProgram.CreateMauiApp", "entry", new
 		{
@@ -22,6 +23,7 @@ public static class MauiProgram
 		AppDomain.CurrentDomain.UnhandledException += (_, e) =>
 		{
 			var ex = e.ExceptionObject as Exception;
+			AppFileLog.Error($"UnhandledException (terminating={e.IsTerminating})", ex);
 			DebugSessionLog.Write("H1", "MauiProgram.UnhandledException", "unhandled", new
 			{
 				e.IsTerminating,
@@ -31,6 +33,7 @@ public static class MauiProgram
 		};
 		TaskScheduler.UnobservedTaskException += (_, e) =>
 		{
+			AppFileLog.Error("UnobservedTaskException", e.Exception);
 			DebugSessionLog.Write("H1", "MauiProgram.UnobservedTaskException", "unobserved", new
 			{
 				e.Observed,
@@ -58,6 +61,7 @@ public static class MauiProgram
 				if (!string.IsNullOrEmpty(baseDir))
 				{
 					Directory.SetCurrentDirectory(baseDir);
+					AppFileLog.Info($"CurrentDirectory set to: {baseDir}");
 				}
 			}
 			catch
@@ -66,6 +70,7 @@ public static class MauiProgram
 			}
 
 			var steamOk = SteamApiNativeLoader.TryPreload();
+			AppFileLog.Info($"SteamApiNativeLoader.TryPreload={steamOk}");
 			// #region agent log
 			DebugNdjsonSessionLog.Write("H4", "MauiProgram.CreateMauiApp", "after_steam_preload", new { steamOk });
 			// #endregion
@@ -122,6 +127,7 @@ public static class MauiProgram
 			// #endregion
 
 			var app = builder.Build();
+			AppFileLog.Info("CreateMauiApp success");
 
 			// #region agent log
 			DebugNdjsonSessionLog.Write("H1", "MauiProgram.CreateMauiApp", "after_build", new { ok = true });
@@ -132,6 +138,7 @@ public static class MauiProgram
 		}
 		catch (Exception ex)
 		{
+			AppFileLog.Error("CreateMauiApp exception", ex);
 			// #region agent log
 			DebugNdjsonSessionLog.Write("H1", "MauiProgram.CreateMauiApp", "exception", new { ex.Message, exType = ex.GetType().FullName, ex.StackTrace });
 			DebugSessionLog.Write("H1", "MauiProgram.CreateMauiApp", "exception", new { ex.Message, ex.StackTrace });

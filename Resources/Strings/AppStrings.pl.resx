@@ -293,5 +293,8 @@
   <data name="Settings_LanguageRestart" xml:space="preserve"><value>Po zmianie języka wymagany jest restart.</value></data>
   <data name="Settings_RestartNow" xml:space="preserve"><value>Uruchom ponownie</value></data>
   <data name="Settings_LanguageSystem" xml:space="preserve"><value>Domyślny systemowy</value></data>
+  <data name="Settings_Logs" xml:space="preserve"><value>Logi</value></data>
+  <data name="Settings_OpenLogs" xml:space="preserve"><value>Otwórz folder logów</value></data>
+  <data name="Settings_OpenLogsFailed" xml:space="preserve"><value>Nie można otworzyć folderu logów: {0}</value></data>
 
 </root>

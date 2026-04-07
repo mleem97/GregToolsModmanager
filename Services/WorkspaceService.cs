@@ -201,8 +201,16 @@ public sealed class WorkspaceService
 			return new WorkshopMetadata();
 		}
 
-		var json = File.ReadAllText(path);
-		var meta = JsonSerializer.Deserialize<WorkshopMetadata>(json) ?? new WorkshopMetadata();
+		WorkshopMetadata meta;
+		try
+		{
+			var json = File.ReadAllText(path);
+			meta = JsonSerializer.Deserialize<WorkshopMetadata>(json) ?? new WorkshopMetadata();
+		}
+		catch
+		{
+			meta = new WorkshopMetadata();
+		}
 		meta.Title ??= string.Empty;
 		meta.Description ??= string.Empty;
 		meta.WorkshopDependencyIds ??= new List<ulong>();
