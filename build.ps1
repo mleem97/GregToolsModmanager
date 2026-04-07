@@ -22,7 +22,7 @@ Set-Location $PSScriptRoot
 $isWindowsHost = $IsWindows -or [System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([System.Runtime.InteropServices.OSPlatform]::Windows)
 
 function Invoke-BuildSign {
-    param([Parameter(Mandatory)][string]$TargetSetupPath)
+    param([Parameter(Mandatory)][string]$TargetPath)
     $signScript = Join-Path $PSScriptRoot 'installer\sign-authenticode.ps1'
     if (-not (Test-Path -LiteralPath $signScript)) {
         throw "Signierskript fehlt: $signScript"
@@ -32,18 +32,18 @@ function Invoke-BuildSign {
     if ([string]::IsNullOrWhiteSpace($thumb) -eq [string]::IsNullOrWhiteSpace($pfx)) {
         throw "CODE_SIGN_THUMBPRINT oder CODE_SIGN_PFX setzen (siehe installer\CODE_SIGNING.md)."
     }
-    if (-not (Test-Path -LiteralPath $TargetSetupPath)) {
-        throw "Setup-EXE nicht gefunden: $TargetSetupPath"
+    if (-not (Test-Path -LiteralPath $TargetPath)) {
+        throw "Datei zum Signieren nicht gefunden: $TargetPath"
     }
-    Write-Host '[build] Authenticode-Signatur ...'
+    Write-Host "[build] Authenticode-Signatur: $TargetPath"
     if (-not [string]::IsNullOrWhiteSpace($thumb)) {
         $t = $thumb.Trim()
         if ($t -match '<|>') {
             throw "CODE_SIGN_THUMBPRINT ist noch ein Platzhalter — den echten 40-stelligen Hex-Thumbprint aus create-selfsigned-codesign-cert.ps1 einsetzen."
         }
-        & $signScript -Path $TargetSetupPath -Thumbprint $t
+        & $signScript -Path $TargetPath -Thumbprint $t
     } else {
-        & $signScript -Path $TargetSetupPath -PfxPath $pfx.Trim()
+        & $signScript -Path $TargetPath -PfxPath $pfx.Trim()
     }
 }
 
@@ -67,7 +67,7 @@ if ($SignOnly) {
         $resolved = $latest.FullName
     }
     Write-Host "[build] -SignOnly → $resolved"
-    Invoke-BuildSign -TargetSetupPath $resolved
+    Invoke-BuildSign -TargetPath $resolved
     exit 0
 }
 
@@ -183,5 +183,12 @@ if (Test-Path -LiteralPath $setupPath) {
 $wantSign = $Sign -or $env:CODE_SIGN_THUMBPRINT -or $env:CODE_SIGN_PFX
 if ($wantSign) {
     Write-Host ''
-    Invoke-BuildSign -TargetSetupPath $setupPath
+    Invoke-BuildSign -TargetPath $setupPath
+
+    $appExePath = Join-Path $publishDir 'WorkshopUploader.exe'
+    if (-not (Test-Path -LiteralPath $appExePath)) {
+        throw "Publish-EXE nicht gefunden: $appExePath"
+    }
+
+    Invoke-BuildSign -TargetPath $appExePath
 }
