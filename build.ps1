@@ -192,6 +192,18 @@ if (-not (Test-Path -LiteralPath $iss)) {
     throw "Inno-Skript fehlt: $iss"
 }
 
+$wantSign = $Sign -or $env:CODE_SIGN_THUMBPRINT -or $env:CODE_SIGN_PFX
+if ($wantSign) {
+    $appExePath = Join-Path $publishDir 'WorkshopUploader.exe'
+    if (-not (Test-Path -LiteralPath $appExePath)) {
+        throw "Publish-EXE nicht gefunden: $appExePath"
+    }
+
+    Write-Host ''
+    Write-Host '[build] Signiere App-EXE vor Setup-Erstellung ...'
+    Invoke-BuildSign -TargetPath $appExePath
+}
+
 Write-Host "[build] Inno Setup ($iscc) — Version $ver ..."
 $argList = @(
     $iss
@@ -213,15 +225,8 @@ if (Test-Path -LiteralPath $setupPath) {
     Write-Host '[build] ISCC ohne Fehler — Ausgabedatei bitte unter installer\Output prüfen.'
 }
 
-$wantSign = $Sign -or $env:CODE_SIGN_THUMBPRINT -or $env:CODE_SIGN_PFX
 if ($wantSign) {
     Write-Host ''
+    Write-Host '[build] Signiere Setup-EXE ...'
     Invoke-BuildSign -TargetPath $setupPath
-
-    $appExePath = Join-Path $publishDir 'WorkshopUploader.exe'
-    if (-not (Test-Path -LiteralPath $appExePath)) {
-        throw "Publish-EXE nicht gefunden: $appExePath"
-    }
-
-    Invoke-BuildSign -TargetPath $appExePath
 }
