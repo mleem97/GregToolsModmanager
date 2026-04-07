@@ -70,6 +70,12 @@ Nur neu kompilieren, wenn Publish schon da ist: `.\build.ps1 -SkipPublish`. Das 
 
 **Signatur:** Mit einer **öffentlichen CA** verschwindet der „Unbekannter Herausgeber“-Eindruck für Nutzer weitgehend; mit **Self-Signed** kannst du trotzdem z. B. **mleem97 / Greg Modding Team** im Zertifikat anzeigen — siehe **`installer\CODE_SIGNING.md`**. Self-Signed anlegen: **`.\installer\create-selfsigned-codesign-cert.ps1`**. Nur signieren **ohne Inno Setup**: **`.\build.ps1 -SignOnly`** (`CODE_SIGN_THUMBPRINT` setzen, Setup-EXE in `installer\Output\` oder `-SetupPath`).
 
+### Code-Signing Status
+
+- **Offizielles CA-Code-Signing (OV/EV)** ist aktuell **nicht aktiv**, da die laufenden Kosten für ein Zertifikat derzeit zu hoch sind.
+- Es gibt einen optionalen **Self-Signed CI-Workflow** unter **`.github/workflows/selfsigned-setup.yml`** (nur für Test-/Community-Builds, weiterhin mögliche SmartScreen-Warnungen).
+- Wenn du das Projekt unterstützen möchtest: Sobald GitHub Sponsors für dieses Repo/Account freigeschaltet ist, kannst du gern die **Sponsor**-Funktion nutzen.
+
 ### Schnell ohne Setup-EXE (nur Kopie + Verknüpfungen)
 
 ```powershell

@@ -26,6 +26,12 @@ After this folder is its **own repository**, edit that workflow (or copy it to `
 
 **VirusTotal:** [file relations](https://www.virustotal.com/gui/file/c0ea7929eee9d754e81363e9ec81c601e763e65f7db1eb0d971edf2c2036f0af/relations) (SHA-256 `c0ea7929eee9d754e81363e9ec81c601e763e65f7db1eb0d971edf2c2036f0af`) — see `README.md` for context.
 
+## Code-Signing status
+
+- Official OV/EV code signing is currently **not enabled** because certificate costs are too high at the moment.
+- For testing/community builds, a **self-signed setup workflow** exists at `.github/workflows/selfsigned-setup.yml`.
+- If you want to support the project: once GitHub Sponsors is enabled for this account/repo, you can use the **Sponsor** feature.
+
 ## Open source & external dependencies
 
 See **[EXTERNAL_DEPENDENCIES.md](./EXTERNAL_DEPENDENCIES.md)** for licenses, **Steamworks** / **steam_api64.dll**, and distribution notes.

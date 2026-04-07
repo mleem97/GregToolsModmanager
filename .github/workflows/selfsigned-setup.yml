@@ -1,0 +1,66 @@
+name: Build Setup (Self-Signed)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-selfsigned-setup:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 9
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Install Inno Setup
+        shell: pwsh
+        run: |
+          choco install innosetup --yes --no-progress
+
+      - name: Create self-signed code-signing certificate
+        shell: pwsh
+        run: |
+          $cert = New-SelfSignedCertificate `
+            -Type CodeSigningCert `
+            -Subject "CN=mleem97, O=Greg Modding Team" `
+            -KeyUsage DigitalSignature `
+            -KeyAlgorithm RSA `
+            -KeyLength 2048 `
+            -HashAlgorithm SHA256 `
+            -NotAfter (Get-Date).AddYears(2) `
+            -CertStoreLocation Cert:\CurrentUser\My `
+            -FriendlyName "GregTools CI Self-Signed Code Signing"
+
+          "CODE_SIGN_THUMBPRINT=$($cert.Thumbprint)" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          Write-Host "Using certificate thumbprint: $($cert.Thumbprint)"
+
+      - name: Build setup and sign (self-signed)
+        shell: pwsh
+        run: |
+          .\build.ps1 -Sign
+
+      - name: Upload setup artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: selfsigned-setup
+          path: installer/Output/GregToolsModmanager-*-Setup.exe
+          if-no-files-found: error
+
+      - name: Add trust warning to job summary
+        shell: pwsh
+        run: |
+          @"
+          ### Self-signed build artifact
+
+          This setup is signed with a **self-signed certificate** generated in CI.
+
+          - Publisher name can be shown in signature details.
+          - Windows/SmartScreen may still show warning dialogs.
+          - This is **not** equivalent to OV/EV CA code signing.
+          "@ | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
