@@ -30,7 +30,11 @@ After this folder is its **own repository**, edit that workflow (or copy it to `
 
 - Official OV/EV code signing is currently **not enabled** because certificate costs are too high at the moment.
 - For testing/community builds, a **self-signed setup workflow** exists at `.github/workflows/selfsigned-setup.yml`.
-- If you want to support the project: once GitHub Sponsors is enabled for this account/repo, you can use the **Sponsor** feature.
+- If you want to support the project, GitHub Sponsors is now enabled: **[github.com/sponsors/mleem97](https://github.com/sponsors/mleem97)**.
+
+## Sponsorship
+
+- **Sponsor page:** [https://github.com/sponsors/mleem97](https://github.com/sponsors/mleem97)
 
 ## Crash dumps (WER LocalDumps)
 

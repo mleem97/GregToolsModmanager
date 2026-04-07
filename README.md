@@ -99,7 +99,13 @@ Standardpfade:
 
 - **Offizielles CA-Code-Signing (OV/EV)** ist aktuell **nicht aktiv**, da die laufenden Kosten für ein Zertifikat derzeit zu hoch sind.
 - Es gibt einen optionalen **Self-Signed CI-Workflow** unter **`.github/workflows/selfsigned-setup.yml`** (nur für Test-/Community-Builds, weiterhin mögliche SmartScreen-Warnungen).
-- Wenn du das Projekt unterstützen möchtest: Sobald GitHub Sponsors für dieses Repo/Account freigeschaltet ist, kannst du gern die **Sponsor**-Funktion nutzen.
+- Wenn du das Projekt unterstützen möchtest, ist GitHub Sponsors jetzt aktiv: **[github.com/sponsors/mleem97](https://github.com/sponsors/mleem97)**.
+
+### Sponsoring
+
+Wenn dir das Projekt hilft und du regelmäßige Updates/Qualitätssicherung unterstützen möchtest:
+
+- **Sponsor:** [github.com/sponsors/mleem97](https://github.com/sponsors/mleem97)
 
 ### Schnell ohne Setup-EXE (nur Kopie + Verknüpfungen)
 
