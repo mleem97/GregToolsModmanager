@@ -296,5 +296,8 @@
   <data name="Settings_Logs" xml:space="preserve"><value>Журналы</value></data>
   <data name="Settings_OpenLogs" xml:space="preserve"><value>Открыть папку журналов</value></data>
   <data name="Settings_OpenLogsFailed" xml:space="preserve"><value>Не удалось открыть папку журналов: {0}</value></data>
+  <data name="Settings_CreateReproBundle" xml:space="preserve"><value>Создать пакет воспроизведения</value></data>
+  <data name="Settings_ReproBundleCreated" xml:space="preserve"><value>Пакет создан: {0}</value></data>
+  <data name="Settings_ReproBundleCreateFailed" xml:space="preserve"><value>Не удалось создать пакет: {0}</value></data>
 
 </root>

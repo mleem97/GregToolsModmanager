@@ -296,5 +296,8 @@
   <data name="Settings_Logs" xml:space="preserve"><value>Registri</value></data>
   <data name="Settings_OpenLogs" xml:space="preserve"><value>Apri cartella registri</value></data>
   <data name="Settings_OpenLogsFailed" xml:space="preserve"><value>Impossibile aprire la cartella registri: {0}</value></data>
+  <data name="Settings_CreateReproBundle" xml:space="preserve"><value>Crea pacchetto di riproduzione</value></data>
+  <data name="Settings_ReproBundleCreated" xml:space="preserve"><value>Pacchetto creato: {0}</value></data>
+  <data name="Settings_ReproBundleCreateFailed" xml:space="preserve"><value>Impossibile creare il pacchetto: {0}</value></data>
 
 </root>

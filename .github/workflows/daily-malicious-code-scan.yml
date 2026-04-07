@@ -1,0 +1,106 @@
+name: Daily Malicious Code Scan
+
+on:
+  schedule:
+    - cron: "19 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+  security-events: write
+
+jobs:
+  scan-selfhosted-linux:
+    runs-on: [self-hosted, linux]
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Ensure full git history
+        shell: bash
+        run: git fetch --unshallow || true
+
+      - name: Run malicious code scan (last 3 days)
+        shell: bash
+        run: |
+          python3 .github/scripts/malicious_scan.py \
+            --days 3 \
+            --output malicious-scan.sarif \
+            --summary malicious-scan-summary.txt
+
+      - name: Upload scan summary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: malicious-scan-summary
+          path: malicious-scan-summary.txt
+          if-no-files-found: error
+
+      - name: Upload SARIF to code scanning
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: malicious-scan.sarif
+          category: malicious-code-scan
+
+      - name: Add run summary
+        shell: bash
+        run: |
+          echo "## Daily Malicious Code Scan" >> "$GITHUB_STEP_SUMMARY"
+          cat malicious-scan-summary.txt >> "$GITHUB_STEP_SUMMARY"
+
+  scan-hosted-fallback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: [scan-selfhosted-linux]
+    if: always() && needs.scan-selfhosted-linux.result != 'success'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Ensure full git history
+        shell: bash
+        run: git fetch --unshallow || true
+
+      - name: Run malicious code scan (last 3 days)
+        shell: bash
+        run: |
+          python3 .github/scripts/malicious_scan.py \
+            --days 3 \
+            --output malicious-scan.sarif \
+            --summary malicious-scan-summary.txt
+
+      - name: Upload scan summary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: malicious-scan-summary-fallback
+          path: malicious-scan-summary.txt
+          if-no-files-found: error
+
+      - name: Upload SARIF to code scanning
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: malicious-scan.sarif
+          category: malicious-code-scan
+
+      - name: Add run summary
+        shell: bash
+        run: |
+          echo "## Daily Malicious Code Scan (hosted fallback)" >> "$GITHUB_STEP_SUMMARY"
+          cat malicious-scan-summary.txt >> "$GITHUB_STEP_SUMMARY"

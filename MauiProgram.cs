@@ -120,6 +120,7 @@ public static class MauiProgram
 				.UseMauiApp<App>();
 
 			builder.Services.AddSingleton<AppLogService>();
+			builder.Services.AddSingleton<ReproBundleService>();
 			builder.Services.AddSingleton<SteamWorkshopService>();
 			builder.Services.AddSingleton<WorkspaceService>();
 			builder.Services.AddSingleton<ModDependencyService>();

@@ -94,6 +94,7 @@
                 <VerticalStackLayout Spacing="12">
                     <Label Style="{StaticResource SectionTitle}" Text="{l:Translate Key=Settings_Logs}" />
                     <Button Text="{l:Translate Key=Settings_OpenLogs}" Clicked="OnOpenLogs" Style="{StaticResource SecondaryButton}" HorizontalOptions="Start" />
+                    <Button Text="{l:Translate Key=Settings_CreateReproBundle}" Clicked="OnCreateReproBundle" Style="{StaticResource SecondaryButton}" HorizontalOptions="Start" />
                 </VerticalStackLayout>
             </Border>
 

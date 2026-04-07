@@ -13,11 +13,13 @@ public partial class SettingsPage : ContentPage
 	private const string WebsiteUrl = "https://gregframework.eu";
 
 	private readonly WorkspaceService _workspace;
+	private readonly ReproBundleService _reproBundle;
 
-	public SettingsPage(WorkspaceService workspace)
+	public SettingsPage(WorkspaceService workspace, ReproBundleService reproBundle)
 	{
 		InitializeComponent();
 		_workspace = workspace;
+		_reproBundle = reproBundle;
 
 		LanguagePicker.ItemsSource = S.SupportedLanguages.Select(l => l.DisplayName).ToList();
 		var savedCode = S.GetSavedLanguage();
@@ -162,6 +164,43 @@ public partial class SettingsPage : ContentPage
 		{
 			AppFileLog.Error("Failed to open logs folder from settings.", ex);
 			await DisplayAlert(S.Get("Error"), S.Format("Settings_OpenLogsFailed", ex.Message), S.Get("OK"));
+		}
+	}
+
+	private async void OnCreateReproBundle(object? sender, EventArgs e)
+	{
+		try
+		{
+			var zipPath = await _reproBundle.CreateBundleAsync();
+
+			if (OperatingSystem.IsWindows())
+			{
+				Process.Start(new ProcessStartInfo
+				{
+					FileName = "explorer.exe",
+					Arguments = $"/select,\"{zipPath}\"",
+					UseShellExecute = true
+				});
+			}
+			else
+			{
+				var dir = Path.GetDirectoryName(zipPath);
+				if (!string.IsNullOrWhiteSpace(dir))
+				{
+					Process.Start(new ProcessStartInfo
+					{
+						FileName = dir,
+						UseShellExecute = true
+					});
+				}
+			}
+
+			await DisplayAlert(S.Get("OK"), S.Format("Settings_ReproBundleCreated", zipPath), S.Get("OK"));
+		}
+		catch (Exception ex)
+		{
+			AppFileLog.Error("Failed to create repro bundle from settings.", ex);
+			await DisplayAlert(S.Get("Error"), S.Format("Settings_ReproBundleCreateFailed", ex.Message), S.Get("OK"));
 		}
 	}
 

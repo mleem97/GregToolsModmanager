@@ -296,5 +296,8 @@
   <data name="Settings_Logs" xml:space="preserve"><value>Protokolle</value></data>
   <data name="Settings_OpenLogs" xml:space="preserve"><value>Protokollordner öffnen</value></data>
   <data name="Settings_OpenLogsFailed" xml:space="preserve"><value>Protokollordner konnte nicht geöffnet werden: {0}</value></data>
+  <data name="Settings_CreateReproBundle" xml:space="preserve"><value>Repro-Bundle erstellen</value></data>
+  <data name="Settings_ReproBundleCreated" xml:space="preserve"><value>Repro-Bundle erstellt: {0}</value></data>
+  <data name="Settings_ReproBundleCreateFailed" xml:space="preserve"><value>Repro-Bundle konnte nicht erstellt werden: {0}</value></data>
 
 </root>

@@ -296,5 +296,8 @@
   <data name="Settings_Logs" xml:space="preserve"><value>Logs</value></data>
   <data name="Settings_OpenLogs" xml:space="preserve"><value>Open logs folder</value></data>
   <data name="Settings_OpenLogsFailed" xml:space="preserve"><value>Could not open logs folder: {0}</value></data>
+  <data name="Settings_CreateReproBundle" xml:space="preserve"><value>Create repro bundle</value></data>
+  <data name="Settings_ReproBundleCreated" xml:space="preserve"><value>Repro bundle created: {0}</value></data>
+  <data name="Settings_ReproBundleCreateFailed" xml:space="preserve"><value>Could not create repro bundle: {0}</value></data>
 
 </root>

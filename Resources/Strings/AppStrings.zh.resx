@@ -296,5 +296,8 @@
   <data name="Settings_Logs" xml:space="preserve"><value>日志</value></data>
   <data name="Settings_OpenLogs" xml:space="preserve"><value>打开日志文件夹</value></data>
   <data name="Settings_OpenLogsFailed" xml:space="preserve"><value>无法打开日志文件夹：{0}</value></data>
+  <data name="Settings_CreateReproBundle" xml:space="preserve"><value>创建复现包</value></data>
+  <data name="Settings_ReproBundleCreated" xml:space="preserve"><value>复现包已创建：{0}</value></data>
+  <data name="Settings_ReproBundleCreateFailed" xml:space="preserve"><value>无法创建复现包：{0}</value></data>
 
 </root>
