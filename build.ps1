@@ -20,6 +20,36 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 Set-Location $PSScriptRoot
 $isWindowsHost = $IsWindows -or [System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([System.Runtime.InteropServices.OSPlatform]::Windows)
+$script:AutoSignThumbprint = $null
+
+function New-EphemeralCodeSignThumbprint {
+    if (-not $isWindowsHost) {
+        throw "Ephemeral code signing is only supported on Windows."
+    }
+
+    if (-not [string]::IsNullOrWhiteSpace($script:AutoSignThumbprint)) {
+        return $script:AutoSignThumbprint
+    }
+
+    $subject = "CN=GregTools Local Build " + (Get-Date -Format 'yyyyMMdd-HHmmss')
+    $notAfter = (Get-Date).AddDays(7)
+    Write-Host "[build] Erzeuge temporäres Self-Signed-Code-Signing-Zertifikat: $subject"
+
+    $cert = New-SelfSignedCertificate `
+        -Type CodeSigningCert `
+        -Subject $subject `
+        -KeyUsage DigitalSignature `
+        -KeyAlgorithm RSA `
+        -KeyLength 2048 `
+        -HashAlgorithm SHA256 `
+        -NotAfter $notAfter `
+        -CertStoreLocation Cert:\CurrentUser\My `
+        -FriendlyName "GregTools ephemeral build signing"
+
+    $script:AutoSignThumbprint = $cert.Thumbprint
+    Write-Host "[build] Temporärer Signing-Thumbprint: $($script:AutoSignThumbprint)"
+    return $script:AutoSignThumbprint
+}
 
 function Invoke-BuildSign {
     param([Parameter(Mandatory)][string]$TargetPath)
@@ -29,8 +59,11 @@ function Invoke-BuildSign {
     }
     $thumb = $env:CODE_SIGN_THUMBPRINT
     $pfx = $env:CODE_SIGN_PFX
+    if ([string]::IsNullOrWhiteSpace($thumb) -and [string]::IsNullOrWhiteSpace($pfx)) {
+        $thumb = New-EphemeralCodeSignThumbprint
+    }
     if ([string]::IsNullOrWhiteSpace($thumb) -eq [string]::IsNullOrWhiteSpace($pfx)) {
-        throw "CODE_SIGN_THUMBPRINT oder CODE_SIGN_PFX setzen (siehe installer\CODE_SIGNING.md)."
+        throw "Ungültige Signierkonfiguration: entweder CODE_SIGN_THUMBPRINT oder CODE_SIGN_PFX setzen."
     }
     if (-not (Test-Path -LiteralPath $TargetPath)) {
         throw "Datei zum Signieren nicht gefunden: $TargetPath"

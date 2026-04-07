@@ -60,4 +60,10 @@
     <PackageReference Include="Facepunch.Steamworks" Version="2.3.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="WorkshopUploader.Tests\**\*.cs" />
+    <Compile Remove="**\obj\**\*.cs" />
+    <Compile Remove="**\bin\**\*.cs" />
+  </ItemGroup>
+
 </Project>
