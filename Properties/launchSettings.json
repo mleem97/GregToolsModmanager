@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "WorkshopUploader": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "nativeDebugging": false
+    },
+    "Windows Machine": {
+      "commandName": "Project",
+      "nativeDebugging": false
+    }
+  }
+}

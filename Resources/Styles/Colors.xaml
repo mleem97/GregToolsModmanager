@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!--  Surface hierarchy: synthetic glass layers  -->
+    <Color x:Key="Surface">#001110</Color>
+    <Color x:Key="SurfaceContainerLow">#001715</Color>
+    <Color x:Key="SurfaceContainer">#001E1C</Color>
+    <Color x:Key="SurfaceContainerHigh">#002422</Color>
+    <Color x:Key="SurfaceContainerHighest">#002A28</Color>
+    <Color x:Key="SurfaceBright">#0A302D</Color>
+    <Color x:Key="SurfaceVariant">#0D3835</Color>
+
+    <!--  Primary (teal)  -->
+    <Color x:Key="Primary">#61F4D8</Color>
+    <Color x:Key="PrimaryContainer">#08C1A6</Color>
+    <Color x:Key="PrimaryFixedDim">#3ABFA8</Color>
+    <Color x:Key="OnPrimary">#001110</Color>
+
+    <!--  Secondary  -->
+    <Color x:Key="Secondary">#1CEDE1</Color>
+    <Color x:Key="OnSecondary">#001110</Color>
+
+    <!--  Tertiary  -->
+    <Color x:Key="Tertiary">#64D0FF</Color>
+
+    <!--  Text  -->
+    <Color x:Key="OnSurface">#C0FCF6</Color>
+    <Color x:Key="OnSurfaceDim">#7FBFB8</Color>
+    <Color x:Key="OnSurfaceVariant">#5A9E96</Color>
+
+    <!--  Outline / ghost borders  -->
+    <Color x:Key="OutlineVariant">#1A5A9E96</Color>
+    <Color x:Key="OutlineVariantHover">#665A9E96</Color>
+
+    <!--  Status  -->
+    <Color x:Key="StatusOk">#61F4D8</Color>
+    <Color x:Key="StatusWarning">#F4C761</Color>
+    <Color x:Key="StatusError">#D7383B</Color>
+
+    <!--  Legacy compat keys (some code-behind references)  -->
+    <Color x:Key="White">#C0FCF6</Color>
+    <Color x:Key="Black">#001110</Color>
+</ResourceDictionary>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!--  ═══════════════════════════════════════════════════
+         The Luminescent Architect — Design System for MAUI
+         Surface hierarchy via tonal depth, no explicit borders.
+         ═══════════════════════════════════════════════════  -->
+
+    <!--  Page: Layer 0 deep abyss  -->
+    <Style TargetType="Page" ApplyToDerivedTypes="True">
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="BackgroundColor" Value="#001110" />
+    </Style>
+
+    <!--  Shell: dark nav bar with teal accent  -->
+    <Style TargetType="Shell" ApplyToDerivedTypes="True">
+        <Setter Property="Shell.BackgroundColor" Value="#001110" />
+        <Setter Property="Shell.ForegroundColor" Value="#61F4D8" />
+        <Setter Property="Shell.TitleColor" Value="#C0FCF6" />
+        <Setter Property="Shell.TabBarBackgroundColor" Value="#001715" />
+        <Setter Property="Shell.TabBarForegroundColor" Value="#61F4D8" />
+        <Setter Property="Shell.TabBarUnselectedColor" Value="#5A9E96" />
+        <Setter Property="Shell.TabBarTitleColor" Value="#61F4D8" />
+        <Setter Property="Shell.NavBarHasShadow" Value="False" />
+    </Style>
+
+    <!--  ── Typography ──  -->
+
+    <Style TargetType="Label">
+        <Setter Property="TextColor" Value="#C0FCF6" />
+        <Setter Property="FontSize" Value="13" />
+    </Style>
+
+    <Style TargetType="Label" x:Key="Headline">
+        <Setter Property="TextColor" Value="#C0FCF6" />
+        <Setter Property="FontSize" Value="26" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="CharacterSpacing" Value="0.5" />
+    </Style>
+
+    <Style TargetType="Label" x:Key="SubHeadline">
+        <Setter Property="TextColor" Value="#7FBFB8" />
+        <Setter Property="FontSize" Value="13" />
+    </Style>
+
+    <Style TargetType="Label" x:Key="SectionTitle">
+        <Setter Property="TextColor" Value="#C0FCF6" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="CharacterSpacing" Value="0.3" />
+    </Style>
+
+    <Style TargetType="Label" x:Key="MetaBadge">
+        <Setter Property="TextColor" Value="#7FBFB8" />
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="BackgroundColor" Value="#0D3835" />
+        <Setter Property="Padding" Value="6,2" />
+    </Style>
+
+    <!--  ── Buttons: kinetic core ──  -->
+
+    <Style TargetType="Button">
+        <Setter Property="TextColor" Value="#001110" />
+        <Setter Property="BackgroundColor" Value="#61F4D8" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="Padding" Value="16,10" />
+        <Setter Property="MinimumHeightRequest" Value="40" />
+        <Setter Property="BorderWidth" Value="0" />
+        <Setter Property="CharacterSpacing" Value="0.3" />
+    </Style>
+
+    <Style TargetType="Button" x:Key="SecondaryButton">
+        <Setter Property="TextColor" Value="#61F4D8" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="Padding" Value="16,10" />
+        <Setter Property="MinimumHeightRequest" Value="40" />
+        <Setter Property="BorderColor" Value="#665A9E96" />
+        <Setter Property="BorderWidth" Value="1" />
+    </Style>
+
+    <Style TargetType="Button" x:Key="TertiaryButton">
+        <Setter Property="TextColor" Value="#1CEDE1" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="Padding" Value="8,6" />
+        <Setter Property="MinimumHeightRequest" Value="32" />
+        <Setter Property="BorderWidth" Value="0" />
+    </Style>
+
+    <Style TargetType="Button" x:Key="BbButton">
+        <Setter Property="TextColor" Value="#7FBFB8" />
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="Padding" Value="6,4" />
+        <Setter Property="MinimumWidthRequest" Value="28" />
+        <Setter Property="MinimumHeightRequest" Value="28" />
+        <Setter Property="BorderWidth" Value="0" />
+    </Style>
+
+    <!--  ── Entry / Editor: recessed inputs ──  -->
+
+    <Style TargetType="Entry">
+        <Setter Property="BackgroundColor" Value="#001E1C" />
+        <Setter Property="TextColor" Value="#C0FCF6" />
+        <Setter Property="PlaceholderColor" Value="#5A9E96" />
+        <Setter Property="FontSize" Value="13" />
+    </Style>
+
+    <Style TargetType="Editor">
+        <Setter Property="BackgroundColor" Value="#001E1C" />
+        <Setter Property="TextColor" Value="#C0FCF6" />
+        <Setter Property="PlaceholderColor" Value="#5A9E96" />
+        <Setter Property="FontSize" Value="13" />
+    </Style>
+
+    <Style TargetType="Picker">
+        <Setter Property="BackgroundColor" Value="#001E1C" />
+        <Setter Property="TextColor" Value="#C0FCF6" />
+        <Setter Property="TitleColor" Value="#5A9E96" />
+        <Setter Property="FontSize" Value="13" />
+    </Style>
+
+    <!--  ── ScrollView ──  -->
+
+    <Style TargetType="ScrollView">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+    </Style>
+
+    <!--  ── RefreshView ──  -->
+
+    <Style TargetType="RefreshView">
+        <Setter Property="RefreshColor" Value="#61F4D8" />
+    </Style>
+
+</ResourceDictionary>

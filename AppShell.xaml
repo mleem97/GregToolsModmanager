@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="WorkshopUploader.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:l="clr-namespace:WorkshopUploader.Localization"
+    Title="GregTools Modmanager"
+    FlyoutBehavior="Disabled">
+
+    <Shell.TitleView>
+        <Grid Padding="0,0,12,0" HeightRequest="36" VerticalOptions="Center">
+            <Border
+                x:Name="SteamLogoTile"
+                Padding="10,4"
+                BackgroundColor="#0D3835"
+                StrokeThickness="0"
+                HorizontalOptions="End"
+                VerticalOptions="Center">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="6" />
+                </Border.StrokeShape>
+                <HorizontalStackLayout Spacing="6" VerticalOptions="Center">
+                    <Ellipse
+                        x:Name="SteamStatusLed"
+                        WidthRequest="8"
+                        HeightRequest="8"
+                        VerticalOptions="Center" />
+                    <Label
+                        x:Name="SteamStatusText"
+                        FontSize="11"
+                        LineBreakMode="NoWrap"
+                        Text="{l:Translate Key=Steam_Connecting}"
+                        TextColor="#7FBFB8"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
+            </Border>
+        </Grid>
+    </Shell.TitleView>
+
+</Shell>
