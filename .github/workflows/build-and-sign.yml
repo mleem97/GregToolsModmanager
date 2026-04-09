@@ -1,0 +1,407 @@
+name: .NET Desktop Build & Sign
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  release:
+    types: [published]
+  schedule:
+    - cron: "0 3 * * 1"
+  workflow_dispatch:
+    inputs:
+      signing:
+        description: "Signing mode: auto = PFX when secret exists, else self-signed"
+        type: choice
+        options:
+          - auto
+          - self-signed
+          - pfx
+        default: "auto"
+
+# Secrets used by the PFX signing path:
+#   CODE_SIGN_PFX_BASE64   – Base64-encoded .pfx file  (required for 'pfx' mode)
+#   CODE_SIGN_PFX_PASSWORD – Password for the .pfx     (required for 'pfx' mode)
+
+env:
+  SOLUTION_PATH: WorkshopUploader.sln
+  DOTNET_VERSION: 9.0.x
+  APP_NAME: GregToolsModmanager
+
+jobs:
+  select-runners:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      actions: read
+    outputs:
+      linux_runs_on: ${{ steps.select.outputs.linux_runs_on }}
+      windows_runs_on: ${{ steps.select.outputs.windows_runs_on }}
+
+    steps:
+      - name: Select Linux and Windows runners (max 10m wait)
+        id: select
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const sleep = ms => new Promise(r => setTimeout(r, ms));
+            const attempts = 20;
+            const intervalMs = 30000;
+
+            function hasLabels(runner, labels) {
+              const runnerLabels = (runner.labels || []).map(l => String(l.name).toLowerCase());
+              return labels.every(l => runnerLabels.includes(l));
+            }
+
+            async function findIdle(labels) {
+              const res = await github.rest.actions.listSelfHostedRunnersForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                per_page: 100,
+              });
+              return (res.data.runners || []).find(r => r.status === 'online' && !r.busy && hasLabels(r, labels));
+            }
+
+            let linuxRunsOn = JSON.stringify('ubuntu-latest');
+            let windowsRunsOn = JSON.stringify('windows-latest');
+
+            for (let i = 0; i < attempts; i++) {
+              const linuxIdle = await findIdle(['self-hosted', 'linux']);
+              const windowsIdle = await findIdle(['self-hosted', 'windows']);
+
+              if (linuxIdle) {
+                linuxRunsOn = JSON.stringify(['self-hosted', 'linux']);
+              }
+              if (windowsIdle) {
+                windowsRunsOn = JSON.stringify(['self-hosted', 'windows']);
+              }
+
+              if (linuxIdle && windowsIdle) {
+                break;
+              }
+
+              if (i < attempts - 1) {
+                await sleep(intervalMs);
+              }
+            }
+
+            if (linuxRunsOn === JSON.stringify('ubuntu-latest')) {
+              core.warning('No idle self-hosted linux runner within 10 minutes, falling back to ubuntu-latest.');
+            }
+            if (windowsRunsOn === JSON.stringify('windows-latest')) {
+              core.warning('No idle self-hosted windows runner within 10 minutes, falling back to windows-latest.');
+            }
+
+            core.setOutput('linux_runs_on', linuxRunsOn);
+            core.setOutput('windows_runs_on', windowsRunsOn);
+
+  preflight-linux:
+    needs: [select-runners]
+    runs-on: ${{ fromJSON(needs.select-runners.outputs.linux_runs_on) }}
+    timeout-minutes: 10
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Linux preflight (malicious scan)
+        shell: bash
+        run: |
+          python3 .github/scripts/malicious_scan.py \
+            --days 3 \
+            --output malicious-scan.sarif \
+            --summary malicious-scan-summary.txt
+
+      - name: Upload preflight summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: preflight-linux-summary
+          path: malicious-scan-summary.txt
+          if-no-files-found: error
+
+  build-windows:
+    runs-on: ${{ fromJSON(needs.select-runners.outputs.windows_runs_on) }}
+    needs: [select-runners, preflight-linux]
+    if: ${{ needs.preflight-linux.result == 'success' }}
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Install MAUI workload
+        shell: pwsh
+        run: dotnet workload install maui-windows
+
+      - name: Restore
+        shell: pwsh
+        run: dotnet restore $env:SOLUTION_PATH
+
+      - name: Build (Release)
+        shell: pwsh
+        run: dotnet build $env:SOLUTION_PATH -c Release --no-restore
+
+      - name: Run tests (if test projects exist)
+        shell: pwsh
+        run: |
+          $testProjects = Get-ChildItem -Recurse -Filter "*Test*.csproj" | Select-Object -ExpandProperty FullName
+          if (-not $testProjects) {
+            Write-Host "No test projects found. Skipping tests."
+            exit 0
+          }
+
+          foreach ($project in $testProjects) {
+            Write-Host "Running tests in $project"
+            dotnet test $project -c Release --no-build --verbosity normal
+          }
+
+      - name: Install Inno Setup
+        shell: pwsh
+        run: choco install innosetup --yes --no-progress
+
+      - name: Determine signing mode
+        id: signing
+        shell: pwsh
+        env:
+          PFX_BASE64: ${{ secrets.CODE_SIGN_PFX_BASE64 }}
+          SIGNING_INPUT: ${{ inputs.signing || 'auto' }}
+        run: |
+          $mode = $env:SIGNING_INPUT
+          $hasPfx = -not [string]::IsNullOrWhiteSpace($env:PFX_BASE64)
+
+          if ($mode -eq 'pfx' -and -not $hasPfx) {
+            throw "PFX signing requested but CODE_SIGN_PFX_BASE64 secret is not configured."
+          }
+
+          if ($mode -eq 'auto') {
+            $mode = if ($hasPfx) { 'pfx' } else { 'self-signed' }
+          }
+
+          "signing_mode=$mode" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          Write-Host "Signing mode: $mode"
+
+      - name: Decode PFX certificate from secret
+        if: steps.signing.outputs.signing_mode == 'pfx'
+        shell: pwsh
+        env:
+          PFX_BASE64: ${{ secrets.CODE_SIGN_PFX_BASE64 }}
+          PFX_PWD: ${{ secrets.CODE_SIGN_PFX_PASSWORD }}
+        run: |
+          $pfxBytes = [System.Convert]::FromBase64String($env:PFX_BASE64)
+          $pfxPath = Join-Path $env:RUNNER_TEMP 'code-signing.pfx'
+          [System.IO.File]::WriteAllBytes($pfxPath, $pfxBytes)
+          "CODE_SIGN_PFX=$pfxPath" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "CODE_SIGN_PFX_PASSWORD=$($env:PFX_PWD)" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          Write-Host "PFX certificate decoded to $pfxPath"
+
+      - name: Create self-signed code-signing certificate
+        if: steps.signing.outputs.signing_mode == 'self-signed'
+        shell: pwsh
+        run: |
+          $friendlyName = "GregTools CI Self-Signed Code Signing"
+          $reuseThreshold = (Get-Date).AddDays(1)
+
+          $cert = Get-ChildItem Cert:\CurrentUser\My |
+            Where-Object { $_.FriendlyName -eq $friendlyName -and $_.NotAfter -gt $reuseThreshold } |
+            Sort-Object NotAfter -Descending |
+            Select-Object -First 1
+
+          if (-not $cert) {
+            Write-Host "No reusable self-signed cert found (or expiring soon). Creating new 7-day cert..."
+            $cert = New-SelfSignedCertificate `
+              -Type CodeSigningCert `
+              -Subject "CN=mleem97, O=Greg Modding Team" `
+              -KeyUsage DigitalSignature `
+              -KeyAlgorithm RSA `
+              -KeyLength 2048 `
+              -HashAlgorithm SHA256 `
+              -NotAfter (Get-Date).AddDays(7) `
+              -CertStoreLocation Cert:\CurrentUser\My `
+              -FriendlyName $friendlyName
+          }
+          else {
+            Write-Host "Reusing self-signed cert valid until $($cert.NotAfter.ToString('u'))."
+          }
+
+          "CODE_SIGN_THUMBPRINT=$($cert.Thumbprint)" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          Write-Host "Using certificate thumbprint: $($cert.Thumbprint)"
+
+      - name: Build, package, and sign
+        shell: pwsh
+        run: .\build.ps1 -Sign
+
+      - name: Sign primary app executable
+        shell: pwsh
+        run: |
+          $appExe = Join-Path $env:GITHUB_WORKSPACE 'bin\Release\net9.0-windows10.0.19041.0\win10-x64\publish\WorkshopUploader.exe'
+          if (-not (Test-Path -LiteralPath $appExe)) {
+            throw "Primary app executable not found: $appExe"
+          }
+
+          if ($env:CODE_SIGN_THUMBPRINT) {
+            .\installer\sign-authenticode.ps1 -Path $appExe -Thumbprint $env:CODE_SIGN_THUMBPRINT
+          } elseif ($env:CODE_SIGN_PFX) {
+            .\installer\sign-authenticode.ps1 -Path $appExe -PfxPath $env:CODE_SIGN_PFX
+          } else {
+            throw "No signing credential available (CODE_SIGN_THUMBPRINT or CODE_SIGN_PFX)."
+          }
+
+      - name: Verify signatures (setup + app)
+        shell: pwsh
+        run: |
+          $setupExe = Get-ChildItem -LiteralPath (Join-Path $env:GITHUB_WORKSPACE 'installer\Output') -Filter 'GregToolsModmanager-*-Setup.exe' |
+            Sort-Object LastWriteTime -Descending |
+            Select-Object -First 1
+          if (-not $setupExe) {
+            throw "No setup file found in installer\\Output"
+          }
+
+          $appExe = Join-Path $env:GITHUB_WORKSPACE 'bin\Release\net9.0-windows10.0.19041.0\win10-x64\publish\WorkshopUploader.exe'
+          if (-not (Test-Path -LiteralPath $appExe)) {
+            throw "Primary app executable not found: $appExe"
+          }
+
+          $setupSig = Get-AuthenticodeSignature -FilePath $setupExe.FullName
+          $appSig = Get-AuthenticodeSignature -FilePath $appExe
+
+          Write-Host "Setup signature status: $($setupSig.Status)"
+          Write-Host "App signature status: $($appSig.Status)"
+
+          if ($setupSig.Status -ne 'Valid') {
+            throw "Setup signature is not valid: $($setupSig.Status)"
+          }
+          if ($appSig.Status -ne 'Valid') {
+            throw "App signature is not valid: $($appSig.Status)"
+          }
+
+      - name: Create portable ZIP (publish output)
+        shell: pwsh
+        run: |
+          $publishDir = Join-Path $env:GITHUB_WORKSPACE 'bin\Release\net9.0-windows10.0.19041.0\win10-x64\publish'
+          if (-not (Test-Path -LiteralPath $publishDir)) {
+            throw "Publish folder not found: $publishDir"
+          }
+
+          $version = ''
+          try {
+            [xml]$csproj = Get-Content -LiteralPath (Join-Path $env:GITHUB_WORKSPACE 'WorkshopUploader.csproj')
+            $version = ($csproj.Project.PropertyGroup | ForEach-Object { $_.ApplicationDisplayVersion } | Where-Object { $_ } | Select-Object -First 1).Trim()
+          }
+          catch {
+            # fallback below
+          }
+
+          if ([string]::IsNullOrWhiteSpace($version)) {
+            $version = if ($env:GITHUB_REF_NAME) { $env:GITHUB_REF_NAME } else { "ci-$env:GITHUB_RUN_NUMBER" }
+          }
+
+          $outDir = Join-Path $env:GITHUB_WORKSPACE 'installer\Output'
+          New-Item -ItemType Directory -Path $outDir -Force | Out-Null
+
+          $zipPath = Join-Path $outDir ("$env:APP_NAME-$version-Portable.zip")
+          if (Test-Path -LiteralPath $zipPath) {
+            Remove-Item -LiteralPath $zipPath -Force
+          }
+
+          Compress-Archive -Path (Join-Path $publishDir '*') -DestinationPath $zipPath -CompressionLevel Optimal
+          Write-Host "Created portable zip: $zipPath"
+
+      - name: Upload setup artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: setup
+          path: installer/Output/GregToolsModmanager-*-Setup.exe
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload portable zip artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: portable-zip
+          path: installer/Output/GregToolsModmanager-*-Portable.zip
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload assets to GitHub Release
+        if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            installer/Output/GregToolsModmanager-*-Setup.exe
+            installer/Output/GregToolsModmanager-*-Portable.zip
+          fail_on_unmatched_files: true
+          append_body: true
+          body: |
+            ### Assets
+            - Windows setup (`*.exe`)
+            - Portable publish (`*-Portable.zip`)
+
+      - name: Refresh rolling latest prerelease
+        if: ${{ github.event_name == 'release' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
+        uses: ncipollo/release-action@v1
+        with:
+          tag: latest
+          name: Latest Build
+          prerelease: true
+          allowUpdates: true
+          removeArtifacts: true
+          replacesArtifacts: true
+          makeLatest: false
+          artifacts: |
+            installer/Output/GregToolsModmanager-*-Setup.exe
+            installer/Output/GregToolsModmanager-*-Portable.zip
+          artifactErrorsFailBuild: true
+          generateReleaseNotes: true
+
+      - name: Clean up PFX file
+        if: always() && steps.signing.outputs.signing_mode == 'pfx'
+        shell: pwsh
+        run: |
+          $pfxPath = $env:CODE_SIGN_PFX
+          if ($pfxPath -and (Test-Path -LiteralPath $pfxPath)) {
+            Remove-Item -LiteralPath $pfxPath -Force
+            Write-Host "Cleaned up temporary PFX file."
+          }
+
+      - name: Job summary
+        if: always()
+        shell: pwsh
+        run: |
+          $signingMode = '${{ steps.signing.outputs.signing_mode }}'
+          $signingLabel = if ($signingMode -eq 'pfx') { 'PFX (CA-signed)' } else { 'Self-signed (CI-generated)' }
+          $note = if ($signingMode -eq 'pfx') {
+            'Build signed with production PFX certificate.'
+          } else {
+            'Self-signed certificates are useful for internal/community builds, but Windows/SmartScreen may still show trust warnings.'
+          }
+
+          @"
+          ## Build completed
+
+          - Workflow: ``.github/workflows/build-and-sign.yml``
+          - Output setup: ``installer/Output/GregToolsModmanager-<version>-Setup.exe``
+          - Output zip: ``installer/Output/GregToolsModmanager-<version>-Portable.zip``
+          - Signature: $signingLabel
+
+          ### Note
+
+          $note
+          "@ | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8

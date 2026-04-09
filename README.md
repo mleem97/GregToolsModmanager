@@ -1,10 +1,9 @@
 # GregTools Modmanager
 
 [![Sponsor mleem97](https://img.shields.io/badge/Sponsor-mleem97-EA4AAA?style=for-the-badge&logo=GitHub-Sponsors&logoColor=white)](https://github.com/sponsors/mleem97)
-[![Desktop Build](https://img.shields.io/github/actions/workflow/status/mleem97/GregToolsModmanager/dotnet-desktop.yml?branch=main&style=for-the-badge&label=Desktop%20Build)](https://github.com/mleem97/GregToolsModmanager/actions/workflows/dotnet-desktop.yml)
+[![Build & Sign](https://img.shields.io/github/actions/workflow/status/mleem97/GregToolsModmanager/build-and-sign.yml?branch=main&style=for-the-badge&label=Build%20%26%20Sign)](https://github.com/mleem97/GregToolsModmanager/actions/workflows/build-and-sign.yml)
 [![Discord Notify](https://img.shields.io/github/actions/workflow/status/mleem97/GregToolsModmanager/discord-release-notify.yml?branch=main&style=for-the-badge&label=Discord%20Notify)](https://github.com/mleem97/GregToolsModmanager/actions/workflows/discord-release-notify.yml)
 [![Daily Security Scan](https://img.shields.io/github/actions/workflow/status/mleem97/GregToolsModmanager/daily-malicious-code-scan.yml?branch=main&style=for-the-badge&label=Daily%20Security%20Scan)](https://github.com/mleem97/GregToolsModmanager/actions/workflows/daily-malicious-code-scan.yml)
-[![Self-Signed Setup](https://img.shields.io/github/actions/workflow/status/mleem97/GregToolsModmanager/selfsigned-setup.yml?branch=main&style=for-the-badge&label=Self-Signed%20Setup)](https://github.com/mleem97/GregToolsModmanager/actions/workflows/selfsigned-setup.yml)
 
 Desktop app for **Steam Workshop** management, mod browsing, and publishing for **Data Center** (Steamworks API, App ID `4170200`).
 
@@ -73,12 +72,18 @@ dotnet publish WorkshopUploader.csproj -c Release -p:SelfContained=true -p:Windo
 2. Run:
 
 ```powershell
-.\build.ps1
+.\scripts\build.ps1
 ```
 
 This runs `dotnet publish` and creates:
 
 `installer\Output\GregToolsModmanager-<Version>-Setup.exe`
+
+Zusätzlich erzeugt der Build jetzt standardmäßig:
+
+- `installer\Output\win64-v<Version>-portable.zip`
+- `installer\Output\win64-v<Version>-setup.exe` (bzw. `...-setup-signed.exe` bei Signierung)
+- jeweils passende `*.sha256`-Dateien
 
 Installer behavior:
 
@@ -88,14 +93,70 @@ Installer behavior:
 
 Useful options:
 
-- Skip publish and only rebuild setup: `./build.ps1 -SkipPublish`
+- Skip publish and only rebuild setup: `./scripts/build.ps1 -SkipPublish`
+- Linux-Source-Bundles (z. B. Debian/Kali): `./scripts/build.ps1 -SkipPublish -LinuxDistros Debian,Kali`
 - Inno script path: `installer\GregToolsModmanager.iss`
+
+Hinweis zu Linux: Die MAUI-App selbst ist aktuell Windows-zentriert (`net9.0-windows...`).
+`-LinuxDistros` erzeugt deshalb signierte Source-Bundles für Distributionen (z. B. Debian/Kali), keine native Linux-GUI-Binärdatei.
+
+### Official Linux packages (`.deb`, `.rpm`, `.apk`, `.pkg.tar.zst`)
+
+Nach dem Sign-Build kannst du aus den Linux-Bundles offizielle Paketformate bauen:
+
+```bash
+bash scripts/linux/build-linux-packages.sh "$HOME/GregTools-Releases" "$HOME/GregTools-Releases/packages" "deb,rpm,apk,archlinux"
+```
+
+Unter **Windows (mit WSL)**:
+
+```powershell
+.\scripts\linux\build-linux-packages.ps1 -SourceDir .\installer\Output -OutputDir .\installer\Output\linux-packages -Formats "deb,rpm,apk,archlinux"
+```
+
+Optional mit expliziter WSL-Distro:
+
+```powershell
+.\scripts\linux\build-linux-packages.ps1 -WslDistro Ubuntu -SourceDir .\installer\Output -OutputDir .\installer\Output\linux-packages
+```
+
+Das Skript erwartet pro Linux-Bundle auch die Signatur-Begleitdateien:
+
+- `Linux-<Distro>-v<Version>-signed.zip`
+- `Linux-<Distro>-v<Version>-signed.zip.sha256`
+- `Linux-<Distro>-v<Version>-signed.zip.sig`
+- `Linux-<Distro>-v<Version>-signed.zip.sig.cer`
+
+Für `.deb`-Installationen werden Runtime-Abhängigkeiten im Paket deklariert.
+Installiere daher mit `apt`, damit Abhängigkeiten automatisch mitinstalliert werden:
+
+```bash
+sudo apt install ./gregtools-modmanager-debian_<Version>_amd64.deb
+```
+
+Wenn dieselbe Version bereits installiert ist, verwende Reinstall:
+
+```bash
+sudo apt install --reinstall ./gregtools-modmanager-debian_<Version>_amd64.deb
+```
+
+Desktop-Menüeinträge nach Installation:
+
+- `GregTools Modmanager (Debian)` (öffnet den installierten Bundle-Ordner)
+- `GregTools Debian Bundle Verify` (Signatur-/Hash-Verifikation)
+
+Ergebnis sind installierbare Linux-Pakete im Zielordner, z. B.:
+
+- `gregtools-modmanager-debian_<Version>_amd64.deb`
+- `gregtools-modmanager-debian-<Version>-1.x86_64.rpm`
+- `gregtools-modmanager-debian-<Version>-r1.apk`
+- `gregtools-modmanager-debian-<Version>-1-x86_64.pkg.tar.zst`
 
 ### Update/reinstall behavior
 
 - Setup uses the same `AppId`, detects existing installs, and overwrites the target folder.
 - Running `WorkshopUploader.exe` is closed through Windows Restart Manager (`CloseApplications`).
-- Portable install via `install-local.ps1` also closes the app and replaces the install directory.
+- Portable install via `scripts/install-local.ps1` also closes the app and replaces the install directory.
 
 ### App does not start after setup
 
@@ -124,15 +185,34 @@ Useful options:
 - Sign only (without rebuilding setup):
 
 ```powershell
-.\build.ps1 -SignOnly
+.\scripts\build.ps1 -SignOnly
 ```
 
 Set `CODE_SIGN_THUMBPRINT` (or use `-SetupPath` when needed).
 
+Bei `./scripts/build.ps1 -Sign` gilt zusätzlich:
+
+- Alle Windows-Payload-Binaries (`*.exe`, `*.dll`) im Portable-Build werden Authenticode-signiert (unsignierte Dateien werden signiert, bereits gültig signierte bleiben erhalten).
+- Installer (`GregToolsModmanager-<Version>-Setup.exe`, `win64-v<Version>-setup-signed.exe`) werden signiert.
+- Alle distributablen Archive (`win64-v<Version>-portable.zip`, `Linux-<Distro>-v<Version>-signed.zip`) erhalten neben `*.sha256` auch Detached-Signaturen (`*.sig` + `*.sig.cer`).
+- Vor dem Release werden Archive automatisch auf Entpackbarkeit geprüft (Windows: `WorkshopUploader.exe` muss im ZIP enthalten sein; Linux-Bundle: `README.md` muss enthalten sein).
+
+Release-Ready für Windows + Linux erreichst du mit:
+
+```powershell
+.\build.ps1 -Sign -LinuxDistros Debian,Kali
+```
+
+Damit entstehen signierte, verifizierte Artefakte für:
+
+- Windows Installer (`*.exe`, inkl. Setup-Alias)
+- Windows Portable (`win64-v<Version>-portable.zip`)
+- Linux Distribution Bundles (`Linux-<Distro>-v<Version>-signed.zip`)
+
 ## 💼 Portable install (no Setup.exe)
 
 ```powershell
-.\install-local.ps1
+.\scripts\install-local.ps1
 ```
 
 Installs per-user to `%LOCALAPPDATA%\Programs\GregTools Modmanager\` (no admin).
@@ -140,7 +220,7 @@ Installs per-user to `%LOCALAPPDATA%\Programs\GregTools Modmanager\` (no admin).
 Uninstall:
 
 ```powershell
-.\install-local.ps1 -Uninstall
+.\scripts\install-local.ps1 -Uninstall
 ```
 
 ## 🧯 Crash dumps (WER LocalDumps)

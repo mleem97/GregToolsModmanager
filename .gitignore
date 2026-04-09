@@ -1,3 +1,9 @@
 bin/
 obj/
 .vs/
+
+# Internal documentation must never be published
+InternalDocs/
+docs/internal/
+**/*_INTERNAL*.md
+**/*.internal.md

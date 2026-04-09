@@ -1,10 +1,9 @@
 # GregTools Modmanager (Workshop Uploader)
 
 [![Sponsor mleem97](https://img.shields.io/badge/Sponsor-mleem97-EA4AAA?style=for-the-badge&logo=GitHub-Sponsors&logoColor=white)](https://github.com/sponsors/mleem97)
-[![Desktop Build](https://img.shields.io/github/actions/workflow/status/mleem97/GregToolsModmanager/dotnet-desktop.yml?branch=main&style=for-the-badge&label=Desktop%20Build)](https://github.com/mleem97/GregToolsModmanager/actions/workflows/dotnet-desktop.yml)
+[![Build & Sign](https://img.shields.io/github/actions/workflow/status/mleem97/GregToolsModmanager/build-and-sign.yml?branch=main&style=for-the-badge&label=Build%20%26%20Sign)](https://github.com/mleem97/GregToolsModmanager/actions/workflows/build-and-sign.yml)
 [![Discord Notify](https://img.shields.io/github/actions/workflow/status/mleem97/GregToolsModmanager/discord-release-notify.yml?branch=main&style=for-the-badge&label=Discord%20Notify)](https://github.com/mleem97/GregToolsModmanager/actions/workflows/discord-release-notify.yml)
 [![Daily Security Scan](https://img.shields.io/github/actions/workflow/status/mleem97/GregToolsModmanager/daily-malicious-code-scan.yml?branch=main&style=for-the-badge&label=Daily%20Security%20Scan)](https://github.com/mleem97/GregToolsModmanager/actions/workflows/daily-malicious-code-scan.yml)
-[![Self-Signed Setup](https://img.shields.io/github/actions/workflow/status/mleem97/GregToolsModmanager/selfsigned-setup.yml?branch=main&style=for-the-badge&label=Self-Signed%20Setup)](https://github.com/mleem97/GregToolsModmanager/actions/workflows/selfsigned-setup.yml)
 
 Windows **.NET MAUI** app for **Data Center** Steam Workshop: Mod Store, local upload projects, `metadata.json` / `content/config.json`, and Steam publish (Facepunch.Steamworks).
 

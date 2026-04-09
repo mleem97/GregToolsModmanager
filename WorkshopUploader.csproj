@@ -43,6 +43,10 @@
   <ItemGroup>
     <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#001110" />
     <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#001110" BaseSize="128,128" />
+    <MauiFont Include="Resources\Fonts\Vendored\Inter\*.ttf" />
+    <MauiFont Include="Resources\Fonts\Vendored\InterTight\*.ttf" />
+    <MauiFont Include="Resources\Fonts\Vendored\Nexa\*.ttf" />
+    <MauiFont Include="Resources\Fonts\Vendored\Nexa\*.otf" />
   </ItemGroup>
 
   <ItemGroup>
@@ -50,6 +54,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="steam_api64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="installer\README_Steam.txt" Link="README_Steam.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
