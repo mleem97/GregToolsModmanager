@@ -1,19 +1,28 @@
-# GregTools Modmanager
+# gregModmanager
+
+**GregTools Modmanager** — desktop app for **Steam Workshop** management, mod browsing, and publishing for **Data Center** (Steamworks API, App ID `4170200`).
 
 [![Sponsor mleem97](https://img.shields.io/badge/Sponsor-mleem97-EA4AAA?style=for-the-badge&logo=GitHub-Sponsors&logoColor=white)](https://github.com/sponsors/mleem97)
 [![Build & Sign](https://img.shields.io/github/actions/workflow/status/mleem97/GregToolsModmanager/build-and-sign.yml?branch=main&style=for-the-badge&label=Build%20%26%20Sign)](https://github.com/mleem97/GregToolsModmanager/actions/workflows/build-and-sign.yml)
 [![Discord Notify](https://img.shields.io/github/actions/workflow/status/mleem97/GregToolsModmanager/discord-release-notify.yml?branch=main&style=for-the-badge&label=Discord%20Notify)](https://github.com/mleem97/GregToolsModmanager/actions/workflows/discord-release-notify.yml)
 [![Daily Security Scan](https://img.shields.io/github/actions/workflow/status/mleem97/GregToolsModmanager/daily-malicious-code-scan.yml?branch=main&style=for-the-badge&label=Daily%20Security%20Scan)](https://github.com/mleem97/GregToolsModmanager/actions/workflows/daily-malicious-code-scan.yml)
 
-Desktop app for **Steam Workshop** management, mod browsing, and publishing for **Data Center** (Steamworks API, App ID `4170200`).
+| | |
+|:---|:---|
+| **Im Workspace** | Pfad `gregFramework/gregModmanager/`. Überblick: [gregFramework README](../README.md). |
+| **Remote** | [`mleem97/GregToolsModmanager`](https://github.com/mleem97/GregToolsModmanager) |
 
-## 📦 Open-source and external dependencies
+---
+
+## Open-source and external dependencies
 
 This project is developed in the open and uses many open-source libraries (.NET, MAUI, Facepunch.Steamworks, and more). It also ships Valve’s closed-source `steam_api64.dll` (Steamworks), which is governed by Valve terms.
 
 See [EXTERNAL_DEPENDENCIES.md](./EXTERNAL_DEPENDENCIES.md) for a full license and redistribution breakdown.
 
-## ✨ Features
+---
+
+## Features
 
 - **Mod Store:** Browse, search, subscribe, favorite, and vote on Workshop items.
 - **Mod Manager:** Dependency health checks, MelonLoader status, and FMF plugin channels.
@@ -23,13 +32,17 @@ See [EXTERNAL_DEPENDENCIES.md](./EXTERNAL_DEPENDENCIES.md) for a full license an
 - **Headless CLI:** Supports scripted/CI publish flows.
 - **Pagination:** All major list views support paging.
 
-## 🧰 Open in Visual Studio
+---
+
+## Open in Visual Studio
 
 Use `WorkshopUploader.sln` in this repository root.
 
 If you open only `WorkshopUploader.csproj` from another solution context, Visual Studio may pick a different solution unexpectedly.
 
-## 🏗️ Build
+---
+
+## Build
 
 ```powershell
 dotnet build WorkshopUploader.csproj -c Debug
@@ -43,14 +56,18 @@ dotnet build WorkshopUploader.sln -c Debug
 
 Target: **.NET 9 + .NET MAUI (Windows)**. The project uses `WindowsAppSDKSelfContained` so required Windows App SDK components are shipped with the app.
 
-## ▶️ Run (recommended)
+---
+
+## Run (recommended)
 
 - Use **Visual Studio 2022** with the **.NET MAUI workload** and **Windows App SDK** components.
 - Open `WorkshopUploader.sln`.
 - Set `WorkshopUploader` as startup project.
 - Press `F5`.
 
-## 📤 Publish (`win10-x64`)
+---
+
+## Publish (win10-x64)
 
 ```powershell
 dotnet publish WorkshopUploader.csproj -c Release
@@ -66,7 +83,9 @@ Output:
 dotnet publish WorkshopUploader.csproj -c Release -p:SelfContained=true -p:WindowsPackageType=None -p:WindowsAppSDKSelfContained=true -o .\publish-out
 ```
 
-## 🧱 Create installer (`Setup.exe` via Inno Setup)
+---
+
+## Create installer (Setup.exe via Inno Setup)
 
 1. Install [Inno Setup 6](https://jrsoftware.org/isdl.php) (includes `ISCC.exe`).
 2. Run:
@@ -79,11 +98,11 @@ This runs `dotnet publish` and creates:
 
 `installer\Output\GregToolsModmanager-<Version>-Setup.exe`
 
-Zusätzlich erzeugt der Build jetzt standardmäßig:
+The build also produces by default:
 
 - `installer\Output\win64-v<Version>-portable.zip`
-- `installer\Output\win64-v<Version>-setup.exe` (bzw. `...-setup-signed.exe` bei Signierung)
-- jeweils passende `*.sha256`-Dateien
+- `installer\Output\win64-v<Version>-setup.exe` (or `...-setup-signed.exe` when signing)
+- matching `*.sha256` files for each artifact
 
 Installer behavior:
 
@@ -94,58 +113,58 @@ Installer behavior:
 Useful options:
 
 - Skip publish and only rebuild setup: `./scripts/build.ps1 -SkipPublish`
-- Linux-Source-Bundles (z. B. Debian/Kali): `./scripts/build.ps1 -SkipPublish -LinuxDistros Debian,Kali`
+- Linux source bundles (e.g. Debian/Kali): `./scripts/build.ps1 -SkipPublish -LinuxDistros Debian,Kali`
 - Inno script path: `installer\GregToolsModmanager.iss`
 
-Hinweis zu Linux: Die MAUI-App selbst ist aktuell Windows-zentriert (`net9.0-windows...`).
-`-LinuxDistros` erzeugt deshalb signierte Source-Bundles für Distributionen (z. B. Debian/Kali), keine native Linux-GUI-Binärdatei.
+**Linux note:** The MAUI app itself is currently Windows-focused (`net9.0-windows...`).
+`-LinuxDistros` therefore produces signed source bundles for distributions (e.g. Debian/Kali), not a native Linux GUI binary.
 
 ### Official Linux packages (`.deb`, `.rpm`, `.apk`, `.pkg.tar.zst`)
 
-Nach dem Sign-Build kannst du aus den Linux-Bundles offizielle Paketformate bauen:
+After a signed build you can build official package formats from the Linux bundles:
 
 ```bash
 bash scripts/linux/build-linux-packages.sh "$HOME/GregTools-Releases" "$HOME/GregTools-Releases/packages" "deb,rpm,apk,archlinux"
 ```
 
-Unter **Windows (mit WSL)**:
+On **Windows (with WSL)**:
 
 ```powershell
 .\scripts\linux\build-linux-packages.ps1 -SourceDir .\installer\Output -OutputDir .\installer\Output\linux-packages -Formats "deb,rpm,apk,archlinux"
 ```
 
-Optional mit expliziter WSL-Distro:
+Optional: explicit WSL distro:
 
 ```powershell
 .\scripts\linux\build-linux-packages.ps1 -WslDistro Ubuntu -SourceDir .\installer\Output -OutputDir .\installer\Output\linux-packages
 ```
 
-Das Skript erwartet pro Linux-Bundle auch die Signatur-Begleitdateien:
+The script expects these signature sidecar files for each Linux bundle:
 
 - `Linux-<Distro>-v<Version>-signed.zip`
 - `Linux-<Distro>-v<Version>-signed.zip.sha256`
 - `Linux-<Distro>-v<Version>-signed.zip.sig`
 - `Linux-<Distro>-v<Version>-signed.zip.sig.cer`
 
-Für `.deb`-Installationen werden Runtime-Abhängigkeiten im Paket deklariert.
-Installiere daher mit `apt`, damit Abhängigkeiten automatisch mitinstalliert werden:
+For `.deb` installs, runtime dependencies are declared in the package.
+Install with `apt` so dependencies are pulled in automatically:
 
 ```bash
 sudo apt install ./gregtools-modmanager-debian_<Version>_amd64.deb
 ```
 
-Wenn dieselbe Version bereits installiert ist, verwende Reinstall:
+If the same version is already installed, use reinstall:
 
 ```bash
 sudo apt install --reinstall ./gregtools-modmanager-debian_<Version>_amd64.deb
 ```
 
-Desktop-Menüeinträge nach Installation:
+Desktop menu entries after installation:
 
-- `GregTools Modmanager (Debian)` (öffnet den installierten Bundle-Ordner)
-- `GregTools Debian Bundle Verify` (Signatur-/Hash-Verifikation)
+- `GregTools Modmanager (Debian)` (opens the installed bundle folder)
+- `GregTools Debian Bundle Verify` (signature/hash verification)
 
-Ergebnis sind installierbare Linux-Pakete im Zielordner, z. B.:
+The output is installable Linux packages in the target folder, for example:
 
 - `gregtools-modmanager-debian_<Version>_amd64.deb`
 - `gregtools-modmanager-debian-<Version>-1.x86_64.rpm`
@@ -163,7 +182,9 @@ Ergebnis sind installierbare Linux-Pakete im Zielordner, z. B.:
 - The installer runs elevated, but final launch uses `runasoriginaluser` so the app starts non-elevated (important for WinUI/WebView2/MAUI stability).
 - If problems continue, check Event Viewer and test `CloseApplications=no` in `GregToolsModmanager.iss`.
 
-## 🔐 Code signing, SmartScreen, and trust notice
+---
+
+## Code signing, SmartScreen, and trust notice
 
 - **Current state:** We currently use **self-signed** code signing for CI/community builds.
 - **Why:** I cannot afford an official OV/EV certificate at the moment.
@@ -190,26 +211,28 @@ Ergebnis sind installierbare Linux-Pakete im Zielordner, z. B.:
 
 Set `CODE_SIGN_THUMBPRINT` (or use `-SetupPath` when needed).
 
-Bei `./scripts/build.ps1 -Sign` gilt zusätzlich:
+With `./scripts/build.ps1 -Sign`, additionally:
 
-- Alle Windows-Payload-Binaries (`*.exe`, `*.dll`) im Portable-Build werden Authenticode-signiert (unsignierte Dateien werden signiert, bereits gültig signierte bleiben erhalten).
-- Installer (`GregToolsModmanager-<Version>-Setup.exe`, `win64-v<Version>-setup-signed.exe`) werden signiert.
-- Alle distributablen Archive (`win64-v<Version>-portable.zip`, `Linux-<Distro>-v<Version>-signed.zip`) erhalten neben `*.sha256` auch Detached-Signaturen (`*.sig` + `*.sig.cer`).
-- Vor dem Release werden Archive automatisch auf Entpackbarkeit geprüft (Windows: `WorkshopUploader.exe` muss im ZIP enthalten sein; Linux-Bundle: `README.md` muss enthalten sein).
+- All Windows payload binaries (`*.exe`, `*.dll`) in the portable build are Authenticode-signed (unsigned files get signed; already valid signatures are left as-is).
+- Installers (`GregToolsModmanager-<Version>-Setup.exe`, `win64-v<Version>-setup-signed.exe`) are signed.
+- All distributable archives (`win64-v<Version>-portable.zip`, `Linux-<Distro>-v<Version>-signed.zip`) get detached signatures (`*.sig` + `*.sig.cer`) in addition to `*.sha256`.
+- Before release, archives are checked for extractability (Windows: `WorkshopUploader.exe` must be in the ZIP; Linux bundle: `README.md` must be present).
 
-Release-Ready für Windows + Linux erreichst du mit:
+For release-ready Windows + Linux artifacts, run:
 
 ```powershell
 .\build.ps1 -Sign -LinuxDistros Debian,Kali
 ```
 
-Damit entstehen signierte, verifizierte Artefakte für:
+That produces signed, verified artifacts for:
 
-- Windows Installer (`*.exe`, inkl. Setup-Alias)
-- Windows Portable (`win64-v<Version>-portable.zip`)
-- Linux Distribution Bundles (`Linux-<Distro>-v<Version>-signed.zip`)
+- Windows installer (`*.exe`, including setup alias)
+- Windows portable (`win64-v<Version>-portable.zip`)
+- Linux distribution bundles (`Linux-<Distro>-v<Version>-signed.zip`)
 
-## 💼 Portable install (no Setup.exe)
+---
+
+## Portable install (no Setup.exe)
 
 ```powershell
 .\scripts\install-local.ps1
@@ -223,7 +246,9 @@ Uninstall:
 .\scripts\install-local.ps1 -Uninstall
 ```
 
-## 🧯 Crash dumps (WER LocalDumps)
+---
+
+## Crash dumps (WER LocalDumps)
 
 Enable local dumps:
 
@@ -248,7 +273,9 @@ Default dump directories:
 - Current user: `%LOCALAPPDATA%\GregToolsModmanager\dumps`
 - Machine: `C:\ProgramData\GregToolsModmanager\dumps`
 
-## 🚚 Deploy all mods to Workshop folders
+---
+
+## Deploy all mods to Workshop folders
 
 ```powershell
 pwsh -File scripts/Deploy-Release-ToWorkshop.ps1
@@ -256,7 +283,9 @@ pwsh -File scripts/Deploy-Release-ToWorkshop.ps1
 
 Builds framework/plugins/mods and creates Steamworks-compatible project folders under `<GameRoot>/workshop/`.
 
-## 🩺 Troubleshooting
+---
+
+## Troubleshooting
 
 1. Open **Event Viewer** → **Windows Logs** → **Application** and look for `WorkshopUploader.exe` faults.
 2. Install/repair the [Microsoft Visual C++ Redistributable](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist).
@@ -264,7 +293,9 @@ Builds framework/plugins/mods and creates Steamworks-compatible project folders 
 4. Prefer running with `F5` from Visual Studio on the same machine you use to build.
 5. Ensure Windows 10 version 1809+ (OS build `17763+`).
 
-## 🎮 Deploy next to the game
+---
+
+## Deploy next to the game
 
 Copy the publish output to:
 
@@ -272,22 +303,28 @@ Copy the publish output to:
 
 Place it next to the game executable (not inside `Mods` or `MelonLoader`).
 
-## 🛡️ VirusTotal
+---
+
+## VirusTotal
 
 Third-party scan for transparency (self-contained .NET apps may be flagged heuristically; always compare checksums from official releases):
 
 - **SHA-256:** `c0ea7929eee9d754e81363e9ec81c601e763e65f7db1eb0d971edf2c2036f0af`
 - **Report:** [VirusTotal file relations](https://www.virustotal.com/gui/file/c0ea7929eee9d754e81363e9ec81c601e763e65f7db1eb0d971edf2c2036f0af/relations)
 
-## ❤️ Sponsorship
+---
+
+## Sponsorship
 
 If this project helps you and you want to support ongoing maintenance and improvements:
 
 - **Sponsor:** [github.com/sponsors/mleem97](https://github.com/sponsors/mleem97)
 
-## 🔗 See also
+---
+
+## See also
 
 - [External dependencies and distribution notes](./EXTERNAL_DEPENDENCIES.md)
-- [Workshop wiki page](../docs/wiki/tools/workshop-uploader.md)
-- [End-user guide](../wiki/docs/guides/enduser-workshop.md)
-- [Contributor guide](../wiki/docs/guides/contributor-workshop.md)
+- [Workshop-Uploader (gregWiki)](../gregWiki/docs/tools/workshop-uploader.md)
+- [End-user guide](../gregWiki/docs/guides/players/enduser-workshop.md)
+- [Contributor guide](../gregWiki/docs/guides/contributors/contributor-workshop.md)
