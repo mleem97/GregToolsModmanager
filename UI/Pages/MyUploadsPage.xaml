@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="WorkshopUploader.MyUploadsPage"
+    x:Class="GregModmanager.MyUploadsPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:models="clr-namespace:WorkshopUploader.Models"
-    xmlns:l="clr-namespace:WorkshopUploader.Localization"
+    xmlns:models="clr-namespace:GregModmanager.Models"
+    xmlns:l="clr-namespace:GregModmanager.Localization"
     Title="{l:Translate Key=Tab_MyUploads}">
 
     <ContentPage.Resources>
@@ -25,13 +25,13 @@
         </VerticalStackLayout>
 
         <!--  Selection bar  -->
-        <Grid Grid.Row="1" ColumnDefinitions="Auto,*" ColumnSpacing="12" BackgroundColor="#001715" Padding="12,8">
+        <Grid Grid.Row="1" ColumnDefinitions="Auto,*" ColumnSpacing="12" BackgroundColor="{StaticResource SurfaceContainerLow}" Padding="12,8">
             <Button Grid.Column="0" Clicked="OnImportSelected" Text="{l:Translate Key=Uploads_ImportSelected}" />
             <Label
                 Grid.Column="1"
                 x:Name="SelectionCountLabel"
                 FontSize="12"
-                TextColor="#7FBFB8"
+                TextColor="{StaticResource OnSurfaceDim}"
                 Text="0 selected"
                 VerticalOptions="Center" />
         </Grid>
@@ -47,12 +47,12 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:WorkshopItemDetailVm">
-                        <Border Padding="16" Margin="0,0,0,8" StrokeThickness="0" BackgroundColor="#001715">
+                        <Border Padding="16" Margin="0,0,0,8" StrokeThickness="0" BackgroundColor="{StaticResource SurfaceContainerLow}">
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="8" />
                             </Border.StrokeShape>
                             <Grid ColumnDefinitions="56,*,Auto" ColumnSpacing="12" RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="4">
-                                <Border Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" StrokeThickness="0" BackgroundColor="#001E1C"
+                                <Border Grid.Row="0" Grid.RowSpan="4" Grid.Column="0" StrokeThickness="0" BackgroundColor="{StaticResource SurfaceContainer}"
                                     HeightRequest="56" WidthRequest="56" VerticalOptions="Center">
                                     <Border.StrokeShape>
                                         <RoundRectangle CornerRadius="6" />
@@ -62,22 +62,22 @@
                                 <Label
                                     Grid.Row="0" Grid.Column="1"
                                     FontAttributes="Bold" FontSize="14"
-                                    TextColor="#C0FCF6"
+                                    TextColor="{StaticResource OnSurface}"
                                     LineBreakMode="TailTruncation"
                                     Text="{Binding Title}" />
                                 <Label
                                     Grid.Row="1" Grid.Column="1"
-                                    FontSize="11" TextColor="#5A9E96"
+                                    FontSize="11" TextColor="{StaticResource OnSurfaceVariant}"
                                     Text="{Binding PublishedFileId, StringFormat='File id: {0}'}" />
                                 <Label
                                     Grid.Row="2" Grid.Column="1"
-                                    FontSize="11" TextColor="#5A9E96"
+                                    FontSize="11" TextColor="{StaticResource OnSurfaceVariant}"
                                     Text="{Binding Updated, StringFormat='Updated: {0:g}'}" />
                                 <HorizontalStackLayout Grid.Row="3" Grid.Column="1" Spacing="12">
-                                    <Label FontSize="10" TextColor="#61F4D8" Text="{Binding NumSubscriptions, StringFormat='Subs: {0}'}" />
-                                    <Label FontSize="10" TextColor="#61F4D8" Text="{Binding VotesUp, StringFormat='+{0}'}" />
-                                    <Label FontSize="10" TextColor="#D7383B" Text="{Binding VotesDown, StringFormat='-{0}'}" />
-                                    <Label FontSize="10" TextColor="#5A9E96" Text="{Binding Score, StringFormat='Score: {0:P0}'}" />
+                                    <Label FontSize="10" TextColor="{StaticResource Primary}" Text="{Binding NumSubscriptions, StringFormat='Subs: {0}'}" />
+                                    <Label FontSize="10" TextColor="{StaticResource Primary}" Text="{Binding VotesUp, StringFormat='+{0}'}" />
+                                    <Label FontSize="10" TextColor="{StaticResource StatusError}" Text="{Binding VotesDown, StringFormat='-{0}'}" />
+                                    <Label FontSize="10" TextColor="{StaticResource OnSurfaceVariant}" Text="{Binding Score, StringFormat='Score: {0:P0}'}" />
                                 </HorizontalStackLayout>
                                 <VerticalStackLayout Grid.Row="0" Grid.RowSpan="4" Grid.Column="2" Spacing="4" VerticalOptions="Center">
                                     <Button Padding="14,6" Clicked="OnDownloadClicked" Text="{l:Translate Key=Import}"
@@ -95,7 +95,7 @@
         <!--  Pagination  -->
         <HorizontalStackLayout Grid.Row="3" Spacing="8" HorizontalOptions="Center">
             <Button x:Name="PrevBtn" Text="{l:Translate Key=Previous}" Style="{StaticResource SecondaryButton}" Clicked="OnPrev" IsEnabled="False" />
-            <Label x:Name="PageLabel" FontSize="12" TextColor="#7FBFB8" VerticalOptions="Center" />
+            <Label x:Name="PageLabel" FontSize="12" TextColor="{StaticResource OnSurfaceDim}" VerticalOptions="Center" />
             <Button x:Name="NextBtn" Text="{l:Translate Key=Next}" Style="{StaticResource SecondaryButton}" Clicked="OnNext" IsEnabled="False" />
         </HorizontalStackLayout>
     </Grid>

@@ -1,4 +1,4 @@
-namespace WorkshopUploader.Models;
+namespace GregModmanager.Models;
 
 public sealed class WorkshopBrowseResultVm
 {

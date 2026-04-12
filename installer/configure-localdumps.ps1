@@ -1,4 +1,4 @@
-# Configure Windows Error Reporting (WER) LocalDumps for WorkshopUploader.exe
+# Configure Windows Error Reporting (WER) LocalDumps for GregModmanager.exe
 # Usage examples:
 #   .\installer\configure-localdumps.ps1
 #   .\installer\configure-localdumps.ps1 -Scope Machine -DumpCount 20
@@ -43,15 +43,15 @@ function Ensure-AdminIfNeeded {
 Ensure-AdminIfNeeded -TargetScope $Scope
 
 $baseRegPath = Get-BaseRegPath -TargetScope $Scope
-$exeName = 'WorkshopUploader.exe'
+$exeName = 'GregModmanager.exe'
 $targetRegPath = Join-Path $baseRegPath $exeName
 
 if ([string]::IsNullOrWhiteSpace($DumpFolder)) {
 	if ($Scope -eq 'Machine') {
-		$DumpFolder = 'C:\ProgramData\GregToolsModmanager\dumps'
+		$DumpFolder = 'C:\ProgramData\gregModmanager\dumps'
 	}
 	else {
-		$DumpFolder = Join-Path $env:LOCALAPPDATA 'GregToolsModmanager\dumps'
+		$DumpFolder = Join-Path $env:LOCALAPPDATA 'gregModmanager\dumps'
 	}
 }
 

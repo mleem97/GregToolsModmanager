@@ -1,10 +1,10 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using WorkshopUploader.Localization;
-using WorkshopUploader.Models;
-using WorkshopUploader.Services;
+using GregModmanager.Localization;
+using GregModmanager.Models;
+using GregModmanager.Services;
 
-namespace WorkshopUploader;
+namespace GregModmanager;
 
 public partial class ModManagerPage : ContentPage
 {
@@ -12,6 +12,7 @@ public partial class ModManagerPage : ContentPage
 	private readonly ModDependencyService _deps;
 	private readonly FfmPluginChannelRegistry _channels;
 	private readonly AppLogService _log;
+	private readonly WorkshopSyncOrchestrator _syncOrchestrator;
 
 	private readonly ObservableCollection<DependencyCheckResult> _checks = new();
 	private readonly ObservableCollection<PluginPackageInfo> _plugins = new();
@@ -31,13 +32,15 @@ public partial class ModManagerPage : ContentPage
 		SteamWorkshopService steam,
 		ModDependencyService deps,
 		FfmPluginChannelRegistry channels,
-		AppLogService log)
+		AppLogService log,
+		WorkshopSyncOrchestrator syncOrchestrator)
 	{
 		InitializeComponent();
 		_steam = steam;
 		_deps = deps;
 		_channels = channels;
 		_log = log;
+		_syncOrchestrator = syncOrchestrator;
 
 		ChecksList.ItemsSource = _checks;
 		PluginsList.ItemsSource = _plugins;
@@ -49,13 +52,30 @@ public partial class ModManagerPage : ContentPage
 		TagFilter.SelectedIndex = 0;
 		SortPicker.SelectedIndex = 0;
 
+		_syncOrchestrator.StatusChanged += OnSyncStatusChanged;
 		SwitchToTab("store");
 	}
 
 	protected override void OnAppearing()
 	{
 		base.OnAppearing();
+		_syncOrchestrator.Start();
 		_ = LoadStoreAsync();
+	}
+
+	private void OnSyncStatusChanged(WorkshopSyncEvent evt)
+	{
+		MainThread.BeginInvokeOnMainThread(() =>
+		{
+			SyncStatusBar.IsVisible = true;
+			SyncStatusLabel.Text = evt.Message;
+			SyncStatusBar.BackgroundColor = evt.Kind switch
+			{
+				"warning" => Color.FromArgb("#2A1A0800"),
+				"complete" or "removed" => Color.FromArgb("#0D3835"),
+				_ => Color.FromArgb("#001E1C"),
+			};
+		});
 	}
 
 	#region Tab switching

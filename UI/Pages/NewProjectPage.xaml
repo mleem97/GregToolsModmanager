@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="WorkshopUploader.NewProjectPage"
+    x:Class="GregModmanager.NewProjectPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:l="clr-namespace:WorkshopUploader.Localization"
+    xmlns:l="clr-namespace:GregModmanager.Localization"
     Title="{l:Translate Key=Tab_New}">
 
     <ContentPage.Resources>
@@ -19,7 +19,7 @@
             <Label Style="{StaticResource Headline}" Text="{l:Translate Key=NewProject_Headline}" />
             <Label Style="{StaticResource SubHeadline}" Text="{l:Translate Key=NewProject_Subtitle}" />
 
-            <Border Padding="20" StrokeThickness="0" BackgroundColor="#001715">
+            <Border Padding="20" StrokeThickness="0" BackgroundColor="{StaticResource SurfaceContainerLow}">
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="8" />
                 </Border.StrokeShape>

@@ -16,9 +16,9 @@ $ErrorActionPreference = 'Stop'
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 Set-Location $repoRoot
 
-$AppFolderName = 'GregTools Modmanager'
-$ExeName = 'WorkshopUploader.exe'
-$ShortcutName = 'GregTools Modmanager.lnk'
+$AppFolderName = 'gregModmanager'
+$ExeName = 'GregModmanager.exe'
+$ShortcutName = 'gregModmanager.lnk'
 
 if ([string]::IsNullOrWhiteSpace($InstallDir)) {
     $InstallDir = Join-Path $env:LOCALAPPDATA "Programs\$AppFolderName"
@@ -53,7 +53,7 @@ if ($Uninstall) {
 
 if (-not $SkipPublish) {
     Write-Host '[install-local] dotnet publish -c Release ...'
-    & dotnet publish (Join-Path $repoRoot 'WorkshopUploader.csproj') -c Release
+    & dotnet publish (Join-Path $repoRoot 'GregModmanager.csproj') -c Release
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
 
@@ -62,7 +62,7 @@ if (-not (Test-Path -LiteralPath $publishRel)) {
 }
 
 # Update/Reinstall: laufende App beenden, sonst bleiben EXE/DLL gesperrt und der Ordner lässt sich nicht sauber ersetzen.
-Get-Process -Name 'WorkshopUploader' -ErrorAction SilentlyContinue | ForEach-Object {
+Get-Process -Name 'GregModmanager' -ErrorAction SilentlyContinue | ForEach-Object {
     Write-Host "[install-local] Beende laufende Instanz (PID $($_.Id)) …"
     Stop-Process -Id $_.Id -Force
 }
@@ -84,7 +84,7 @@ foreach ($lnkPath in @($desktopLnk, $startMenuLnk)) {
     $sc = $shell.CreateShortcut($lnkPath)
     $sc.TargetPath = $exePath
     $sc.WorkingDirectory = $InstallDir
-    $sc.Description = 'GregTools Modmanager (Data Center Workshop)'
+    $sc.Description = 'gregModmanager (Data Center Workshop)'
     $sc.IconLocation = "$exePath,0"
     $sc.Save()
     Write-Host "[install-local] Verknüpfung: $lnkPath"

@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace WorkshopUploader.Models;
+namespace GregModmanager.Models;
 
 /// <summary>Root object for <c>content/config.json</c> (Data Center native <see cref="ModLoader"/> format).</summary>
 public sealed class NativeModConfig

@@ -1,4 +1,4 @@
-# External dependencies (Workshop Uploader / GregTools Modmanager)
+# External dependencies (Workshop Uploader / gregModmanager)
 
 This document is an **open-source transparency** note: what this app ships or relies on, and how that relates to licenses. It is **not legal advice**.
 
@@ -11,7 +11,7 @@ This document is an **open-source transparency** note: what this app ships or re
 | **Not open source (binary redistributables)** | **steam_api64.dll** from Valve’s **Steamworks SDK** — distributed under Valve’s terms, not under a public source license. You must comply with [Steamworks](https://partner.steamgames.com/) agreements when building or redistributing the app. |
 | **Runtime on the user’s PC** | **WebView2**, **Visual C++ Redistributable**, and optional **Windows App SDK** / **.NET** components may be installed separately; those are governed by their respective Microsoft (or other) licenses. |
 
-For release **ZIP** contents: the publish output includes managed assemblies from NuGet (see `WorkshopUploader.csproj` and lock files if you use them) plus native **steam_api64.dll** and **steam_appid.txt** as described below.
+For release **ZIP** contents: the publish output includes managed assemblies from NuGet (see `GregModmanager.csproj` and lock files if you use them) plus native **steam_api64.dll** and **steam_appid.txt** as described below.
 
 ## Runtime and framework (open source)
 
@@ -52,7 +52,7 @@ The workflow file lives at **`.github/workflows/gregtools-modmanager-release.yml
 - **Inside the monorepo**, use tags matching **`gregtools-modmanager-v*`** (e.g. `gregtools-modmanager-v1.0.0`) so this workflow does not collide with other projects that use generic `v*` tags.
 - **Standalone `workshopuploader` repo** (this app at the repository root): copy the same workflow into your new repo’s `.github/workflows/`, then change the `on.push.tags` entry to **`v*`** (or your preferred prefix) and tag releases accordingly.
 
-Path detection in the workflow supports, in order: **`WorkshopUploader.csproj`** at repo root, **`workshopuploader/WorkshopUploader.csproj`**, or **`WorkshopUploader/WorkshopUploader.csproj`**.
+Path detection in the workflow supports, in order: **`GregModmanager.csproj`** at repo root, **`workshopuploader/GregModmanager.csproj`**, or **`GregModmanager/GregModmanager.csproj`**.
 
 ## GitHub Releases and distribution formats
 

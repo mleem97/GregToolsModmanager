@@ -1,6 +1,6 @@
-using WorkshopUploader.Localization;
+using GregModmanager.Localization;
 
-namespace WorkshopUploader.Services;
+namespace GregModmanager.Services;
 
 /// <summary>
 /// Infers MelonLoader / FrikaModFramework requirements from Steam tags and item description

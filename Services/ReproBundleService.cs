@@ -3,11 +3,11 @@ using System.IO.Compression;
 using System.Reflection;
 using System.Text;
 
-namespace WorkshopUploader.Services;
+namespace GregModmanager.Services;
 
 public sealed class ReproBundleService
 {
-	private const string AppFolderName = "GregToolsModmanager";
+	private const string AppFolderName = "gregModmanager";
 
 	public Task<string> CreateBundleAsync(CancellationToken cancellationToken = default)
 	{
@@ -48,7 +48,7 @@ public sealed class ReproBundleService
 	{
 		var version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "unknown";
 		var summary = new StringBuilder();
-		summary.AppendLine("GregTools Modmanager - Repro Bundle");
+		summary.AppendLine("gregModmanager - Repro Bundle");
 		summary.AppendLine($"CreatedAt: {createdAt:O}");
 		summary.AppendLine($"AppVersion: {version}");
 		summary.AppendLine($"OSVersion: {Environment.OSVersion}");
@@ -118,7 +118,7 @@ public sealed class ReproBundleService
 		}
 
 		var outputPath = Path.Combine(stagingDir, "eventlog.txt");
-		var psCommand = "$events = Get-WinEvent -FilterHashtable @{LogName='Application'; StartTime=(Get-Date).AddDays(-2)} | Where-Object { ($_.ProviderName -in @('Application Error','.NET Runtime','Windows Error Reporting')) -and $_.Message -match 'WorkshopUploader' } | Select-Object -First 200 TimeCreated,ProviderName,Id,LevelDisplayName,Message; if (-not $events) { 'No matching events found.' } else { $events | Format-List | Out-String -Width 240 }";
+		var psCommand = "$events = Get-WinEvent -FilterHashtable @{LogName='Application'; StartTime=(Get-Date).AddDays(-2)} | Where-Object { ($_.ProviderName -in @('Application Error','.NET Runtime','Windows Error Reporting')) -and $_.Message -match 'GregModmanager' } | Select-Object -First 200 TimeCreated,ProviderName,Id,LevelDisplayName,Message; if (-not $events) { 'No matching events found.' } else { $events | Format-List | Out-String -Width 240 }";
 
 		try
 		{
@@ -144,7 +144,7 @@ public sealed class ReproBundleService
 			proc.WaitForExit(7000);
 
 			var sb = new StringBuilder();
-			sb.AppendLine("Recent Application log events for WorkshopUploader (last 48h)");
+			sb.AppendLine("Recent Application log events for GregModmanager (last 48h)");
 			sb.AppendLine();
 			sb.AppendLine(output);
 

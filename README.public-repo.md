@@ -1,11 +1,11 @@
 # gregModmanager (public README variant)
 
-**GregTools Modmanager (Workshop Uploader)** — Windows **.NET MAUI** app for **Data Center** Steam Workshop: Mod Store, local upload projects, `metadata.json` / `content/config.json`, and Steam publish (Facepunch.Steamworks).
+**gregModmanager (Workshop Uploader)** — Windows **.NET MAUI** app for **Data Center** Steam Workshop: Mod Store, local upload projects, `metadata.json` / `content/config.json`, and Steam publish (Facepunch.Steamworks).
 
 [![Sponsor mleem97](https://img.shields.io/badge/Sponsor-mleem97-EA4AAA?style=for-the-badge&logo=GitHub-Sponsors&logoColor=white)](https://github.com/sponsors/mleem97)
-[![Build & Sign](https://img.shields.io/github/actions/workflow/status/mleem97/GregToolsModmanager/build-and-sign.yml?branch=main&style=for-the-badge&label=Build%20%26%20Sign)](https://github.com/mleem97/GregToolsModmanager/actions/workflows/build-and-sign.yml)
-[![Discord Notify](https://img.shields.io/github/actions/workflow/status/mleem97/GregToolsModmanager/discord-release-notify.yml?branch=main&style=for-the-badge&label=Discord%20Notify)](https://github.com/mleem97/GregToolsModmanager/actions/workflows/discord-release-notify.yml)
-[![Daily Security Scan](https://img.shields.io/github/actions/workflow/status/mleem97/GregToolsModmanager/daily-malicious-code-scan.yml?branch=main&style=for-the-badge&label=Daily%20Security%20Scan)](https://github.com/mleem97/GregToolsModmanager/actions/workflows/daily-malicious-code-scan.yml)
+[![Build & Sign](https://img.shields.io/github/actions/workflow/status/mleem97/gregModmanager/build-and-sign.yml?branch=main&style=for-the-badge&label=Build%20%26%20Sign)](https://github.com/mleem97/gregModmanager/actions/workflows/build-and-sign.yml)
+[![Discord Notify](https://img.shields.io/github/actions/workflow/status/mleem97/gregModmanager/discord-release-notify.yml?branch=main&style=for-the-badge&label=Discord%20Notify)](https://github.com/mleem97/gregModmanager/actions/workflows/discord-release-notify.yml)
+[![Daily Security Scan](https://img.shields.io/github/actions/workflow/status/mleem97/gregModmanager/daily-malicious-code-scan.yml?branch=main&style=for-the-badge&label=Daily%20Security%20Scan)](https://github.com/mleem97/gregModmanager/actions/workflows/daily-malicious-code-scan.yml)
 
 ---
 
@@ -20,11 +20,11 @@ For the full guide (installers, Linux bundles, troubleshooting), use **`README.m
 ## Build
 
 ```powershell
-dotnet build WorkshopUploader.sln -c Release
+dotnet build GregModmanager.sln -c Release
 ```
 
 ```powershell
-dotnet publish WorkshopUploader.csproj -c Release -p:SelfContained=true -p:RuntimeIdentifier=win10-x64
+dotnet publish GregModmanager.csproj -c Release -p:SelfContained=true -p:RuntimeIdentifier=win10-x64
 ```
 
 See `README.md` in this directory for troubleshooting, Steam layout, and headless CLI.
@@ -83,8 +83,8 @@ Disable again:
 
 Default dump folders:
 
-- CurrentUser: `%LOCALAPPDATA%\GregToolsModmanager\dumps`
-- Machine: `C:\ProgramData\GregToolsModmanager\dumps`
+- CurrentUser: `%LOCALAPPDATA%\gregModmanager\dumps`
+- Machine: `C:\ProgramData\gregModmanager\dumps`
 
 ---
 

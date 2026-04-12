@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="WorkshopUploader.ModManagerPage"
+    x:Class="GregModmanager.ModManagerPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:models="clr-namespace:WorkshopUploader.Models"
-    xmlns:l="clr-namespace:WorkshopUploader.Localization"
+    xmlns:models="clr-namespace:GregModmanager.Models"
+    xmlns:l="clr-namespace:GregModmanager.Localization"
     Title="{l:Translate Key=Mod_Headline}">
 
     <ContentPage.Resources>
@@ -15,7 +15,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <Grid RowDefinitions="Auto,Auto,*" Padding="0" RowSpacing="0">
+    <Grid RowDefinitions="Auto,Auto,Auto,*" Padding="0" RowSpacing="0">
 
         <!--  Header  -->
         <Grid Grid.Row="0" Padding="24,24,24,12" ColumnDefinitions="*,Auto" ColumnSpacing="12">
@@ -31,8 +31,35 @@
                 VerticalOptions="Start" />
         </Grid>
 
+        <!--  Workshop Sync Status Bar  -->
+        <Border
+            x:Name="SyncStatusBar"
+            Grid.Row="1"
+            Padding="16,8"
+            Margin="24,0,24,8"
+            BackgroundColor="{StaticResource SurfaceContainer}"
+            StrokeThickness="0"
+            IsVisible="False">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="6" />
+            </Border.StrokeShape>
+            <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+                <Ellipse
+                    WidthRequest="8"
+                    HeightRequest="8"
+                    Fill="{StaticResource Primary}"
+                    VerticalOptions="Center" />
+                <Label
+                    x:Name="SyncStatusLabel"
+                    FontFamily="SpaceGrotesk-Regular"
+                    FontSize="12"
+                    TextColor="{StaticResource OnSurface}"
+                    VerticalOptions="Center" />
+            </HorizontalStackLayout>
+        </Border>
+
         <!--  Segment Control (internal tabs)  -->
-        <Grid Grid.Row="1" Padding="24,0,24,12" ColumnDefinitions="*,*,*,*" ColumnSpacing="6">
+        <Grid Grid.Row="2" Padding="24,0,24,12" ColumnDefinitions="*,*,*,*" ColumnSpacing="6">
             <Button x:Name="TabStore" Grid.Column="0" Text="{l:Translate Key=Mod_Store}" Clicked="OnTabStore" />
             <Button x:Name="TabInstalled" Grid.Column="1" Text="{l:Translate Key=Mod_Installed}" Style="{StaticResource SecondaryButton}" Clicked="OnTabInstalled" />
             <Button x:Name="TabFavorites" Grid.Column="2" Text="{l:Translate Key=Mod_Favorites}" Style="{StaticResource SecondaryButton}" Clicked="OnTabFavorites" />
@@ -40,7 +67,7 @@
         </Grid>
 
         <!--  Tab content area  -->
-        <Grid Grid.Row="2" Padding="24,0,24,24">
+        <Grid Grid.Row="3" Padding="24,0,24,24">
 
             <!--  STORE TAB  -->
             <VerticalStackLayout x:Name="StoreView" IsVisible="True" Spacing="12">
@@ -78,7 +105,7 @@
                     </Picker>
                 </Grid>
 
-                <Label x:Name="StoreStatusLabel" FontSize="11" TextColor="#5A9E96" />
+                <Label x:Name="StoreStatusLabel" FontSize="11" TextColor="{StaticResource OnSurfaceVariant}" />
 
                 <CollectionView x:Name="StoreList" SelectionMode="None">
                     <CollectionView.ItemsLayout>
@@ -86,7 +113,7 @@
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:WorkshopItemDetailVm">
-                            <Border Padding="12" Margin="0,0,0,6" StrokeThickness="0" BackgroundColor="#001715">
+                            <Border Padding="12" Margin="0,0,0,6" StrokeThickness="0" BackgroundColor="{StaticResource SurfaceContainerLow}">
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="8" />
                                 </Border.StrokeShape>
@@ -94,7 +121,7 @@
                                     <TapGestureRecognizer Tapped="OnStoreItemTapped" />
                                 </Border.GestureRecognizers>
                                 <Grid ColumnDefinitions="56,*,Auto" ColumnSpacing="12">
-                                    <Border Grid.Column="0" StrokeThickness="0" BackgroundColor="#001E1C"
+                                    <Border Grid.Column="0" StrokeThickness="0" BackgroundColor="{StaticResource SurfaceContainer}"
                                         HeightRequest="56" WidthRequest="56">
                                         <Border.StrokeShape>
                                             <RoundRectangle CornerRadius="6" />
@@ -102,21 +129,21 @@
                                         <Image Source="{Binding PreviewImageSource}" Aspect="AspectFill" />
                                     </Border>
                                     <VerticalStackLayout Grid.Column="1" Spacing="3" VerticalOptions="Center">
-                                        <Label FontAttributes="Bold" FontSize="14" TextColor="#C0FCF6" LineBreakMode="TailTruncation" Text="{Binding Title}" />
+                                        <Label FontAttributes="Bold" FontSize="14" TextColor="{StaticResource OnSurface}" LineBreakMode="TailTruncation" Text="{Binding Title}" />
                                         <HorizontalStackLayout Spacing="6">
                                             <Label FontSize="10" TextColor="{Binding SourceColor}" Text="{Binding SourceLabel}"
-                                                BackgroundColor="#001E1C" Padding="5,1" />
-                                            <Label FontSize="11" TextColor="#7FBFB8" Text="{Binding OwnerName}" />
+                                                BackgroundColor="{StaticResource SurfaceContainer}" Padding="5,1" />
+                                            <Label FontSize="11" TextColor="{StaticResource OnSurfaceDim}" Text="{Binding OwnerName}" />
                                         </HorizontalStackLayout>
                                         <HorizontalStackLayout Spacing="10">
-                                            <Label FontSize="10" TextColor="#5A9E96" Text="{Binding NumSubscriptions, StringFormat='Subs: {0}'}" />
-                                            <Label FontSize="10" TextColor="#5A9E96" Text="{Binding Score, StringFormat='Score: {0:P0}'}" />
+                                            <Label FontSize="10" TextColor="{StaticResource OnSurfaceVariant}" Text="{Binding NumSubscriptions, StringFormat='Subs: {0}'}" />
+                                            <Label FontSize="10" TextColor="{StaticResource OnSurfaceVariant}" Text="{Binding Score, StringFormat='Score: {0:P0}'}" />
                                         </HorizontalStackLayout>
                                         <Label
                                             FontSize="10"
                                             LineBreakMode="WordWrap"
                                             MaxLines="4"
-                                            TextColor="#D7A23B"
+                                            TextColor="{StaticResource WarningAccent}"
                                             Text="{Binding DependencyHintCompact}"
                                             IsVisible="{Binding HasDependencyHints}" />
                                     </VerticalStackLayout>
@@ -132,18 +159,18 @@
                 <!--  Pagination  -->
                 <HorizontalStackLayout x:Name="StorePagination" Spacing="8" HorizontalOptions="Center">
                     <Button x:Name="StorePrevBtn" Text="{l:Translate Key=Previous}" Style="{StaticResource SecondaryButton}" Clicked="OnStorePrev" IsEnabled="False" />
-                    <Label x:Name="StorePageLabel" FontSize="12" TextColor="#7FBFB8" VerticalOptions="Center" />
+                    <Label x:Name="StorePageLabel" FontSize="12" TextColor="{StaticResource OnSurfaceDim}" VerticalOptions="Center" />
                     <Button x:Name="StoreNextBtn" Text="{l:Translate Key=Next}" Style="{StaticResource SecondaryButton}" Clicked="OnStoreNext" IsEnabled="False" />
                 </HorizontalStackLayout>
             </VerticalStackLayout>
 
             <!--  INSTALLED TAB  -->
             <VerticalStackLayout x:Name="InstalledView" IsVisible="False" Spacing="12">
-                <Label x:Name="InstalledStatusLabel" FontSize="11" TextColor="#5A9E96" />
+                <Label x:Name="InstalledStatusLabel" FontSize="11" TextColor="{StaticResource OnSurfaceVariant}" />
                 <CollectionView x:Name="InstalledList" SelectionMode="None">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:WorkshopItemDetailVm">
-                            <Border Padding="12" Margin="0,0,0,6" StrokeThickness="0" BackgroundColor="#001715">
+                            <Border Padding="12" Margin="0,0,0,6" StrokeThickness="0" BackgroundColor="{StaticResource SurfaceContainerLow}">
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="8" />
                                 </Border.StrokeShape>
@@ -151,7 +178,7 @@
                                     <TapGestureRecognizer Tapped="OnStoreItemTapped" />
                                 </Border.GestureRecognizers>
                                 <Grid ColumnDefinitions="56,*,Auto,Auto" ColumnSpacing="10">
-                                    <Border Grid.Column="0" StrokeThickness="0" BackgroundColor="#001E1C"
+                                    <Border Grid.Column="0" StrokeThickness="0" BackgroundColor="{StaticResource SurfaceContainer}"
                                         HeightRequest="56" WidthRequest="56">
                                         <Border.StrokeShape>
                                             <RoundRectangle CornerRadius="6" />
@@ -159,14 +186,14 @@
                                         <Image Source="{Binding PreviewImageSource}" Aspect="AspectFill" />
                                     </Border>
                                     <VerticalStackLayout Grid.Column="1" Spacing="3" VerticalOptions="Center">
-                                        <Label FontAttributes="Bold" FontSize="14" TextColor="#C0FCF6" LineBreakMode="TailTruncation" Text="{Binding Title}" />
+                                        <Label FontAttributes="Bold" FontSize="14" TextColor="{StaticResource OnSurface}" LineBreakMode="TailTruncation" Text="{Binding Title}" />
                                         <HorizontalStackLayout Spacing="6">
                                             <Label FontSize="10" TextColor="{Binding SourceColor}" Text="{Binding SourceLabel}"
-                                                BackgroundColor="#001E1C" Padding="5,1" />
-                                            <Label FontSize="10" TextColor="#5A9E96" Text="{Binding Updated, StringFormat='Updated: {0:d}'}" />
+                                                BackgroundColor="{StaticResource SurfaceContainer}" Padding="5,1" />
+                                            <Label FontSize="10" TextColor="{StaticResource OnSurfaceVariant}" Text="{Binding Updated, StringFormat='Updated: {0:d}'}" />
                                         </HorizontalStackLayout>
                                     </VerticalStackLayout>
-                                    <Label Grid.Column="2" FontSize="10" TextColor="#D7A23B" VerticalOptions="Center"
+                                    <Label Grid.Column="2" FontSize="10" TextColor="{StaticResource WarningAccent}" VerticalOptions="Center"
                                         Text="{Binding NeedsUpdate, StringFormat='Update: {0}'}" />
                                     <Button Grid.Column="3" Text="{l:Translate Key=Mod_Unsubscribe}" Clicked="OnQuickUnsubscribe"
                                         Style="{StaticResource SecondaryButton}" Padding="10,4" FontSize="11" VerticalOptions="Center" />
@@ -177,18 +204,18 @@
                 </CollectionView>
                 <HorizontalStackLayout x:Name="InstalledPagination" Spacing="8" HorizontalOptions="Center">
                     <Button x:Name="InstalledPrevBtn" Text="{l:Translate Key=Previous}" Style="{StaticResource SecondaryButton}" Clicked="OnInstalledPrev" IsEnabled="False" />
-                    <Label x:Name="InstalledPageLabel" FontSize="12" TextColor="#7FBFB8" VerticalOptions="Center" />
+                    <Label x:Name="InstalledPageLabel" FontSize="12" TextColor="{StaticResource OnSurfaceDim}" VerticalOptions="Center" />
                     <Button x:Name="InstalledNextBtn" Text="{l:Translate Key=Next}" Style="{StaticResource SecondaryButton}" Clicked="OnInstalledNext" IsEnabled="False" />
                 </HorizontalStackLayout>
             </VerticalStackLayout>
 
             <!--  FAVORITES TAB  -->
             <VerticalStackLayout x:Name="FavoritesView" IsVisible="False" Spacing="12">
-                <Label x:Name="FavoritesStatusLabel" FontSize="11" TextColor="#5A9E96" />
+                <Label x:Name="FavoritesStatusLabel" FontSize="11" TextColor="{StaticResource OnSurfaceVariant}" />
                 <CollectionView x:Name="FavoritesList" SelectionMode="None">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:WorkshopItemDetailVm">
-                            <Border Padding="12" Margin="0,0,0,6" StrokeThickness="0" BackgroundColor="#001715">
+                            <Border Padding="12" Margin="0,0,0,6" StrokeThickness="0" BackgroundColor="{StaticResource SurfaceContainerLow}">
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="8" />
                                 </Border.StrokeShape>
@@ -196,7 +223,7 @@
                                     <TapGestureRecognizer Tapped="OnStoreItemTapped" />
                                 </Border.GestureRecognizers>
                                 <Grid ColumnDefinitions="56,*,Auto" ColumnSpacing="10">
-                                    <Border Grid.Column="0" StrokeThickness="0" BackgroundColor="#001E1C"
+                                    <Border Grid.Column="0" StrokeThickness="0" BackgroundColor="{StaticResource SurfaceContainer}"
                                         HeightRequest="56" WidthRequest="56">
                                         <Border.StrokeShape>
                                             <RoundRectangle CornerRadius="6" />
@@ -204,11 +231,11 @@
                                         <Image Source="{Binding PreviewImageSource}" Aspect="AspectFill" />
                                     </Border>
                                     <VerticalStackLayout Grid.Column="1" Spacing="3" VerticalOptions="Center">
-                                        <Label FontAttributes="Bold" FontSize="14" TextColor="#C0FCF6" LineBreakMode="TailTruncation" Text="{Binding Title}" />
+                                        <Label FontAttributes="Bold" FontSize="14" TextColor="{StaticResource OnSurface}" LineBreakMode="TailTruncation" Text="{Binding Title}" />
                                         <HorizontalStackLayout Spacing="6">
                                             <Label FontSize="10" TextColor="{Binding SourceColor}" Text="{Binding SourceLabel}"
-                                                BackgroundColor="#001E1C" Padding="5,1" />
-                                            <Label FontSize="11" TextColor="#7FBFB8" Text="{Binding OwnerName}" />
+                                                BackgroundColor="{StaticResource SurfaceContainer}" Padding="5,1" />
+                                            <Label FontSize="11" TextColor="{StaticResource OnSurfaceDim}" Text="{Binding OwnerName}" />
                                         </HorizontalStackLayout>
                                     </VerticalStackLayout>
                                     <Button Grid.Column="2" Text="{l:Translate Key=Mod_Unfavorite}" Clicked="OnQuickUnfavorite"
@@ -220,7 +247,7 @@
                 </CollectionView>
                 <HorizontalStackLayout x:Name="FavoritesPagination" Spacing="8" HorizontalOptions="Center">
                     <Button x:Name="FavoritesPrevBtn" Text="{l:Translate Key=Previous}" Style="{StaticResource SecondaryButton}" Clicked="OnFavoritesPrev" IsEnabled="False" />
-                    <Label x:Name="FavoritesPageLabel" FontSize="12" TextColor="#7FBFB8" VerticalOptions="Center" />
+                    <Label x:Name="FavoritesPageLabel" FontSize="12" TextColor="{StaticResource OnSurfaceDim}" VerticalOptions="Center" />
                     <Button x:Name="FavoritesNextBtn" Text="{l:Translate Key=Next}" Style="{StaticResource SecondaryButton}" Clicked="OnFavoritesNext" IsEnabled="False" />
                 </HorizontalStackLayout>
             </VerticalStackLayout>
@@ -230,7 +257,7 @@
                 <VerticalStackLayout Spacing="16">
 
                     <!--  Dependency health  -->
-                    <Border Padding="20" StrokeThickness="0" BackgroundColor="#001715">
+                    <Border Padding="20" StrokeThickness="0" BackgroundColor="{StaticResource SurfaceContainerLow}">
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="8" />
                         </Border.StrokeShape>
@@ -245,8 +272,8 @@
                                         <Grid Padding="0,6" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
                                             <Ellipse Grid.Column="0" WidthRequest="10" HeightRequest="10" VerticalOptions="Center" />
                                             <VerticalStackLayout Grid.Column="1" Spacing="3">
-                                                <Label FontAttributes="Bold" FontSize="13" TextColor="#C0FCF6" Text="{Binding Label}" />
-                                                <Label FontSize="11" TextColor="#5A9E96" LineBreakMode="TailTruncation" MaxLines="2" Text="{Binding Detail}" />
+                                                <Label FontAttributes="Bold" FontSize="13" TextColor="{StaticResource OnSurface}" Text="{Binding Label}" />
+                                                <Label FontSize="11" TextColor="{StaticResource OnSurfaceVariant}" LineBreakMode="TailTruncation" MaxLines="2" Text="{Binding Detail}" />
                                             </VerticalStackLayout>
                                             <Button Grid.Column="2" Clicked="OnOpenFolder" CommandParameter="{Binding Path}"
                                                 Style="{StaticResource TertiaryButton}" Text="{l:Translate Key=Open}" VerticalOptions="Center" />
@@ -258,13 +285,13 @@
                     </Border>
 
                     <!--  MelonLoader  -->
-                    <Border Padding="20" StrokeThickness="0" BackgroundColor="#001715">
+                    <Border Padding="20" StrokeThickness="0" BackgroundColor="{StaticResource SurfaceContainerLow}">
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="8" />
                         </Border.StrokeShape>
                         <VerticalStackLayout Spacing="10">
                             <Label Style="{StaticResource SectionTitle}" Text="{l:Translate Key=Mod_MelonLoader}" />
-                            <Label x:Name="MelonStatusLabel" FontSize="12" TextColor="#7FBFB8" Text="{l:Translate Key=Mod_CheckingStatus}" />
+                            <Label x:Name="MelonStatusLabel" FontSize="12" TextColor="{StaticResource OnSurfaceDim}" Text="{l:Translate Key=Mod_CheckingStatus}" />
                             <HorizontalStackLayout Spacing="8">
                                 <Button Clicked="OnMelonLoaderDownload" Text="{l:Translate Key=Mod_DownloadPage}" />
                                 <Button Clicked="OnOpenGameFolder" Style="{StaticResource SecondaryButton}" Text="{l:Translate Key=Mod_GameFolder}" />
@@ -273,14 +300,14 @@
                     </Border>
 
                     <!--  Plugin channel  -->
-                    <Border Padding="20" StrokeThickness="0" BackgroundColor="#001715">
+                    <Border Padding="20" StrokeThickness="0" BackgroundColor="{StaticResource SurfaceContainerLow}">
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="8" />
                         </Border.StrokeShape>
                         <VerticalStackLayout Spacing="10">
                             <Label Style="{StaticResource SectionTitle}" Text="{l:Translate Key=Mod_PluginChannel}" />
                             <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
-                                <Label FontSize="12" TextColor="#7FBFB8" Text="{l:Translate Key=Mod_Channel}" VerticalOptions="Center" />
+                                <Label FontSize="12" TextColor="{StaticResource OnSurfaceDim}" Text="{l:Translate Key=Mod_Channel}" VerticalOptions="Center" />
                                 <Picker x:Name="ChannelPicker" WidthRequest="200" SelectedIndexChanged="OnChannelChanged">
                                     <Picker.ItemsSource>
                                         <x:Array Type="{x:Type x:String}">
@@ -290,14 +317,14 @@
                                     </Picker.ItemsSource>
                                 </Picker>
                             </HorizontalStackLayout>
-                            <Label x:Name="ChannelInfoLabel" FontSize="11" TextColor="#5A9E96" Text="Stable: official channel." />
+                            <Label x:Name="ChannelInfoLabel" FontSize="11" TextColor="{StaticResource OnSurfaceVariant}" Text="Stable: official channel." />
                             <CollectionView x:Name="PluginsList" SelectionMode="None">
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate x:DataType="models:PluginPackageInfo">
-                                        <Grid Padding="8,6" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="12" BackgroundColor="#001E1C" Margin="0,2">
-                                            <Label Grid.Column="0" FontSize="13" TextColor="#C0FCF6" Text="{Binding PluginId}" VerticalOptions="Center" />
-                                            <Label Grid.Column="1" FontSize="11" TextColor="#5A9E96" Text="{Binding Version}" VerticalOptions="Center" />
-                                            <Label Grid.Column="2" FontSize="10" TextColor="#3ABFA8" Text="{Binding Channel}" VerticalOptions="Center" />
+                                        <Grid Padding="8,6" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="12" BackgroundColor="{StaticResource SurfaceContainer}" Margin="0,2">
+                                            <Label Grid.Column="0" FontSize="13" TextColor="{StaticResource OnSurface}" Text="{Binding PluginId}" VerticalOptions="Center" />
+                                            <Label Grid.Column="1" FontSize="11" TextColor="{StaticResource OnSurfaceVariant}" Text="{Binding Version}" VerticalOptions="Center" />
+                                            <Label Grid.Column="2" FontSize="10" TextColor="{StaticResource PrimaryFixedDim}" Text="{Binding Channel}" VerticalOptions="Center" />
                                         </Grid>
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>

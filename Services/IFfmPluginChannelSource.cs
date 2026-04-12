@@ -1,6 +1,6 @@
-using WorkshopUploader.Models;
+using GregModmanager.Models;
 
-namespace WorkshopUploader.Services;
+namespace GregModmanager.Services;
 
 /// <summary>
 /// Provides a list of available FMF plugin packages from a specific distribution channel.

@@ -1,9 +1,9 @@
 using Microsoft.Extensions.Logging;
-using WorkshopUploader.Localization;
-using WorkshopUploader.Services;
-using WorkshopUploader.Steam;
+using GregModmanager.Localization;
+using GregModmanager.Services;
+using GregModmanager.Steam;
 
-namespace WorkshopUploader;
+namespace GregModmanager;
 
 public static class MauiProgram
 {
@@ -65,7 +65,7 @@ public static class MauiProgram
 				{
 					var webViewDataDir = Path.Combine(
 						Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-						"GregToolsModmanager",
+						"gregModmanager",
 						"webview2");
 					Directory.CreateDirectory(webViewDataDir);
 					Environment.SetEnvironmentVariable("WEBVIEW2_USER_DATA_FOLDER", webViewDataDir);
@@ -133,6 +133,11 @@ public static class MauiProgram
 			});
 			builder.Services.AddSingleton<RalphSyncService>();
 			builder.Services.AddSingleton<VdfGeneratorService>();
+			builder.Services.AddSingleton<WorkshopDownloadService>();
+			builder.Services.AddSingleton<ModsFolderSyncService>();
+			builder.Services.AddSingleton<SubscriptionPoller>(sp =>
+				new SubscriptionPoller(sp.GetRequiredService<SteamWorkshopService>()));
+			builder.Services.AddSingleton<WorkshopSyncOrchestrator>();
 			builder.Services.AddSingleton<ProjectsPage>();
 			builder.Services.AddSingleton<NewProjectPage>();
 			builder.Services.AddSingleton<MyUploadsPage>();

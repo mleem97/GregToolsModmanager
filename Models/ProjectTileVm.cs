@@ -1,7 +1,7 @@
 using Microsoft.Maui.Controls;
-using WorkshopUploader.Services;
+using GregModmanager.Services;
 
-namespace WorkshopUploader.Models;
+namespace GregModmanager.Models;
 
 /// <summary>View model for a tile in the workshop project grid.</summary>
 public sealed class ProjectTileVm

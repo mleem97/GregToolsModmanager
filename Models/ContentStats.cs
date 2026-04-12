@@ -1,4 +1,4 @@
-namespace WorkshopUploader.Models;
+namespace GregModmanager.Models;
 
 /// <summary>Size breakdown for <c>content/</c>.</summary>
 public sealed class ContentStats

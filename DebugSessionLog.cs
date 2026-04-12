@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace WorkshopUploader;
+namespace GregModmanager;
 
 /// <summary>NDJSON debug log (Debug builds only; stripped from Release for size and I/O).</summary>
 internal static class DebugSessionLog
@@ -19,7 +19,7 @@ internal static class DebugSessionLog
 			var dir = new DirectoryInfo(AppContext.BaseDirectory);
 			for (var i = 0; i < 14 && dir != null; i++, dir = dir.Parent)
 			{
-				var csproj = Path.Combine(dir.FullName, "WorkshopUploader", "WorkshopUploader.csproj");
+				var csproj = Path.Combine(dir.FullName, "GregModmanager", "GregModmanager.csproj");
 				if (File.Exists(csproj))
 					return Path.Combine(dir.FullName, "debug-9fc458.log");
 			}

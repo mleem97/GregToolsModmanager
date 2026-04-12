@@ -1,8 +1,8 @@
 using Steamworks;
-using WorkshopUploader.Models;
-using WorkshopUploader.Steam;
+using GregModmanager.Models;
+using GregModmanager.Steam;
 
-namespace WorkshopUploader.Services;
+namespace GregModmanager.Services;
 
 /// <summary>
 /// Probes the local Data Center installation for MelonLoader, FrikaModFramework,

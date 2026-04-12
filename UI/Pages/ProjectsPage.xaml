@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="WorkshopUploader.ProjectsPage"
+    x:Class="GregModmanager.ProjectsPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:models="clr-namespace:WorkshopUploader.Models"
-    xmlns:l="clr-namespace:WorkshopUploader.Localization"
+    xmlns:models="clr-namespace:GregModmanager.Models"
+    xmlns:l="clr-namespace:GregModmanager.Localization"
     Title="{l:Translate Key=Tab_Projects}">
 
     <ContentPage.Resources>
@@ -49,7 +49,7 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:ProjectTileVm">
-                        <Border Padding="12" StrokeThickness="0" BackgroundColor="#001715">
+                        <Border Padding="12" StrokeThickness="0" BackgroundColor="{StaticResource SurfaceContainerLow}">
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="8" />
                             </Border.StrokeShape>
@@ -57,7 +57,7 @@
                                 <Border
                                     Grid.Column="0"
                                     StrokeThickness="0"
-                                    BackgroundColor="#001E1C"
+                                    BackgroundColor="{StaticResource SurfaceContainer}"
                                     HeightRequest="104"
                                     WidthRequest="104"
                                     VerticalOptions="Start">
@@ -74,7 +74,7 @@
                                             HorizontalOptions="Center"
                                             IsVisible="{Binding ShowPreviewPlaceholder}"
                                             Text="?"
-                                            TextColor="#5A9E96"
+                                            TextColor="{StaticResource OnSurfaceVariant}"
                                             VerticalOptions="Center" />
                                     </Grid>
                                 </Border>
@@ -86,7 +86,7 @@
                                             FontSize="15"
                                             LineBreakMode="TailTruncation"
                                             Text="{Binding Title}"
-                                            TextColor="#C0FCF6" />
+                                            TextColor="{StaticResource OnSurface}" />
                                         <Label
                                             Grid.Column="1"
                                             FontSize="10"
@@ -98,11 +98,11 @@
                                         FontSize="11"
                                         LineBreakMode="TailTruncation"
                                         Text="{Binding Name}"
-                                        TextColor="#5A9E96" />
+                                        TextColor="{StaticResource OnSurfaceVariant}" />
                                     <HorizontalStackLayout Spacing="8" VerticalOptions="Start">
                                         <Border
                                             Padding="6,2"
-                                            BackgroundColor="#0D3835"
+                                            BackgroundColor="{StaticResource SurfaceVariant}"
                                             IsVisible="{Binding NeedsFmf}"
                                             StrokeThickness="0">
                                             <Border.StrokeShape>
@@ -112,24 +112,24 @@
                                                 <Label
                                                     FontSize="11"
                                                     Text="✓"
-                                                    TextColor="#61F4D8"
+                                                    TextColor="{StaticResource Primary}"
                                                     VerticalOptions="Center" />
                                                 <Label
                                                     FontSize="10"
                                                     Text="GregFramework"
-                                                    TextColor="#61F4D8"
+                                                    TextColor="{StaticResource Primary}"
                                                     VerticalOptions="Center" />
                                             </HorizontalStackLayout>
                                         </Border>
-                                        <Label FontSize="10" TextColor="#61F4D8" Text="{Binding HasContent, StringFormat='Content: {0}'}" />
-                                        <Label FontSize="10" TextColor="#61F4D8" Text="{Binding HasPreview, StringFormat='Preview: {0}'}" />
-                                        <Label FontSize="10" TextColor="#7FBFB8" Text="{Binding IsPublished, StringFormat='Published: {0}'}" />
+                                        <Label FontSize="10" TextColor="{StaticResource Primary}" Text="{Binding HasContent, StringFormat='Content: {0}'}" />
+                                        <Label FontSize="10" TextColor="{StaticResource Primary}" Text="{Binding HasPreview, StringFormat='Preview: {0}'}" />
+                                        <Label FontSize="10" TextColor="{StaticResource OnSurfaceDim}" Text="{Binding IsPublished, StringFormat='Published: {0}'}" />
                                     </HorizontalStackLayout>
                                     <Label
                                         FontSize="10"
                                         LineBreakMode="TailTruncation"
                                         Text="{Binding Tags}"
-                                        TextColor="#5A9E96" />
+                                        TextColor="{StaticResource OnSurfaceVariant}" />
                                     <Label
                                         FontSize="9"
                                         IsVisible="{Binding HasPreviewImage}"
@@ -145,7 +145,7 @@
         </RefreshView>
 
         <!--  Log panel (collapsible)  -->
-        <Border Grid.Row="3" Padding="16" StrokeThickness="0" BackgroundColor="#001E1C">
+        <Border Grid.Row="3" Padding="16" StrokeThickness="0" BackgroundColor="{StaticResource SurfaceContainer}">
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="8" />
             </Border.StrokeShape>
@@ -167,7 +167,7 @@
                 </Grid>
                 <VerticalStackLayout x:Name="LogPanelContent" Spacing="0">
                     <ScrollView x:Name="LogScroll" HeightRequest="140">
-                        <Label x:Name="LogLabel" FontFamily="Consolas" FontSize="11" TextColor="#7FBFB8" LineBreakMode="WordWrap" />
+                        <Label x:Name="LogLabel" FontFamily="Consolas" FontSize="11" TextColor="{StaticResource OnSurfaceDim}" LineBreakMode="WordWrap" />
                     </ScrollView>
                 </VerticalStackLayout>
             </VerticalStackLayout>

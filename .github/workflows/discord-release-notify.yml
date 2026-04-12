@@ -2,7 +2,7 @@ name: Discord Release Notification
 
 on:
   workflow_run:
-    workflows: [".NET Desktop (Self-Signed Setup)"]
+    workflows: ["gregModmanager Build & Sign"]
     types: [completed]
 
 jobs:
@@ -139,7 +139,7 @@ jobs:
             exit 0
           fi
 
-          app_name="GregTools Modmanager"
+          app_name="gregModmanager"
           version="${TAG_NAME:-unknown}"
 
           payload=$(cat <<EOF

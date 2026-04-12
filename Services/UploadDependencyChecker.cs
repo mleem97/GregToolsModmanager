@@ -1,8 +1,8 @@
 using System.Text.RegularExpressions;
-using WorkshopUploader.Models;
-using WorkshopUploader.Steam;
+using GregModmanager.Models;
+using GregModmanager.Steam;
 
-namespace WorkshopUploader.Services;
+namespace GregModmanager.Services;
 
 public static class UploadDependencyChecker
 {

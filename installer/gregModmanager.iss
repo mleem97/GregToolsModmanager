@@ -1,14 +1,14 @@
-; Inno Setup 6 — GregTools Modmanager (WorkshopUploader)
-; Kompilieren: ISCC.exe GregToolsModmanager.iss  (oder ..\build.ps1)
-; Version wird per ..\build.ps1 aus WorkshopUploader.csproj als /DMyAppVersion übergeben.
+; Inno Setup 6 — gregModmanager (GregModmanager.exe)
+; Kompilieren: ISCC.exe gregModmanager.iss  (oder ..\build.ps1)
+; Version wird per ..\build.ps1 aus GregModmanager.csproj als /DMyAppVersion übergeben.
 
 #ifndef MyAppVersion
 #define MyAppVersion "1.0.0"
 #endif
 
-#define MyAppName "GregTools Modmanager"
+#define MyAppName "gregModmanager"
 #define MyAppPublisher "GregFramework"
-#define MyAppExeName "WorkshopUploader.exe"
+#define MyAppExeName "GregModmanager.exe"
 #define MyAppURL "https://github.com/mleem97/gregFramework"
 
 [Setup]
@@ -32,7 +32,7 @@ PrivilegesRequired=admin
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 OutputDir=Output
-OutputBaseFilename=GregToolsModmanager-{#MyAppVersion}-Setup
+OutputBaseFilename=gregModmanager-{#MyAppVersion}-Setup
 Compression=lzma2/ultra64
 SolidCompression=yes
 WizardStyle=modern

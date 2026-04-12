@@ -1,4 +1,4 @@
-# Startet WorkshopUploader (MAUI Windows). Ausführen aus diesem Ordner: .\run.ps1
+# Startet GregModmanager (MAUI Windows). Ausführen aus diesem Ordner: .\run.ps1
 # Optional: .\run.ps1 -- -h  (Argumente nach -- gehen an die App)
 $ErrorActionPreference = 'Stop'
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path

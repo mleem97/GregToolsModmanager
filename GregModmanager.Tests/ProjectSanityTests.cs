@@ -1,10 +1,10 @@
 using System.Xml.Linq;
 
-namespace WorkshopUploader.Tests;
+namespace GregModmanager.Tests;
 
 public class ProjectSanityTests
 {
-    private static readonly string ProjectFile = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "WorkshopUploader.csproj"));
+    private static readonly string ProjectFile = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "GregModmanager.csproj"));
 
     [Fact]
     public void ProjectFile_Exists()

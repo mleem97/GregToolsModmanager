@@ -2,10 +2,10 @@ using System.Diagnostics;
 using Steamworks;
 using Steamworks.Data;
 using Steamworks.Ugc;
-using WorkshopUploader.Models;
-using WorkshopUploader.Steam;
+using GregModmanager.Models;
+using GregModmanager.Steam;
 
-namespace WorkshopUploader.Services;
+namespace GregModmanager.Services;
 
 public sealed class SteamWorkshopService
 {

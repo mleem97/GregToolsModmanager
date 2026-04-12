@@ -1,8 +1,8 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using WorkshopUploader.Models;
+using GregModmanager.Models;
 
-namespace WorkshopUploader.Services;
+namespace GregModmanager.Services;
 
 public static class NativeModConfigStore
 {

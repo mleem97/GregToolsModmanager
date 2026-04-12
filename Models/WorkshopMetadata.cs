@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace WorkshopUploader.Models;
+namespace GregModmanager.Models;
 
 public sealed class WorkshopMetadata
 {

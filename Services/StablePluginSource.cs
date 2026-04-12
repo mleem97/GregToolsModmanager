@@ -1,6 +1,6 @@
-using WorkshopUploader.Models;
+using GregModmanager.Models;
 
-namespace WorkshopUploader.Services;
+namespace GregModmanager.Services;
 
 /// <summary>
 /// Scans <c>{GameRoot}/FMF/Plugins</c> and <c>{GameRoot}/Mods</c> for locally installed

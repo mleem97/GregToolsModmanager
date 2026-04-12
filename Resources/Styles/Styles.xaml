@@ -12,61 +12,75 @@
     <!--  Page: Layer 0 deep abyss  -->
     <Style TargetType="Page" ApplyToDerivedTypes="True">
         <Setter Property="Padding" Value="0" />
-        <Setter Property="BackgroundColor" Value="#001110" />
+        <Setter Property="BackgroundColor" Value="{StaticResource Surface}" />
     </Style>
 
     <!--  Shell: dark nav bar with teal accent  -->
     <Style TargetType="Shell" ApplyToDerivedTypes="True">
-        <Setter Property="Shell.BackgroundColor" Value="#001110" />
-        <Setter Property="Shell.ForegroundColor" Value="#61F4D8" />
-        <Setter Property="Shell.TitleColor" Value="#C0FCF6" />
-        <Setter Property="Shell.TabBarBackgroundColor" Value="#001715" />
-        <Setter Property="Shell.TabBarForegroundColor" Value="#61F4D8" />
-        <Setter Property="Shell.TabBarUnselectedColor" Value="#5A9E96" />
-        <Setter Property="Shell.TabBarTitleColor" Value="#61F4D8" />
+        <Setter Property="Shell.BackgroundColor" Value="{StaticResource Surface}" />
+        <Setter Property="Shell.ForegroundColor" Value="{StaticResource Primary}" />
+        <Setter Property="Shell.TitleColor" Value="{StaticResource OnSurface}" />
+        <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource SurfaceContainerLow}" />
+        <Setter Property="Shell.TabBarForegroundColor" Value="{StaticResource Primary}" />
+        <Setter Property="Shell.TabBarUnselectedColor" Value="{StaticResource OnSurfaceVariant}" />
+        <Setter Property="Shell.TabBarTitleColor" Value="{StaticResource Primary}" />
         <Setter Property="Shell.NavBarHasShadow" Value="False" />
     </Style>
 
-    <!--  ── Typography ──  -->
+    <!--  ── Typography ──
+         Display / Headlines: Space Grotesk (+2% tracking)
+         Body / Labels: Inter
+         Code: JetBrains Mono on surface-container-highest  -->
 
     <Style TargetType="Label">
-        <Setter Property="TextColor" Value="#C0FCF6" />
+        <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+        <Setter Property="FontFamily" Value="SpaceGrotesk-Regular" />
         <Setter Property="FontSize" Value="13" />
     </Style>
 
     <Style TargetType="Label" x:Key="Headline">
-        <Setter Property="TextColor" Value="#C0FCF6" />
+        <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+        <Setter Property="FontFamily" Value="SpaceGrotesk-Bold" />
         <Setter Property="FontSize" Value="26" />
-        <Setter Property="FontAttributes" Value="Bold" />
-        <Setter Property="CharacterSpacing" Value="0.5" />
+        <Setter Property="CharacterSpacing" Value="0.52" />
     </Style>
 
     <Style TargetType="Label" x:Key="SubHeadline">
-        <Setter Property="TextColor" Value="#7FBFB8" />
+        <Setter Property="TextColor" Value="{StaticResource OnSurfaceDim}" />
+        <Setter Property="FontFamily" Value="SpaceGrotesk-Regular" />
         <Setter Property="FontSize" Value="13" />
     </Style>
 
     <Style TargetType="Label" x:Key="SectionTitle">
-        <Setter Property="TextColor" Value="#C0FCF6" />
+        <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+        <Setter Property="FontFamily" Value="SpaceGrotesk-Bold" />
         <Setter Property="FontSize" Value="15" />
-        <Setter Property="FontAttributes" Value="Bold" />
         <Setter Property="CharacterSpacing" Value="0.3" />
     </Style>
 
     <Style TargetType="Label" x:Key="MetaBadge">
-        <Setter Property="TextColor" Value="#7FBFB8" />
+        <Setter Property="TextColor" Value="{StaticResource OnSurfaceDim}" />
+        <Setter Property="FontFamily" Value="SpaceGrotesk-Regular" />
         <Setter Property="FontSize" Value="11" />
-        <Setter Property="BackgroundColor" Value="#0D3835" />
+        <Setter Property="BackgroundColor" Value="{StaticResource SurfaceVariant}" />
         <Setter Property="Padding" Value="6,2" />
+    </Style>
+
+    <Style TargetType="Label" x:Key="CodeLabel">
+        <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+        <Setter Property="FontFamily" Value="JetBrainsMono-Regular" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="BackgroundColor" Value="{StaticResource SurfaceContainerHighest}" />
+        <Setter Property="Padding" Value="8,4" />
     </Style>
 
     <!--  ── Buttons: kinetic core ──  -->
 
     <Style TargetType="Button">
-        <Setter Property="TextColor" Value="#001110" />
-        <Setter Property="BackgroundColor" Value="#61F4D8" />
+        <Setter Property="TextColor" Value="{StaticResource OnPrimary}" />
+        <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+        <Setter Property="FontFamily" Value="SpaceGrotesk-Bold" />
         <Setter Property="FontSize" Value="13" />
-        <Setter Property="FontAttributes" Value="Bold" />
         <Setter Property="CornerRadius" Value="6" />
         <Setter Property="Padding" Value="16,10" />
         <Setter Property="MinimumHeightRequest" Value="40" />
@@ -75,19 +89,21 @@
     </Style>
 
     <Style TargetType="Button" x:Key="SecondaryButton">
-        <Setter Property="TextColor" Value="#61F4D8" />
+        <Setter Property="TextColor" Value="{StaticResource Primary}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="FontFamily" Value="SpaceGrotesk-Medium" />
         <Setter Property="FontSize" Value="13" />
         <Setter Property="CornerRadius" Value="6" />
         <Setter Property="Padding" Value="16,10" />
         <Setter Property="MinimumHeightRequest" Value="40" />
-        <Setter Property="BorderColor" Value="#665A9E96" />
+        <Setter Property="BorderColor" Value="{StaticResource OutlineVariantHover}" />
         <Setter Property="BorderWidth" Value="1" />
     </Style>
 
     <Style TargetType="Button" x:Key="TertiaryButton">
-        <Setter Property="TextColor" Value="#1CEDE1" />
+        <Setter Property="TextColor" Value="{StaticResource Secondary}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="FontFamily" Value="SpaceGrotesk-Regular" />
         <Setter Property="FontSize" Value="12" />
         <Setter Property="CornerRadius" Value="4" />
         <Setter Property="Padding" Value="8,6" />
@@ -96,8 +112,9 @@
     </Style>
 
     <Style TargetType="Button" x:Key="BbButton">
-        <Setter Property="TextColor" Value="#7FBFB8" />
+        <Setter Property="TextColor" Value="{StaticResource OnSurfaceDim}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="FontFamily" Value="SpaceGrotesk-Regular" />
         <Setter Property="FontSize" Value="11" />
         <Setter Property="CornerRadius" Value="4" />
         <Setter Property="Padding" Value="6,4" />
@@ -109,24 +126,49 @@
     <!--  ── Entry / Editor: recessed inputs ──  -->
 
     <Style TargetType="Entry">
-        <Setter Property="BackgroundColor" Value="#001E1C" />
-        <Setter Property="TextColor" Value="#C0FCF6" />
-        <Setter Property="PlaceholderColor" Value="#5A9E96" />
+        <Setter Property="BackgroundColor" Value="{StaticResource SurfaceContainer}" />
+        <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+        <Setter Property="PlaceholderColor" Value="{StaticResource OnSurfaceVariant}" />
+        <Setter Property="FontFamily" Value="SpaceGrotesk-Regular" />
         <Setter Property="FontSize" Value="13" />
     </Style>
 
     <Style TargetType="Editor">
-        <Setter Property="BackgroundColor" Value="#001E1C" />
-        <Setter Property="TextColor" Value="#C0FCF6" />
-        <Setter Property="PlaceholderColor" Value="#5A9E96" />
+        <Setter Property="BackgroundColor" Value="{StaticResource SurfaceContainer}" />
+        <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+        <Setter Property="PlaceholderColor" Value="{StaticResource OnSurfaceVariant}" />
+        <Setter Property="FontFamily" Value="SpaceGrotesk-Regular" />
         <Setter Property="FontSize" Value="13" />
     </Style>
 
     <Style TargetType="Picker">
-        <Setter Property="BackgroundColor" Value="#001E1C" />
-        <Setter Property="TextColor" Value="#C0FCF6" />
-        <Setter Property="TitleColor" Value="#5A9E96" />
+        <Setter Property="BackgroundColor" Value="{StaticResource SurfaceContainer}" />
+        <Setter Property="TextColor" Value="{StaticResource OnSurface}" />
+        <Setter Property="TitleColor" Value="{StaticResource OnSurfaceVariant}" />
+        <Setter Property="FontFamily" Value="SpaceGrotesk-Regular" />
         <Setter Property="FontSize" Value="13" />
+    </Style>
+
+    <!--  ── Borders / Cards: ghost border for A11y ──  -->
+
+    <Style TargetType="Border" x:Key="Card">
+        <Setter Property="BackgroundColor" Value="{StaticResource SurfaceContainerLow}" />
+        <Setter Property="StrokeThickness" Value="0" />
+        <Setter Property="Padding" Value="20" />
+    </Style>
+
+    <Style TargetType="Border" x:Key="GhostCard">
+        <Setter Property="BackgroundColor" Value="{StaticResource SurfaceContainerLow}" />
+        <Setter Property="Stroke" Value="{StaticResource OutlineVariant}" />
+        <Setter Property="StrokeThickness" Value="1" />
+        <Setter Property="Padding" Value="20" />
+    </Style>
+
+    <Style TargetType="Border" x:Key="GlassPanel">
+        <Setter Property="BackgroundColor" Value="{StaticResource SurfaceContainer}" />
+        <Setter Property="Opacity" Value="0.92" />
+        <Setter Property="StrokeThickness" Value="0" />
+        <Setter Property="Padding" Value="16" />
     </Style>
 
     <!--  ── ScrollView ──  -->
@@ -138,7 +180,20 @@
     <!--  ── RefreshView ──  -->
 
     <Style TargetType="RefreshView">
-        <Setter Property="RefreshColor" Value="#61F4D8" />
+        <Setter Property="RefreshColor" Value="{StaticResource Primary}" />
+    </Style>
+
+    <!--  ── Switch: themed toggle ──  -->
+
+    <Style TargetType="Switch">
+        <Setter Property="OnColor" Value="{StaticResource Primary}" />
+        <Setter Property="ThumbColor" Value="{StaticResource OnSurface}" />
+    </Style>
+
+    <!--  ── ActivityIndicator ──  -->
+
+    <Style TargetType="ActivityIndicator">
+        <Setter Property="Color" Value="{StaticResource Primary}" />
     </Style>
 
 </ResourceDictionary>

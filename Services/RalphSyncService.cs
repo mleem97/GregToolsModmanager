@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace WorkshopUploader.Services;
+namespace GregModmanager.Services;
 
 public sealed class RalphSyncService
 {

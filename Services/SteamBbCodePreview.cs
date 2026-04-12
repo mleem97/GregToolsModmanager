@@ -1,7 +1,7 @@
 using System.Net;
 using System.Text;
 
-namespace WorkshopUploader.Services;
+namespace GregModmanager.Services;
 
 /// <summary>
 /// Renders Steam Workshop BBCode to HTML for a live preview (subset of

@@ -1,4 +1,4 @@
-namespace WorkshopUploader.Services;
+namespace GregModmanager.Services;
 
 public static class AppFileLog
 {
@@ -19,14 +19,14 @@ public static class AppFileLog
 			{
 				var root = Path.Combine(
 					Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-					"GregToolsModmanager",
+					"gregModmanager",
 					"logs");
 				Directory.CreateDirectory(root);
 				_logPath = Path.Combine(root, $"app-{DateTime.Now:yyyyMMdd}.log");
 			}
 			catch
 			{
-				_logPath = Path.Combine(Path.GetTempPath(), $"GregToolsModmanager-app-{DateTime.Now:yyyyMMdd}.log");
+				_logPath = Path.Combine(Path.GetTempPath(), $"gregModmanager-app-{DateTime.Now:yyyyMMdd}.log");
 			}
 
 			return _logPath;

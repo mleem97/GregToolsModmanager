@@ -33,7 +33,7 @@ body:
     id: install_path
     attributes:
       label: Install path
-      placeholder: "e.g. C:\\Program Files\\GregTools Modmanager"
+      placeholder: "e.g. C:\\Program Files\\gregModmanager"
 
   - type: textarea
     id: setup_logs
@@ -45,5 +45,5 @@ body:
     id: app_logs
     attributes:
       label: App logs after install
-      description: Paste relevant lines from `%LOCALAPPDATA%\\GregToolsModmanager\\logs`.
+      description: Paste relevant lines from `%LOCALAPPDATA%\\gregModmanager\\logs`.
       render: shell

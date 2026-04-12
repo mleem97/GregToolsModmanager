@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
 
-namespace WorkshopUploader.Steam;
+namespace GregModmanager.Steam;
 
 /// <summary>
 /// Loads <c>steam_api64.dll</c> before Facepunch/Steamworks runs so the process uses the same

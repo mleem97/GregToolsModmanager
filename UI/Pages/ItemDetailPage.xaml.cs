@@ -1,8 +1,8 @@
-using WorkshopUploader.Localization;
-using WorkshopUploader.Models;
-using WorkshopUploader.Services;
+using GregModmanager.Localization;
+using GregModmanager.Models;
+using GregModmanager.Services;
 
-namespace WorkshopUploader;
+namespace GregModmanager;
 
 [QueryProperty(nameof(FileId), "FileId")]
 public partial class ItemDetailPage : ContentPage

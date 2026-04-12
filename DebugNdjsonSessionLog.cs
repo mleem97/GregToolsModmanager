@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
-namespace WorkshopUploader;
+namespace GregModmanager;
 
 /// <summary>Session 9fc458: NDJSON to %TEMP%\debug-9fc458.log (writable from Program Files). Remove after root cause confirmed.</summary>
 internal static class DebugNdjsonSessionLog

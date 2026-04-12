@@ -1,12 +1,13 @@
 using System.Diagnostics;
-using WorkshopUploader.Localization;
-using WorkshopUploader.Services;
+using GregModmanager.Localization;
+using GregModmanager.Services;
 
-namespace WorkshopUploader;
+namespace GregModmanager;
 
 public partial class SettingsPage : ContentPage
 {
 	public const string ModStoreEnabledKey = "ModStoreEnabled";
+	public const string GameRootPathKey = "GameRootPath";
 
 	private const string DiscordInviteUrl = "https://discord.gg/greg";
 	private const string WasekuDCUrl = "https://discord.gg/nEGpsHqr";
@@ -32,10 +33,22 @@ public partial class SettingsPage : ContentPage
 		base.OnAppearing();
 		ModStoreSwitch.IsToggled = Preferences.Default.Get(ModStoreEnabledKey, false);
 
+		var gameRoot = GetGameRootPath();
+		GameRootEntry.Text = Preferences.Default.Get(GameRootPathKey, "");
+		CurrentGameRootLabel.Text = string.IsNullOrEmpty(gameRoot)
+			? S.Get("Settings_GameRootNotSet")
+			: S.Format("Settings_CurrentPath", gameRoot);
+		GameRootHint.Text = "";
+
 		var custom = Preferences.Default.Get(WorkspaceService.CustomWorkspacePathKey, "");
 		CustomPathEntry.Text = custom;
 		CurrentPathLabel.Text = S.Format("Settings_CurrentPath", _workspace.WorkspaceRoot);
 		PathHint.Text = "";
+	}
+
+	public static string GetGameRootPath()
+	{
+		return Preferences.Default.Get(GameRootPathKey, "");
 	}
 
 	private void OnModStoreToggled(object? sender, ToggledEventArgs e)
@@ -44,6 +57,61 @@ public partial class SettingsPage : ContentPage
 		ModStoreHint.Text = S.Get("Settings_RestartEffect");
 		ModStoreRestartBtn.IsVisible = true;
 	}
+
+	#region Game Root path
+
+	private void OnBrowseGameRoot(object? sender, EventArgs e)
+	{
+		if (!OperatingSystem.IsWindows()) return;
+
+		try
+		{
+			var dialog = new Windows.Storage.Pickers.FolderPicker();
+			dialog.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.ComputerFolder;
+			dialog.FileTypeFilter.Add("*");
+
+			var hwnd = WinRT.Interop.WindowNative.GetWindowHandle(
+				(Application.Current?.Windows.FirstOrDefault()?.Handler?.PlatformView as Microsoft.UI.Xaml.Window)!);
+			WinRT.Interop.InitializeWithWindow.Initialize(dialog, hwnd);
+
+			var folder = dialog.PickSingleFolderAsync().AsTask().GetAwaiter().GetResult();
+			if (folder != null)
+			{
+				GameRootEntry.Text = folder.Path;
+			}
+		}
+		catch (Exception ex)
+		{
+			GameRootHint.Text = S.Format("Settings_PickerFailed", ex.Message);
+		}
+	}
+
+	private void OnApplyGameRoot(object? sender, EventArgs e)
+	{
+		var path = GameRootEntry.Text?.Trim() ?? "";
+
+		if (!string.IsNullOrEmpty(path) && !Directory.Exists(path))
+		{
+			GameRootHint.Text = S.Get("Settings_GameRootNotFound");
+			return;
+		}
+
+		Preferences.Default.Set(GameRootPathKey, path);
+		CurrentGameRootLabel.Text = string.IsNullOrEmpty(path)
+			? S.Get("Settings_GameRootNotSet")
+			: S.Format("Settings_CurrentPath", path);
+		GameRootHint.Text = S.Get("Settings_PathUpdated");
+	}
+
+	private void OnResetGameRoot(object? sender, EventArgs e)
+	{
+		Preferences.Default.Remove(GameRootPathKey);
+		GameRootEntry.Text = "";
+		CurrentGameRootLabel.Text = S.Get("Settings_GameRootNotSet");
+		GameRootHint.Text = S.Get("Settings_PathReset");
+	}
+
+	#endregion
 
 	#region Workspace path
 

@@ -1,7 +1,7 @@
 using System.Globalization;
 using System.Resources;
 
-namespace WorkshopUploader.Localization;
+namespace GregModmanager.Localization;
 
 /// <summary>
 /// Short-named static accessor for localized strings.
@@ -13,7 +13,7 @@ public static class S
 	private const string LanguagePreferenceKey = "AppLanguage";
 
 	private static readonly ResourceManager Rm =
-		new("WorkshopUploader.Resources.Strings.AppStrings", typeof(S).Assembly);
+		new("GregModmanager.Resources.Strings.AppStrings", typeof(S).Assembly);
 
 	public static string Get(string key)
 		=> Rm.GetString(key, CultureInfo.CurrentUICulture) ?? key;

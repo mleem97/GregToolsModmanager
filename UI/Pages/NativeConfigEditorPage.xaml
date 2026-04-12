@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="WorkshopUploader.NativeConfigEditorPage"
+    x:Class="GregModmanager.NativeConfigEditorPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:l="clr-namespace:WorkshopUploader.Localization"
+    xmlns:l="clr-namespace:GregModmanager.Localization"
     Title="{l:Translate Key=NativeConfig_Title}">
 
     <ContentPage.Resources>
@@ -22,7 +22,7 @@
                 x:Name="HeaderPathLabel"
                 FontSize="11"
                 LineBreakMode="MiddleTruncation"
-                TextColor="#7FBFB8"
+                TextColor="{StaticResource OnSurfaceDim}"
                 VerticalOptions="Center" />
             <Button
                 Grid.Column="1"
@@ -46,22 +46,22 @@
                 <!--  config.json panel  -->
                 <VerticalStackLayout x:Name="PanelNative" Spacing="12" IsVisible="True">
 
-                    <Border x:Name="DecorationProfileHintBorder" Padding="14" BackgroundColor="#001E1C" StrokeThickness="0" IsVisible="False">
+                    <Border x:Name="DecorationProfileHintBorder" Padding="14" BackgroundColor="{StaticResource SurfaceContainer}" StrokeThickness="0" IsVisible="False">
                         <Border.StrokeShape><RoundRectangle CornerRadius="8" /></Border.StrokeShape>
                         <Label
                             FontSize="12"
                             LineBreakMode="WordWrap"
                             Text="{l:Translate Key=NativeConfig_ProfileDecorationHint}"
-                            TextColor="#7FBFB8" />
+                            TextColor="{StaticResource OnSurfaceDim}" />
                     </Border>
 
-                    <Border x:Name="Il2CppNoticeBorder" Padding="14" BackgroundColor="#001E1C" StrokeThickness="0" IsVisible="False">
+                    <Border x:Name="Il2CppNoticeBorder" Padding="14" BackgroundColor="{StaticResource SurfaceContainer}" StrokeThickness="0" IsVisible="False">
                         <Border.StrokeShape><RoundRectangle CornerRadius="8" /></Border.StrokeShape>
                         <Label
                             FontSize="12"
                             LineBreakMode="WordWrap"
                             Text="{l:Translate Key=NativeConfig_Il2CppNotice}"
-                            TextColor="#7FBFB8" />
+                            TextColor="{StaticResource OnSurfaceDim}" />
                     </Border>
 
                     <Label Style="{StaticResource SectionTitle}" Text="{l:Translate Key=NativeConfig_ModName}" />
@@ -89,13 +89,13 @@
                 <!--  modconfig.json panel  -->
                 <VerticalStackLayout x:Name="PanelOptions" Spacing="12" IsVisible="False">
 
-                    <Border Padding="14" BackgroundColor="#001E1C" StrokeThickness="0">
+                    <Border Padding="14" BackgroundColor="{StaticResource SurfaceContainer}" StrokeThickness="0">
                         <Border.StrokeShape><RoundRectangle CornerRadius="8" /></Border.StrokeShape>
                         <Label
                             FontSize="12"
                             LineBreakMode="WordWrap"
                             Text="{l:Translate Key=NativeConfig_ModOptionsHint}"
-                            TextColor="#7FBFB8" />
+                            TextColor="{StaticResource OnSurfaceDim}" />
                     </Border>
 
                     <Label Style="{StaticResource SectionTitle}" Text="{l:Translate Key=NativeConfig_SchemaVersion}" />

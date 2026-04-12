@@ -301,7 +301,7 @@ if ($SignOnly) {
             Sort-Object LastWriteTime -Descending |
             Select-Object -First 1
         if (-not $latest) {
-            throw "Keine GregToolsModmanager-*-Setup.exe unter $outDir. Inno-Build ausführen oder -SetupPath verwenden."
+            throw "Keine gregModmanager-*-Setup.exe unter $outDir. Inno-Build ausführen oder -SetupPath verwenden."
         }
         $resolved = $latest.FullName
     }
@@ -332,7 +332,7 @@ Nach der Installation ggf. PowerShell neu starten.
 "@
 }
 
-$projPath = Join-Path $repoRoot 'WorkshopUploader.csproj'
+$projPath = Join-Path $repoRoot 'GregModmanager.csproj'
 $csproj = [xml](Get-Content -LiteralPath $projPath -Raw)
 $ver = (
     $csproj.Project.PropertyGroup |
@@ -345,7 +345,7 @@ if ([string]::IsNullOrWhiteSpace($ver)) {
 }
 
 $publishDir = Join-Path $repoRoot 'bin\Release\net9.0-windows10.0.19041.0\win10-x64\publish'
-$iss = Join-Path $repoRoot 'installer\GregToolsModmanager.iss'
+$iss = Join-Path $repoRoot 'installer\gregModmanager.iss'
 $outDir = Join-Path $repoRoot 'installer\Output'
 $linuxRequested = $LinuxDistros.Count -gt 0
 $wantSign = $Sign -or $env:CODE_SIGN_THUMBPRINT -or $env:CODE_SIGN_PFX
@@ -407,7 +407,7 @@ if ($wantSign) {
 
 Write-Host "[build] Packe Win64 Portable ZIP: $portableZipPath"
 Compress-Archive -Path (Join-Path $publishDir '*') -DestinationPath $portableZipPath -CompressionLevel Optimal
-Test-ZipArchiveExtractable -ZipPath $portableZipPath -ExpectedRelativePath 'WorkshopUploader.exe'
+Test-ZipArchiveExtractable -ZipPath $portableZipPath -ExpectedRelativePath 'GregModmanager.exe'
 New-Sha256File -TargetPath $portableZipPath | Out-Null
 if ($wantSign) {
     New-DetachedArtifactSignature -TargetPath $portableZipPath
@@ -423,7 +423,7 @@ if ($LASTEXITCODE -ne 0) {
     throw "ISCC beendet mit Code $LASTEXITCODE"
 }
 
-$setupName = "GregToolsModmanager-$ver-Setup.exe"
+$setupName = "gregModmanager-$ver-Setup.exe"
 $setupPath = Join-Path $outDir $setupName
 if (Test-Path -LiteralPath $setupPath) {
     $len = (Get-Item -LiteralPath $setupPath).Length

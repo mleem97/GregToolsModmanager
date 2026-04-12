@@ -1,4 +1,4 @@
-namespace WorkshopUploader.Models;
+namespace GregModmanager.Models;
 
 /// <summary>Metadata for a distributable FMF plugin artifact (stable or beta channel).</summary>
 public sealed class PluginPackageInfo

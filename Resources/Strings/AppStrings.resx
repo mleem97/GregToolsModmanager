@@ -284,6 +284,11 @@
   <data name="Settings_PathReset" xml:space="preserve"><value>Reset to default. Restart recommended.</value></data>
   <data name="Settings_CannotCreate" xml:space="preserve"><value>Cannot create folder: {0}</value></data>
   <data name="Settings_PickerFailed" xml:space="preserve"><value>Folder picker failed: {0}</value></data>
+  <data name="Settings_GameRoot" xml:space="preserve"><value>Game Root</value></data>
+  <data name="Settings_GameRootDesc" xml:space="preserve"><value>Path to the game installation folder. Workshop mods will be synced to GameRoot/Mods/Workshop/.</value></data>
+  <data name="Settings_GameRootPlaceholder" xml:space="preserve"><value>e.g. C:\Program Files\Steam\steamapps\common\DataCenter</value></data>
+  <data name="Settings_GameRootNotSet" xml:space="preserve"><value>Not configured. Workshop sync requires a valid game root.</value></data>
+  <data name="Settings_GameRootNotFound" xml:space="preserve"><value>Folder does not exist. Please select a valid game installation folder.</value></data>
   <data name="Settings_Community" xml:space="preserve"><value>Community</value></data>
   <data name="Settings_Discord" xml:space="preserve"><value>Discord (discord.gg/greg)</value></data>
   <data name="Settings_ModdingChannel" xml:space="preserve"><value>Modding Channel</value></data>

@@ -1,10 +1,10 @@
 using System.Globalization;
 using System.Text.Json;
-using WorkshopUploader.Localization;
-using WorkshopUploader.Models;
-using WorkshopUploader.Services;
+using GregModmanager.Localization;
+using GregModmanager.Models;
+using GregModmanager.Services;
 
-namespace WorkshopUploader;
+namespace GregModmanager;
 
 [QueryProperty(nameof(ProjectPath), "ProjectPath")]
 public partial class NativeConfigEditorPage : ContentPage

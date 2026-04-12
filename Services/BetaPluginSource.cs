@@ -1,6 +1,6 @@
-using WorkshopUploader.Models;
+using GregModmanager.Models;
 
-namespace WorkshopUploader.Services;
+namespace GregModmanager.Services;
 
 /// <summary>
 /// Stub for a future beta distribution channel served from a custom backend.

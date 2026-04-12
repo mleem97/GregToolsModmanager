@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 
-namespace WorkshopUploader.Services;
+namespace GregModmanager.Services;
 
 public sealed class AppLogService
 {

@@ -1,21 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Shell
-    x:Class="WorkshopUploader.AppShell"
+    x:Class="GregModmanager.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:l="clr-namespace:WorkshopUploader.Localization"
-    Title="GregTools Modmanager"
-    FlyoutBehavior="Disabled">
+    xmlns:l="clr-namespace:GregModmanager.Localization"
+    Title="gregModmanager"
+    FlyoutBehavior="Locked"
+    FlyoutWidth="220"
+    FlyoutBackgroundColor="{StaticResource SurfaceContainerLow}">
 
-    <Shell.TitleView>
-        <Grid Padding="0,0,12,0" HeightRequest="36" VerticalOptions="Center">
+    <Shell.FlyoutHeader>
+        <VerticalStackLayout Padding="20,24,20,16" Spacing="8">
+            <Label
+                Text="gregModmanager"
+                FontFamily="SpaceGrotesk-Bold"
+                FontSize="18"
+                TextColor="{StaticResource Primary}"
+                CharacterSpacing="0.4" />
+            <Label
+                Text="Workshop Manager"
+                FontFamily="SpaceGrotesk-Regular"
+                FontSize="11"
+                TextColor="{StaticResource OnSurfaceVariant}" />
+        </VerticalStackLayout>
+    </Shell.FlyoutHeader>
+
+    <Shell.FlyoutFooter>
+        <VerticalStackLayout Padding="16,8,16,16">
             <Border
                 x:Name="SteamLogoTile"
-                Padding="10,4"
-                BackgroundColor="#0D3835"
-                StrokeThickness="0"
-                HorizontalOptions="End"
-                VerticalOptions="Center">
+                Padding="10,6"
+                BackgroundColor="{StaticResource SurfaceVariant}"
+                StrokeThickness="0">
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="6" />
                 </Border.StrokeShape>
@@ -27,14 +43,41 @@
                         VerticalOptions="Center" />
                     <Label
                         x:Name="SteamStatusText"
+                        FontFamily="SpaceGrotesk-Regular"
                         FontSize="11"
                         LineBreakMode="NoWrap"
                         Text="{l:Translate Key=Steam_Connecting}"
-                        TextColor="#7FBFB8"
+                        TextColor="{StaticResource OnSurfaceDim}"
                         VerticalOptions="Center" />
                 </HorizontalStackLayout>
             </Border>
-        </Grid>
-    </Shell.TitleView>
+        </VerticalStackLayout>
+    </Shell.FlyoutFooter>
+
+    <Shell.ItemTemplate>
+        <DataTemplate x:DataType="BaseShellItem">
+            <Grid
+                ColumnDefinitions="4,*"
+                HeightRequest="44"
+                Padding="0,2">
+                <BoxView
+                    Grid.Column="0"
+                    WidthRequest="4"
+                    Color="{StaticResource Primary}"
+                    CornerRadius="2"
+                    VerticalOptions="Center"
+                    HeightRequest="24"
+                    IsVisible="{Binding IsChecked}" />
+                <Label
+                    Grid.Column="1"
+                    Text="{Binding Title}"
+                    FontFamily="SpaceGrotesk-Medium"
+                    FontSize="13"
+                    TextColor="{StaticResource OnSurface}"
+                    VerticalTextAlignment="Center"
+                    Padding="12,0,0,0" />
+            </Grid>
+        </DataTemplate>
+    </Shell.ItemTemplate>
 
 </Shell>

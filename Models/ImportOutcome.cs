@@ -1,4 +1,4 @@
-namespace WorkshopUploader.Models;
+namespace GregModmanager.Models;
 
 public readonly record struct ImportOutcome(bool Success, string ProjectRoot, string Message)
 {

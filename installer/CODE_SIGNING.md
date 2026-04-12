@@ -19,7 +19,7 @@ Wenn du **bewusst** self-signed nutzt: Ziel ist oft ein **fester Anzeigename** u
 ### Schnell: eigenes Code-Signing-Zertifikat mit deinem Namen
 
 ```powershell
-cd WorkshopUploader
+cd gregModmanager
 .\installer\create-selfsigned-codesign-cert.ps1
 # optional: -CommonName "mleem97" -Organization "Greg Modding Team"
 ```
@@ -31,7 +31,7 @@ $env:CODE_SIGN_THUMBPRINT = '<Thumbprint>'
 .\build.ps1 -SkipPublish -Sign
 ```
 
-Oder nur die Setup-EXE: `.\installer\sign-authenticode.ps1 -Path "…\GregToolsModmanager-…-Setup.exe" -Thumbprint …`
+Oder nur die Setup-EXE: `.\installer\sign-authenticode.ps1 -Path "…\gregModmanager-…-Setup.exe" -Thumbprint …`
 
 **Öffentliche CA (kein „Unbekannter Herausgeber“ für die breite Masse)**
 
@@ -58,8 +58,8 @@ Damit die Signatur **flächendeckend als vertrauenswürdig** gilt, brauchst du e
 4. Nach dem Build die **Setup-EXE** signieren:
 
    ```powershell
-   cd WorkshopUploader
-   .\installer\sign-authenticode.ps1 -Path ".\installer\Output\GregToolsModmanager-1.0.0-Setup.exe" -Thumbprint DEIN_THUMBPRINT
+   cd gregModmanager
+   .\installer\sign-authenticode.ps1 -Path ".\installer\Output\gregModmanager-1.0.0-Setup.exe" -Thumbprint DEIN_THUMBPRINT
    ```
 
    Oder **PFX** direkt:
@@ -73,7 +73,7 @@ Damit die Signatur **flächendeckend als vertrauenswürdig** gilt, brauchst du e
 
 ## Mit `build.ps1` in einem Schritt
 
-Voraussetzung: Inno-Setup-Build war erfolgreich, `GregToolsModmanager-*-Setup.exe` liegt unter `installer\Output\`.
+Voraussetzung: Inno-Setup-Build war erfolgreich, `gregModmanager-*-Setup.exe` liegt unter `installer\Output\`.
 
 ```powershell
 # Thumbprint (Zertifikat mit privatem Schlüssel im Benutzerspeicher)
@@ -92,10 +92,10 @@ $env:CODE_SIGN_THUMBPRINT = '4AB58E6A56F4CA5726849BD410151B25321289DC'   # Beisp
 .\build.ps1 -SignOnly
 ```
 
-Nimmt die **neueste** `GregToolsModmanager-*-Setup.exe` unter `installer\Output\`, oder:
+Nimmt die **neueste** `gregModmanager-*-Setup.exe` unter `installer\Output\`, oder:
 
 ```powershell
-.\build.ps1 -SignOnly -SetupPath 'D:\dist\GregToolsModmanager-1.0.0-Setup.exe'
+.\build.ps1 -SignOnly -SetupPath 'D:\dist\gregModmanager-1.0.0-Setup.exe'
 ```
 
 **Nicht** den Platzhaltertext `<Thumbprint aus der Ausgabe>` verwenden — nur den **40-stelligen Hex-Thumbprint** aus `create-selfsigned-codesign-cert.ps1`.
@@ -107,7 +107,7 @@ Nimmt die **neueste** `GregToolsModmanager-*-Setup.exe` unter `installer\Output\
 
 ## Weitere Dateien signieren
 
-- **Nur die Setup-EXE** zu signieren reicht oft; manche Teams signieren zusätzlich **`WorkshopUploader.exe`** im Publish-Ordner vor dem Packen — dann Inno mit dem bereits signierten Build erneut laufen lassen. Für den Anfang: **Setup-EXE signieren** ist der übliche Weg.
+- **Nur die Setup-EXE** zu signieren reicht oft; manche Teams signieren zusätzlich **`GregModmanager.exe`** im Publish-Ordner vor dem Packen — dann Inno mit dem bereits signierten Build erneut laufen lassen. Für den Anfang: **Setup-EXE signieren** ist der übliche Weg.
 
 ## Referenzen
 

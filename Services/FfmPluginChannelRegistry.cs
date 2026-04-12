@@ -1,4 +1,4 @@
-namespace WorkshopUploader.Services;
+namespace GregModmanager.Services;
 
 /// <summary>
 /// Central registry for plugin distribution channels (stable, beta, …).

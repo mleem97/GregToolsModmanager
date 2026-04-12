@@ -1,4 +1,4 @@
-=== GregTools Modmanager - Steam Play / Proton Guide ===
+=== gregModmanager - Steam Play / Proton Guide ===
 
 This application is a native Windows app (.NET MAUI / WinUI 3).
 On Linux and Steam Deck it runs through Steam's Proton compatibility layer.
@@ -7,7 +7,7 @@ On Linux and Steam Deck it runs through Steam's Proton compatibility layer.
 --- Enabling Proton (Linux / Steam Deck) ---
 
 1. Open Steam and go to your Library.
-2. Right-click "GregTools Modmanager" > Properties...
+2. Right-click "gregModmanager" > Properties...
 3. Open the "Compatibility" tab.
 4. Enable "Force the use of a specific Steam Play compatibility tool".
 5. Select "Proton Experimental" or "Proton 9.0+" from the dropdown.

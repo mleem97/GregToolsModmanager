@@ -1,4 +1,4 @@
-namespace WorkshopUploader.Localization;
+namespace GregModmanager.Localization;
 
 [AcceptEmptyServiceProvider]
 [ContentProperty(nameof(Key))]

@@ -3,7 +3,7 @@ using Steamworks;
 using Steamworks.Data;
 using Steamworks.Ugc;
 
-namespace WorkshopUploader.Steam;
+namespace GregModmanager.Steam;
 
 /// <summary>
 /// Provides access to Steamworks UGC additional preview file functions

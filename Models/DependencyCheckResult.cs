@@ -1,4 +1,4 @@
-namespace WorkshopUploader.Models;
+namespace GregModmanager.Models;
 
 public enum DependencyStatus
 {

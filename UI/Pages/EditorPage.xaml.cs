@@ -4,12 +4,12 @@ using System.Globalization;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
-using WorkshopUploader.Localization;
-using WorkshopUploader.Models;
-using WorkshopUploader.Services;
-using WorkshopUploader.Steam;
+using GregModmanager.Localization;
+using GregModmanager.Models;
+using GregModmanager.Services;
+using GregModmanager.Steam;
 
-namespace WorkshopUploader;
+namespace GregModmanager;
 
 [QueryProperty(nameof(ProjectPath), "ProjectPath")]
 public partial class EditorPage : ContentPage

@@ -39,6 +39,13 @@
     <Color x:Key="StatusOk">#61F4D8</Color>
     <Color x:Key="StatusWarning">#F4C761</Color>
     <Color x:Key="StatusError">#D7383B</Color>
+    <Color x:Key="WarningAccent">#D7A23B</Color>
+    <Color x:Key="WarningAccentDim">#E8C87A</Color>
+
+    <!--  Syntax highlighting (code blocks per design spec)  -->
+    <Color x:Key="SyntaxFunction">#64D0FF</Color>
+    <Color x:Key="SyntaxString">#1CEDE1</Color>
+    <Color x:Key="SyntaxKeyword">#D7383B</Color>
 
     <!--  Legacy compat keys (some code-behind references)  -->
     <Color x:Key="White">#C0FCF6</Color>

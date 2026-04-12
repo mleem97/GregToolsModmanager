@@ -1,8 +1,8 @@
 using Microsoft.UI.Xaml;
-using WorkshopUploader.Services;
-using WorkshopUploader;
+using GregModmanager.Services;
+using GregModmanager;
 
-namespace WorkshopUploader.WinUI;
+namespace GregModmanager.WinUI;
 
 public partial class App : MauiWinUIApplication
 {

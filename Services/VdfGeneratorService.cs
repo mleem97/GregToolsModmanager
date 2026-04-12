@@ -1,6 +1,6 @@
-using WorkshopUploader.Steam;
+using GregModmanager.Steam;
 
-namespace WorkshopUploader.Services;
+namespace GregModmanager.Services;
 
 /// <summary>
 /// Builds a minimal SteamCMD <c>workshop_build_item.vdf</c> for manual or scripted uploads.

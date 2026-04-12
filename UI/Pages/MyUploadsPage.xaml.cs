@@ -1,9 +1,9 @@
 using System.Collections.ObjectModel;
-using WorkshopUploader.Localization;
-using WorkshopUploader.Models;
-using WorkshopUploader.Services;
+using GregModmanager.Localization;
+using GregModmanager.Models;
+using GregModmanager.Services;
 
-namespace WorkshopUploader;
+namespace GregModmanager;
 
 public partial class MyUploadsPage : ContentPage
 {

@@ -1,7 +1,7 @@
-using WorkshopUploader.Localization;
-using WorkshopUploader.Services;
+using GregModmanager.Localization;
+using GregModmanager.Services;
 
-namespace WorkshopUploader;
+namespace GregModmanager;
 
 public partial class AppShell : Shell
 {
@@ -11,54 +11,43 @@ public partial class AppShell : Shell
 	public AppShell(ProjectsPage projects, NewProjectPage newProject, MyUploadsPage uploads, ModManagerPage modManager, SettingsPage settings, SteamWorkshopService steam)
 	{
 		_steam = steam;
-		// #region agent log
 		DebugSessionLog.Write("H2", "AppShell.ctor", "before_init", null);
-		// #endregion
 		InitializeComponent();
-		// #region agent log
 		DebugSessionLog.Write("H2", "AppShell.ctor", "after_init", null);
-		// #endregion
 
 		Loaded += OnShellLoaded;
 
-		var tabBar = new TabBar();
-		tabBar.Items.Add(new ShellContent
+		Items.Add(new FlyoutItem
 		{
 			Title = S.Get("Tab_Projects"),
-			Content = projects,
-			Route = nameof(ProjectsPage),
+			Items = { new ShellContent { Content = projects, Route = nameof(ProjectsPage) } },
 		});
-		tabBar.Items.Add(new ShellContent
+		Items.Add(new FlyoutItem
 		{
 			Title = S.Get("Tab_New"),
-			Content = newProject,
-			Route = nameof(NewProjectPage),
+			Items = { new ShellContent { Content = newProject, Route = nameof(NewProjectPage) } },
 		});
-		tabBar.Items.Add(new ShellContent
+		Items.Add(new FlyoutItem
 		{
 			Title = S.Get("Tab_MyUploads"),
-			Content = uploads,
-			Route = nameof(MyUploadsPage),
+			Items = { new ShellContent { Content = uploads, Route = nameof(MyUploadsPage) } },
 		});
 
 		if (SettingsPage.IsModStoreEnabled())
 		{
-			tabBar.Items.Add(new ShellContent
+			Items.Add(new FlyoutItem
 			{
 				Title = S.Get("Tab_ModStore"),
-				Content = modManager,
-				Route = nameof(ModManagerPage),
+				Items = { new ShellContent { Content = modManager, Route = nameof(ModManagerPage) } },
 			});
 		}
 
-		tabBar.Items.Add(new ShellContent
+		Items.Add(new FlyoutItem
 		{
 			Title = S.Get("Tab_Settings"),
-			Content = settings,
-			Route = nameof(SettingsPage),
+			Items = { new ShellContent { Content = settings, Route = nameof(SettingsPage) } },
 		});
 
-		Items.Add(tabBar);
 		Routing.RegisterRoute(nameof(EditorPage), typeof(EditorPage));
 		Routing.RegisterRoute(nameof(NativeConfigEditorPage), typeof(NativeConfigEditorPage));
 		Routing.RegisterRoute(nameof(ItemDetailPage), typeof(ItemDetailPage));

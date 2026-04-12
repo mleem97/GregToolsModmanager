@@ -1,4 +1,4 @@
-name: .NET Desktop Build & Sign
+name: gregModmanager Build & Sign
 
 on:
   push:
@@ -25,9 +25,9 @@ on:
 #   CODE_SIGN_PFX_PASSWORD – Password for the .pfx     (required for 'pfx' mode)
 
 env:
-  SOLUTION_PATH: WorkshopUploader.sln
+  SOLUTION_PATH: GregModmanager.sln
   DOTNET_VERSION: 9.0.x
-  APP_NAME: GregToolsModmanager
+  APP_NAME: gregModmanager
 
 jobs:
   select-runners:
@@ -251,7 +251,7 @@ jobs:
       - name: Sign primary app executable
         shell: pwsh
         run: |
-          $appExe = Join-Path $env:GITHUB_WORKSPACE 'bin\Release\net9.0-windows10.0.19041.0\win10-x64\publish\WorkshopUploader.exe'
+          $appExe = Join-Path $env:GITHUB_WORKSPACE 'bin\Release\net9.0-windows10.0.19041.0\win10-x64\publish\GregModmanager.exe'
           if (-not (Test-Path -LiteralPath $appExe)) {
             throw "Primary app executable not found: $appExe"
           }
@@ -267,14 +267,14 @@ jobs:
       - name: Verify signatures (setup + app)
         shell: pwsh
         run: |
-          $setupExe = Get-ChildItem -LiteralPath (Join-Path $env:GITHUB_WORKSPACE 'installer\Output') -Filter 'GregToolsModmanager-*-Setup.exe' |
+          $setupExe = Get-ChildItem -LiteralPath (Join-Path $env:GITHUB_WORKSPACE 'installer\Output') -Filter 'gregModmanager-*-Setup.exe' |
             Sort-Object LastWriteTime -Descending |
             Select-Object -First 1
           if (-not $setupExe) {
             throw "No setup file found in installer\\Output"
           }
 
-          $appExe = Join-Path $env:GITHUB_WORKSPACE 'bin\Release\net9.0-windows10.0.19041.0\win10-x64\publish\WorkshopUploader.exe'
+          $appExe = Join-Path $env:GITHUB_WORKSPACE 'bin\Release\net9.0-windows10.0.19041.0\win10-x64\publish\GregModmanager.exe'
           if (-not (Test-Path -LiteralPath $appExe)) {
             throw "Primary app executable not found: $appExe"
           }
@@ -302,7 +302,7 @@ jobs:
 
           $version = ''
           try {
-            [xml]$csproj = Get-Content -LiteralPath (Join-Path $env:GITHUB_WORKSPACE 'WorkshopUploader.csproj')
+            [xml]$csproj = Get-Content -LiteralPath (Join-Path $env:GITHUB_WORKSPACE 'GregModmanager.csproj')
             $version = ($csproj.Project.PropertyGroup | ForEach-Object { $_.ApplicationDisplayVersion } | Where-Object { $_ } | Select-Object -First 1).Trim()
           }
           catch {
@@ -328,7 +328,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: setup
-          path: installer/Output/GregToolsModmanager-*-Setup.exe
+          path: installer/Output/gregModmanager-*-Setup.exe
           if-no-files-found: error
           retention-days: 14
 
@@ -336,7 +336,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: portable-zip
-          path: installer/Output/GregToolsModmanager-*-Portable.zip
+          path: installer/Output/gregModmanager-*-Portable.zip
           if-no-files-found: error
           retention-days: 14
 
@@ -345,8 +345,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            installer/Output/GregToolsModmanager-*-Setup.exe
-            installer/Output/GregToolsModmanager-*-Portable.zip
+            installer/Output/gregModmanager-*-Setup.exe
+            installer/Output/gregModmanager-*-Portable.zip
           fail_on_unmatched_files: true
           append_body: true
           body: |
@@ -366,8 +366,8 @@ jobs:
           replacesArtifacts: true
           makeLatest: false
           artifacts: |
-            installer/Output/GregToolsModmanager-*-Setup.exe
-            installer/Output/GregToolsModmanager-*-Portable.zip
+            installer/Output/gregModmanager-*-Setup.exe
+            installer/Output/gregModmanager-*-Portable.zip
           artifactErrorsFailBuild: true
           generateReleaseNotes: true
 
@@ -397,8 +397,8 @@ jobs:
           ## Build completed
 
           - Workflow: ``.github/workflows/build-and-sign.yml``
-          - Output setup: ``installer/Output/GregToolsModmanager-<version>-Setup.exe``
-          - Output zip: ``installer/Output/GregToolsModmanager-<version>-Portable.zip``
+          - Output setup: ``installer/Output/gregModmanager-<version>-Setup.exe``
+          - Output zip: ``installer/Output/gregModmanager-<version>-Portable.zip``
           - Signature: $signingLabel
 
           ### Note

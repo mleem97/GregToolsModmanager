@@ -1,4 +1,4 @@
-namespace WorkshopUploader.Models;
+namespace GregModmanager.Models;
 
 /// <summary>Scaffold layout under <c>content/</c> for a new Workshop project.</summary>
 public enum WorkshopTemplateKind

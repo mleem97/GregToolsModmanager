@@ -1,4 +1,4 @@
-namespace WorkshopUploader.Steam;
+namespace GregModmanager.Steam;
 
 public static class SteamConstants
 {

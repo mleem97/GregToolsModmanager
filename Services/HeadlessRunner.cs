@@ -1,4 +1,4 @@
-namespace WorkshopUploader.Services;
+namespace GregModmanager.Services;
 
 public static class HeadlessRunner
 {
@@ -16,7 +16,7 @@ public static class HeadlessRunner
 				  --autocommit         Write .ralph/tasks/status.json on completion
 
 				Example (path is usually <game>/workshop/<project>):
-				  WorkshopUploader.exe --mode publish --path "D:\Steam\steamapps\common\Data Center\workshop\MyMod" --autocommit
+				  GregModmanager.exe --mode publish --path "D:\Steam\steamapps\common\Data Center\workshop\MyMod" --autocommit
 				""");
 			exitCode = 0;
 			return true;

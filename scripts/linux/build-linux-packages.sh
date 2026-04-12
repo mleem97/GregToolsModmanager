@@ -136,8 +136,8 @@ SCRIPT
 [Desktop Entry]
 Type=Application
 Version=1.0
-Name=GregTools Modmanager (${distro})
-GenericName=GregTools Modmanager
+Name=gregModmanager (${distro})
+GenericName=gregModmanager
 Comment=Open installed GregTools Linux bundle (${distro})
 Exec=/usr/local/bin/gregtools-modmanager-${distro_lc}
 Terminal=false
@@ -166,10 +166,10 @@ version: ${version}
 section: utils
 priority: optional
 maintainer: GregTools Team <noreply@example.com>
-description: GregTools Modmanager signed Linux release bundle for ${distro}.
+description: gregModmanager signed Linux release bundle for ${distro}.
 vendor: GregTools
 license: Proprietary
-homepage: https://github.com/mleem97/GregToolsModmanager
+homepage: https://github.com/mleem97/gregModmanager
 depends:
   - bash
   - coreutils
