@@ -17,21 +17,22 @@ public sealed class GitHubModSource : IgregPluginChannelSource
         var repos = new[] { 
             "mleem97/gregCore", 
             "mleem97/gregMod.IPAM",
-            "mleem97/gregMod.ResetSwitch"
+            "mleem97/gregMod.ResetSwitch",
+            "ASavageSwan/-DataCenter-ModLoader"
         };
 
         var list = new List<PluginPackageInfo>();
         
-        // This would normally be async, but for simplicity in this stub 
-        // we'll simulate the metadata mapping.
         foreach (var repo in repos)
         {
+            string id = repo.Split('/').Last();
+            if (id == "-DataCenter-ModLoader") id = "SteamPlugin"; // Friendly name for the external plugin
+
             list.Add(new PluginPackageInfo
             {
-                PluginId = repo.Split('/').Last(),
+                PluginId = id,
                 Version = "Latest (GitHub)",
                 Channel = ChannelName,
-                // Note: Installation would trigger a download from /releases/latest
             });
         }
 
