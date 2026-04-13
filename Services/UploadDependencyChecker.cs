@@ -317,23 +317,23 @@ public static class UploadDependencyChecker
 		}
 	}
 
-	/// <summary>Aligns <see cref="WorkshopMetadata.NeedsFmf"/> with description/tags (FrikaModFramework / GregFramework).</summary>
+	/// <summary>Aligns <see cref="WorkshopMetadata.Needsgreg"/> with description/tags (gregCoreModFramework / GregFramework).</summary>
 	private static void CheckGregFrameworkDependency(WorkshopMetadata metadata, List<UploadCheckResult> results)
 	{
 		var desc = metadata.Description ?? "";
-		var descMentionsFmf = ContainsFmfHint(desc);
-		var tagsSuggestFmf = metadata.Tags.Any(t => TagSuggestsFmf(t));
+		var descMentionsgreg = ContainsgregHint(desc);
+		var tagsSuggestgreg = metadata.Tags.Any(t => TagSuggestsgreg(t));
 
-		if (metadata.NeedsFmf)
+		if (metadata.Needsgreg)
 		{
-			if (!descMentionsFmf)
+			if (!descMentionsgreg)
 			{
 				results.Add(new UploadCheckResult
 				{
-					Label = "GregFramework (FMF)",
+					Label = "GregFramework (greg)",
 					Severity = UploadCheckSeverity.Warning,
 					Detail =
-						"Marked as requiring FrikaModFramework, but the description does not mention it yet. " +
+						"Marked as requiring gregCoreModFramework, but the description does not mention it yet. " +
 						"A standard notice is still appended automatically on upload if missing.",
 				});
 			}
@@ -341,45 +341,45 @@ public static class UploadDependencyChecker
 			{
 				results.Add(new UploadCheckResult
 				{
-					Label = "GregFramework (FMF)",
+					Label = "GregFramework (greg)",
 					Severity = UploadCheckSeverity.Ok,
-					Detail = "Requires FrikaModFramework / GregFramework — description mentions the framework.",
+					Detail = "Requires gregCoreModFramework / GregFramework — description mentions the framework.",
 				});
 			}
 		}
 		else
 		{
-			if (tagsSuggestFmf || descMentionsFmf)
+			if (tagsSuggestgreg || descMentionsgreg)
 			{
 				results.Add(new UploadCheckResult
 				{
-					Label = "GregFramework (FMF)",
+					Label = "GregFramework (greg)",
 					Severity = UploadCheckSeverity.Warning,
 					Detail =
-						"Tags or description suggest FMF — enable “Needs FrikaModFramework” if players must install GregFramework.",
+						"Tags or description suggest greg — enable “Needs gregCoreModFramework” if players must install GregFramework.",
 				});
 			}
 			else
 			{
 				results.Add(new UploadCheckResult
 				{
-					Label = "GregFramework (FMF)",
+					Label = "GregFramework (greg)",
 					Severity = UploadCheckSeverity.Ok,
-					Detail = "Not flagged as requiring FrikaModFramework (GregFramework).",
+					Detail = "Not flagged as requiring gregCoreModFramework (GregFramework).",
 				});
 			}
 		}
 	}
 
-	private static bool TagSuggestsFmf(string tag)
+	private static bool TagSuggestsgreg(string tag)
 	{
 		var t = tag.Trim().ToLowerInvariant();
-		return t is "fmf" or "frika-mod-framework" or "gregframework" or "frika" or "frikamodframework"
-			|| t.Contains("frikamod", StringComparison.Ordinal)
+		return t is "greg" or "gregCore-mod-framework" or "gregframework" or "gregCore" or "gregCoremodframework"
+			|| t.Contains("gregCoremod", StringComparison.Ordinal)
 			|| t.Contains("gregframework", StringComparison.Ordinal);
 	}
 
-	private static bool ContainsFmfHint(string text)
+	private static bool ContainsgregHint(string text)
 	{
 		if (string.IsNullOrWhiteSpace(text))
 		{
@@ -387,10 +387,10 @@ public static class UploadDependencyChecker
 		}
 
 		var s = text;
-		return s.Contains("FrikaModFramework", StringComparison.OrdinalIgnoreCase)
+		return s.Contains("gregCoreModFramework", StringComparison.OrdinalIgnoreCase)
 			|| s.Contains("GregFramework", StringComparison.OrdinalIgnoreCase)
 			|| s.Contains("Greg Tools", StringComparison.OrdinalIgnoreCase)
-			|| s.Contains("Frika Mod Framework", StringComparison.OrdinalIgnoreCase)
-			|| Regex.IsMatch(s, @"\bFMF\b", RegexOptions.IgnoreCase);
+			|| s.Contains("gregCore Mod Framework", StringComparison.OrdinalIgnoreCase)
+			|| Regex.IsMatch(s, @"\bgreg\b", RegexOptions.IgnoreCase);
 	}
 }

@@ -6,10 +6,10 @@ namespace GregModmanager.Services;
 /// Stub for a future beta distribution channel served from a custom backend.
 /// TODO: Implement when the server API is available. Configure base URL via Preferences.
 /// </summary>
-public sealed class BetaPluginSource : IFfmPluginChannelSource
+public sealed class BetaPluginSource : IgregPluginChannelSource
 {
 	/// <summary>Preferences key for the beta server base URL.</summary>
-	public const string PrefKeyBetaServerUrl = "ffm_beta_server_url";
+	public const string PrefKeyBetaServerUrl = "greg_beta_server_url";
 
 	public string ChannelName => "beta";
 
@@ -20,7 +20,7 @@ public sealed class BetaPluginSource : IFfmPluginChannelSource
 		{
 			throw new NotImplementedException(
 				"Beta-Kanal: Server-URL ist noch nicht konfiguriert. " +
-				"Setze die URL unter Einstellungen (Preferences-Key: ffm_beta_server_url).");
+				"Setze die URL unter Einstellungen (Preferences-Key: greg_beta_server_url).");
 		}
 
 		// TODO: HTTP GET {url}/api/plugins → deserialize → return list

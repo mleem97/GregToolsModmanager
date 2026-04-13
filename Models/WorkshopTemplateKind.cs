@@ -9,6 +9,6 @@ public enum WorkshopTemplateKind
 	/// <summary>MelonLoader mods — <c>content/Mods</c> mirrors <c>{GameRoot}/Mods</c> when linked from Workshop delivery.</summary>
 	ModdedMelonLoader,
 
-	/// <summary>FrikaModFramework — <c>content/ModFramework/FMF/Plugins</c> mirrors <c>{GameRoot}/FMF/Plugins</c>.</summary>
-	ModdedFrikaModFramework,
+	/// <summary>gregCoreModFramework — <c>content/ModFramework/greg/Plugins</c> mirrors <c>{GameRoot}/greg/Plugins</c>.</summary>
+	ModdedgregCoreModFramework,
 }

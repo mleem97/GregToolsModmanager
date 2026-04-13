@@ -4,16 +4,16 @@ namespace GregModmanager.Services;
 /// Central registry for plugin distribution channels (stable, beta, …).
 /// Injected as singleton; channels are registered at startup.
 /// </summary>
-public sealed class FfmPluginChannelRegistry
+public sealed class gregPluginChannelRegistry
 {
-	private readonly Dictionary<string, IFfmPluginChannelSource> _sources = new(StringComparer.OrdinalIgnoreCase);
+	private readonly Dictionary<string, IgregPluginChannelSource> _sources = new(StringComparer.OrdinalIgnoreCase);
 
-	public void Register(IFfmPluginChannelSource source)
+	public void Register(IgregPluginChannelSource source)
 	{
 		_sources[source.ChannelName] = source;
 	}
 
-	public IFfmPluginChannelSource? GetSource(string channelName)
+	public IgregPluginChannelSource? GetSource(string channelName)
 	{
 		_sources.TryGetValue(channelName, out var source);
 		return source;

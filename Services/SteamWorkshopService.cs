@@ -413,7 +413,7 @@ public sealed class SteamWorkshopService
 	/// <summary>
 	/// Copies title, description, visibility, and tags from a live Steam Workshop item into
 	/// <paramref name="target"/>. Preserves app-local fields from <paramref name="localSnapshot"/>
-	/// (<see cref="WorkshopMetadata.NeedsFmf"/>, preview path, additional screenshot paths).
+	/// (<see cref="WorkshopMetadata.Needsgreg"/>, preview path, additional screenshot paths).
 	/// </summary>
 	public static void ApplySteamWorkshopToMetadata(
 		WorkshopItemDetailVm steam,
@@ -433,7 +433,7 @@ public sealed class SteamWorkshopService
 			.Take(maxTags)
 			.ToList();
 
-		target.NeedsFmf = localSnapshot.NeedsFmf;
+		target.Needsgreg = localSnapshot.Needsgreg;
 		target.NeedsMelonLoader = localSnapshot.NeedsMelonLoader;
 		target.NativeConfigProfile = string.IsNullOrWhiteSpace(localSnapshot.NativeConfigProfile)
 			? "decoration"

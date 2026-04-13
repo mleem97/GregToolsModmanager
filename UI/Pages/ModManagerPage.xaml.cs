@@ -10,7 +10,7 @@ public partial class ModManagerPage : ContentPage
 {
 	private readonly SteamWorkshopService _steam;
 	private readonly ModDependencyService _deps;
-	private readonly FfmPluginChannelRegistry _channels;
+	private readonly gregPluginChannelRegistry _channels;
 	private readonly AppLogService _log;
 	private readonly WorkshopSyncOrchestrator _syncOrchestrator;
 
@@ -31,7 +31,7 @@ public partial class ModManagerPage : ContentPage
 	public ModManagerPage(
 		SteamWorkshopService steam,
 		ModDependencyService deps,
-		FfmPluginChannelRegistry channels,
+		gregPluginChannelRegistry channels,
 		AppLogService log,
 		WorkshopSyncOrchestrator syncOrchestrator)
 	{

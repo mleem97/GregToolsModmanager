@@ -266,8 +266,8 @@ public sealed class WorkspaceService
 			case WorkshopTemplateKind.ModdedMelonLoader:
 				CreateMelonLoaderTemplate(content);
 				break;
-			case WorkshopTemplateKind.ModdedFrikaModFramework:
-				CreateFrikaModFrameworkTemplate(content);
+			case WorkshopTemplateKind.ModdedgregCoreModFramework:
+				CreategregCoreModFrameworkTemplate(content);
 				break;
 			default:
 				throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
@@ -303,7 +303,7 @@ public sealed class WorkspaceService
 				meta.Tags.AddRange(new[] { "vanilla", "object", "decoration" });
 				meta.NativeConfigProfile = "decoration";
 				meta.NeedsMelonLoader = false;
-				meta.NeedsFmf = false;
+				meta.Needsgreg = false;
 				break;
 			case WorkshopTemplateKind.ModdedMelonLoader:
 				meta.Description =
@@ -320,24 +320,24 @@ public sealed class WorkspaceService
 				meta.Tags.AddRange(new[] { "modded", "melonloader" });
 				meta.NativeConfigProfile = "code";
 				meta.NeedsMelonLoader = true;
-				meta.NeedsFmf = false;
+				meta.Needsgreg = false;
 				break;
-			case WorkshopTemplateKind.ModdedFrikaModFramework:
+			case WorkshopTemplateKind.ModdedgregCoreModFramework:
 				meta.Description =
-					"[h1]FrikaModFramework Plugin[/h1]\n" +
-					"A FrikaModFramework plugin for Data Center.\n\n" +
+					"[h1]gregCoreModFramework Plugin[/h1]\n" +
+					"A gregCoreModFramework plugin for Data Center.\n\n" +
 					"[h2]Features[/h2]\n" +
 					"[list]\n[*] Feature 1\n[*] Feature 2\n[/list]\n\n" +
 					"[h2]Requirements[/h2]\n" +
-					"[list]\n[*] [url=https://melonwiki.xyz]MelonLoader[/url]\n[*] [url=https://gregframework.eu]FrikaModFramework[/url]\n[/list]\n\n" +
+					"[list]\n[*] [url=https://melonwiki.xyz]MelonLoader[/url]\n[*] [url=https://gregframework.eu]gregCoreModFramework[/url]\n[/list]\n\n" +
 					"[h2]Installation[/h2]\n" +
-					"[list]\n[*] Install MelonLoader for Data Center\n[*] Install FrikaModFramework\n[*] Subscribe to this Workshop item\n[*] Restart the game\n[/list]\n\n" +
+					"[list]\n[*] Install MelonLoader for Data Center\n[*] Install gregCoreModFramework\n[*] Subscribe to this Workshop item\n[*] Restart the game\n[/list]\n\n" +
 					"[hr][/hr]\n" +
 					"[i]Replace this placeholder description with your own.[/i]";
-				meta.Tags.AddRange(new[] { "modded", "fmf", "frika-mod-framework" });
+				meta.Tags.AddRange(new[] { "modded", "greg", "gregCore-mod-framework" });
 				meta.NativeConfigProfile = "code";
 				meta.NeedsMelonLoader = true;
-				meta.NeedsFmf = true;
+				meta.Needsgreg = true;
 				break;
 		}
 
@@ -412,7 +412,7 @@ public sealed class WorkspaceService
 
 	/// <summary>
 	/// Standard layout under <c>content/</c> for modded Workshop items: mirrors <c>{GameRoot}/Mods</c>, <c>{GameRoot}/Plugins</c>,
-	/// and <c>{GameRoot}/FMF/...</c> under a single <c>ModFramework/</c> umbrella. Steam uploads this tree as workshop content;
+	/// and <c>{GameRoot}/greg/...</c> under a single <c>ModFramework/</c> umbrella. Steam uploads this tree as workshop content;
 	/// the game delivers it under <c>.../StreamingAssets/mods/workshop_&lt;id&gt;/WorkshopUploadContent/</c>. Players typically use
 	/// directory junctions from the game root to those subfolders (see README_GameMirror.txt).
 	/// </summary>
@@ -431,7 +431,7 @@ public sealed class WorkspaceService
 			Recommended mapping next to the game executable ({GameRoot}):
 			  Mods/           -> MelonLoader MelonMods  (same relative path under WorkshopUploadContent)
 			  Plugins/        -> MelonLoader Plugins
-			  ModFramework/     -> umbrella for FMF and other framework files; use ModFramework/FMF/Plugins for FMF.Plugin DLLs
+			  ModFramework/     -> umbrella for greg and other framework files; use ModFramework/greg/Plugins for greg.Plugin DLLs
 
 			MelonLoader does not read arbitrary paths from Loader.cfg — link {GameRoot}/Mods (or a subfolder) to the
 			workshop folder if you want Workshop DLLs loaded like local mods.
@@ -469,27 +469,27 @@ public sealed class WorkspaceService
 		File.WriteAllText(
 			Path.Combine(modFw, "README.txt"),
 			"""
-			ModFramework (extra files for FMF / tooling)
+			ModFramework (extra files for greg / tooling)
 
 			Use this tree for everything that belongs to the mod framework but is not a MelonMod/MelonPlugin:
-			  - FMF plugin DLLs -> FMF/Plugins/
-			  - optional configs, catalogs, or assets your FMF plugins expect
+			  - greg plugin DLLs -> greg/Plugins/
+			  - optional configs, catalogs, or assets your greg plugins expect
 
-			At the game root, FMF expects FMF/Plugins next to the executable. From Workshop delivery, create a junction:
-			  {GameRoot}/FMF  ->  .../WorkshopUploadContent/ModFramework/FMF
-			so that FMF/Plugins resolves to ModFramework/FMF/Plugins in the workshop folder.
+			At the game root, greg expects greg/Plugins next to the executable. From Workshop delivery, create a junction:
+			  {GameRoot}/greg  ->  .../WorkshopUploadContent/ModFramework/greg
+			so that greg/Plugins resolves to ModFramework/greg/Plugins in the workshop folder.
 
 			Do not ship game binaries; only your own files.
 			""".Trim());
 
-		var fmfPlugins = Path.Combine(modFw, "FMF", "Plugins");
-		Directory.CreateDirectory(fmfPlugins);
+		var gregPlugins = Path.Combine(modFw, "greg", "Plugins");
+		Directory.CreateDirectory(gregPlugins);
 		File.WriteAllText(
-			Path.Combine(fmfPlugins, "README.txt"),
+			Path.Combine(gregPlugins, "README.txt"),
 			"""
-			FMF plugins ({GameRoot}/FMF/Plugins)
+			greg plugins ({GameRoot}/greg/Plugins)
 
-			Place FMF plugin DLLs (FFM.Plugin.*) here. With a junction from {GameRoot}/FMF to ModFramework/FMF in the
+			Place greg plugin DLLs (greg.Plugin.*) here. With a junction from {GameRoot}/greg to ModFramework/greg in the
 			workshop content folder, this path matches the live game layout.
 
 			Do not ship game binaries; only your plugin DLLs and allowed content.
@@ -498,7 +498,7 @@ public sealed class WorkspaceService
 
 	private static void CreateMelonLoaderTemplate(string contentRoot) => CreateModdedGameMirrorLayout(contentRoot);
 
-	private static void CreateFrikaModFrameworkTemplate(string contentRoot) => CreateModdedGameMirrorLayout(contentRoot);
+	private static void CreategregCoreModFrameworkTemplate(string contentRoot) => CreateModdedGameMirrorLayout(contentRoot);
 
 	/// <summary>Copies all files from <paramref name="sourceDir"/> into <paramref name="destDir"/> (recursive).</summary>
 	public static void CopyDirectoryRecursive(string sourceDir, string destDir)

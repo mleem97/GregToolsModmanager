@@ -37,7 +37,7 @@
                 <Button x:Name="TabBtnPublish" Grid.Column="2" Clicked="OnTabPublish" Text="{l:Translate Key=Editor_TabPublish}" />
             </Grid>
 
-            <!--  TAB: Details (metadata + BB + FMF)  -->
+            <!--  TAB: Details (metadata + BB + greg)  -->
             <Border x:Name="PanelDetails" Padding="20" StrokeThickness="0" BackgroundColor="{StaticResource SurfaceContainerLow}" IsVisible="True">
                 <Border.StrokeShape><RoundRectangle CornerRadius="8" /></Border.StrokeShape>
                 <VerticalStackLayout Spacing="10">
@@ -113,13 +113,13 @@
 
                     <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
                         <VerticalStackLayout Grid.Column="0" Spacing="2">
-                            <Label Text="{l:Translate Key=Editor_NeedsFmf}" FontAttributes="Bold" FontSize="12" TextColor="{StaticResource OnSurfaceDim}" />
+                            <Label Text="{l:Translate Key=Editor_Needsgreg}" FontAttributes="Bold" FontSize="12" TextColor="{StaticResource OnSurfaceDim}" />
                             <Label FontSize="11" TextColor="{StaticResource OnSurfaceVariant}"
-                                Text="{l:Translate Key=Editor_NeedsFmfHint}" />
+                                Text="{l:Translate Key=Editor_NeedsgregHint}" />
                         </VerticalStackLayout>
-                        <Switch x:Name="NeedsFmfSwitch" Grid.Column="1"
+                        <Switch x:Name="NeedsgregSwitch" Grid.Column="1"
                             OnColor="{StaticResource Primary}" ThumbColor="{StaticResource OnSurface}"
-                            Toggled="OnNeedsFmfToggled"
+                            Toggled="OnNeedsgregToggled"
                             VerticalOptions="Center" />
                     </Grid>
 

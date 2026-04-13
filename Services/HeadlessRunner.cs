@@ -8,7 +8,7 @@ public static class HeadlessRunner
 		if (args.Any(a => string.Equals(a, "--help", StringComparison.OrdinalIgnoreCase) || string.Equals(a, "-h", StringComparison.OrdinalIgnoreCase)))
 		{
 			Console.WriteLine("""
-				FrikaMF Workshop Uploader (headless)
+				gregCoreMF Workshop Uploader (headless)
 
 				  --mode publish       Publish a local workshop project
 				  --upload             Same as --mode publish

@@ -23,8 +23,8 @@ public sealed class WorkshopMetadata
 	[JsonPropertyName("tags")]
 	public List<string> Tags { get; set; } = new();
 
-	[JsonPropertyName("needsFmf")]
-	public bool NeedsFmf { get; set; }
+	[JsonPropertyName("needsgreg")]
+	public bool Needsgreg { get; set; }
 
 	/// <summary>When true, upload appends a MelonLoader requirement + link to the Steam description if not already mentioned.</summary>
 	[JsonPropertyName("needsMelonLoader")]

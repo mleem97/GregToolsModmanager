@@ -15,7 +15,7 @@ public sealed class ProjectTileVm
 		Title = string.IsNullOrWhiteSpace(meta.Title) ? project.Name : meta.Title;
 		Tags = meta.Tags.Count > 0 ? string.Join(", ", meta.Tags) : "";
 		IsPublished = meta.PublishedFileId != 0;
-		NeedsFmf = meta.NeedsFmf;
+		Needsgreg = meta.Needsgreg;
 
 		HasContent = project.IsValidLayout;
 		HasPreview = !string.IsNullOrWhiteSpace(meta.PreviewImageRelativePath)
@@ -65,7 +65,7 @@ public sealed class ProjectTileVm
 	public bool ShowPreviewPlaceholder { get; }
 	public ImageSource? PreviewImage { get; }
 	public string PreviewFileName { get; }
-	public bool NeedsFmf { get; }
+	public bool Needsgreg { get; }
 	public string ReadinessText { get; }
 	public string ReadinessColor { get; }
 }

@@ -46,7 +46,7 @@ public sealed class WorkshopItemDetailVm
 	/// <summary>Badge color for source indicator.</summary>
 	public string SourceColor => IsGregFramework ? "#61F4D8" : "#5A9E96";
 
-	private static readonly string[] GregFrameworkTags = ["fmf", "framework", "frika-mod-framework", "melonloader"];
+	private static readonly string[] GregFrameworkTags = ["greg", "framework", "gregCore-mod-framework", "melonloader"];
 
 	private bool IsGregFramework =>
 		Tags.Any(t => GregFrameworkTags.Contains(t, StringComparer.OrdinalIgnoreCase));

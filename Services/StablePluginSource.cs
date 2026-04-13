@@ -3,10 +3,10 @@ using GregModmanager.Models;
 namespace GregModmanager.Services;
 
 /// <summary>
-/// Scans <c>{GameRoot}/FMF/Plugins</c> and <c>{GameRoot}/Mods</c> for locally installed
-/// FMF plugins and the framework DLL. This is the "stable" channel — no network access.
+/// Scans <c>{GameRoot}/greg/Plugins</c> and <c>{GameRoot}/Mods</c> for locally installed
+/// greg plugins and the framework DLL. This is the "stable" channel — no network access.
 /// </summary>
-public sealed class StablePluginSource : IFfmPluginChannelSource
+public sealed class StablePluginSource : IgregPluginChannelSource
 {
 	private readonly ModDependencyService _deps;
 
@@ -21,8 +21,8 @@ public sealed class StablePluginSource : IFfmPluginChannelSource
 	{
 		var list = new List<PluginPackageInfo>();
 
-		ScanDirectory(list, _deps.FmfPluginsDir, "FFM.Plugin");
-		ScanDirectory(list, _deps.ModsDir, "FMF.");
+		ScanDirectory(list, _deps.gregPluginsDir, "greg.Plugin");
+		ScanDirectory(list, _deps.ModsDir, "greg.");
 
 		return list;
 	}
@@ -38,7 +38,7 @@ public sealed class StablePluginSource : IFfmPluginChannelSource
 		{
 			var name = Path.GetFileNameWithoutExtension(dll);
 			if (!name.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)
-			    && !name.Equals("FrikaModdingFramework", StringComparison.OrdinalIgnoreCase))
+			    && !name.Equals("gregCoreModdingFramework", StringComparison.OrdinalIgnoreCase))
 			{
 				continue;
 			}

@@ -5,7 +5,7 @@ using GregModmanager.Steam;
 namespace GregModmanager.Services;
 
 /// <summary>
-/// Probes the local Data Center installation for MelonLoader, FrikaModFramework,
+/// Probes the local Data Center installation for MelonLoader, gregCoreModFramework,
 /// Il2Cpp interop assemblies, and mod configuration directories.
 /// All checks are read-only unless explicitly stated.
 /// </summary>
@@ -44,7 +44,7 @@ public sealed class ModDependencyService
 	public string MelonLoaderNet6Dir => Path.Combine(MelonLoaderDir, "net6");
 	public string Il2CppAssembliesDir => Path.Combine(MelonLoaderDir, "Il2CppAssemblies");
 	public string ModsDir => Path.Combine(GameRoot ?? string.Empty, "Mods");
-	public string FmfPluginsDir => Path.Combine(GameRoot ?? string.Empty, "FMF", "Plugins");
+	public string gregPluginsDir => Path.Combine(GameRoot ?? string.Empty, "greg", "Plugins");
 	public string ModCfgDir => Path.Combine(GameRoot ?? string.Empty, "UserData", "ModCfg");
 
 	/// <summary>Run all dependency checks and return an ordered list of results.</summary>
@@ -75,8 +75,8 @@ public sealed class ModDependencyService
 
 		CheckMelonLoader(results);
 		CheckIl2Cpp(results);
-		CheckFrikaModFramework(results);
-		CheckFmfPluginsDir(results);
+		CheckgregCoreModFramework(results);
+		CheckgregPluginsDir(results);
 		CheckModCfg(results);
 
 		return results;
@@ -142,16 +142,16 @@ public sealed class ModDependencyService
 		}
 	}
 
-	private void CheckFrikaModFramework(List<DependencyCheckResult> results)
+	private void CheckgregCoreModFramework(List<DependencyCheckResult> results)
 	{
-		var fmfDll = Path.Combine(ModsDir, "FrikaModdingFramework.dll");
-		if (File.Exists(fmfDll))
+		var gregDll = Path.Combine(ModsDir, "gregCoreModdingFramework.dll");
+		if (File.Exists(gregDll))
 		{
 			results.Add(new DependencyCheckResult
 			{
-				Label = "FrikaModFramework",
+				Label = "gregCoreModFramework",
 				Status = DependencyStatus.Ok,
-				Detail = fmfDll,
+				Detail = gregDll,
 				Path = ModsDir,
 			});
 		}
@@ -159,35 +159,35 @@ public sealed class ModDependencyService
 		{
 			results.Add(new DependencyCheckResult
 			{
-				Label = "FrikaModFramework",
+				Label = "gregCoreModFramework",
 				Status = DependencyStatus.Missing,
-				Detail = "FrikaModdingFramework.dll fehlt unter Mods/. Aus GitHub Release herunterladen oder selbst bauen.",
+				Detail = "gregCoreModdingFramework.dll fehlt unter Mods/. Aus GitHub Release herunterladen oder selbst bauen.",
 				Path = ModsDir,
 			});
 		}
 	}
 
-	private void CheckFmfPluginsDir(List<DependencyCheckResult> results)
+	private void CheckgregPluginsDir(List<DependencyCheckResult> results)
 	{
-		if (Directory.Exists(FmfPluginsDir))
+		if (Directory.Exists(gregPluginsDir))
 		{
-			var count = Directory.GetFiles(FmfPluginsDir, "*.dll").Length;
+			var count = Directory.GetFiles(gregPluginsDir, "*.dll").Length;
 			results.Add(new DependencyCheckResult
 			{
-				Label = "FMF Plugins",
+				Label = "greg Plugins",
 				Status = count > 0 ? DependencyStatus.Ok : DependencyStatus.Warning,
-				Detail = count > 0 ? $"{count} Plugin-DLL(s) unter FMF/Plugins/" : "FMF/Plugins/ existiert, aber enthält keine DLLs.",
-				Path = FmfPluginsDir,
+				Detail = count > 0 ? $"{count} Plugin-DLL(s) unter greg/Plugins/" : "greg/Plugins/ existiert, aber enthält keine DLLs.",
+				Path = gregPluginsDir,
 			});
 		}
 		else
 		{
 			results.Add(new DependencyCheckResult
 			{
-				Label = "FMF Plugins",
+				Label = "greg Plugins",
 				Status = DependencyStatus.Warning,
-				Detail = "FMF/Plugins/ existiert noch nicht (wird beim ersten Plugin-Install angelegt).",
-				Path = Path.Combine(GameRoot ?? string.Empty, "FMF"),
+				Detail = "greg/Plugins/ existiert noch nicht (wird beim ersten Plugin-Install angelegt).",
+				Path = Path.Combine(GameRoot ?? string.Empty, "greg"),
 			});
 		}
 	}
@@ -225,12 +225,12 @@ public sealed class ModDependencyService
 		}
 	}
 
-	/// <summary>Create the FMF/Plugins directory if it doesn't exist.</summary>
-	public void EnsureFmfPluginsDirectory()
+	/// <summary>Create the greg/Plugins directory if it doesn't exist.</summary>
+	public void EnsuregregPluginsDirectory()
 	{
 		if (!string.IsNullOrEmpty(GameRoot))
 		{
-			Directory.CreateDirectory(FmfPluginsDir);
+			Directory.CreateDirectory(gregPluginsDir);
 		}
 	}
 

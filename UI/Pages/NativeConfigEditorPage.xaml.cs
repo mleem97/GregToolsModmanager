@@ -98,7 +98,7 @@ public partial class NativeConfigEditorPage : ContentPage
 
 		SchemaVersionEntry.Text = _modOptions.SchemaVersion.ToString(CultureInfo.InvariantCulture);
 		var kind = string.IsNullOrWhiteSpace(_modOptions.ModKind) ? "standalone" : _modOptions.ModKind.Trim().ToLowerInvariant();
-		ModKindPicker.SelectedItem = kind == "fmf" ? "fmf" : "standalone";
+		ModKindPicker.SelectedItem = kind == "greg" ? "greg" : "standalone";
 		ModOptionsNotesEditor.Text = _modOptions.Notes;
 		RebuildSettingsUi();
 

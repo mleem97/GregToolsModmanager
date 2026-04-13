@@ -15,7 +15,7 @@ namespace GregModmanager;
 public partial class EditorPage : ContentPage
 {
 	private const int MaxWorkshopTags = 20;
-	private static string FmfNotice => "\n\n---\n" + S.Get("Editor_FmfNotice");
+	private static string gregNotice => "\n\n---\n" + S.Get("Editor_gregNotice");
 
 	private static string MelonLoaderNotice => "\n\n---\n" + S.Get("Editor_MelonLoaderNotice");
 
@@ -91,7 +91,7 @@ public partial class EditorPage : ContentPage
 
 		var localSnapshot = new WorkshopMetadata
 		{
-			NeedsFmf = _metadata.NeedsFmf,
+			Needsgreg = _metadata.Needsgreg,
 			NeedsMelonLoader = _metadata.NeedsMelonLoader,
 			NativeConfigProfile = _metadata.NativeConfigProfile,
 			PreviewImageRelativePath = _metadata.PreviewImageRelativePath,
@@ -143,7 +143,7 @@ public partial class EditorPage : ContentPage
 			? _metadata.Visibility
 			: "Public";
 		TagsEntry.Text = string.Join(", ", _metadata.Tags);
-		NeedsFmfSwitch.IsToggled = _metadata.NeedsFmf;
+		NeedsgregSwitch.IsToggled = _metadata.Needsgreg;
 		NeedsMelonLoaderSwitch.IsToggled = _metadata.NeedsMelonLoader;
 		var profile = string.IsNullOrWhiteSpace(_metadata.NativeConfigProfile)
 			? "decoration"
@@ -453,7 +453,7 @@ public partial class EditorPage : ContentPage
 		}
 	}
 
-	private void OnNeedsFmfToggled(object? sender, ToggledEventArgs e) => RunUploadCheck();
+	private void OnNeedsgregToggled(object? sender, ToggledEventArgs e) => RunUploadCheck();
 
 	private void OnNeedsMelonLoaderToggled(object? sender, ToggledEventArgs e) => RunUploadCheck();
 
@@ -846,7 +846,7 @@ public partial class EditorPage : ContentPage
 		_metadata.Description = DescriptionEditor.Text ?? "";
 		_metadata.Visibility = VisibilityPicker.SelectedItem as string ?? "Public";
 		_metadata.Tags = ParseTags(TagsEntry.Text);
-		_metadata.NeedsFmf = NeedsFmfSwitch.IsToggled;
+		_metadata.Needsgreg = NeedsgregSwitch.IsToggled;
 		_metadata.NeedsMelonLoader = NeedsMelonLoaderSwitch.IsToggled;
 		_metadata.NativeConfigProfile = NativeProfilePicker.SelectedItem as string ?? "decoration";
 		_metadata.WorkshopDependencyIds = _metadata.WorkshopDependencyIds.Where(x => x > 0).Distinct().ToList();
@@ -860,9 +860,9 @@ public partial class EditorPage : ContentPage
 			desc += MelonLoaderNotice;
 		}
 
-		if (meta.NeedsFmf && !desc.Contains("FrikaModFramework", StringComparison.OrdinalIgnoreCase))
+		if (meta.Needsgreg && !desc.Contains("gregCoreModFramework", StringComparison.OrdinalIgnoreCase))
 		{
-			desc += FmfNotice;
+			desc += gregNotice;
 		}
 
 		return desc;

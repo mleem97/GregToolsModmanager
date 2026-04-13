@@ -3,7 +3,7 @@ using GregModmanager.Localization;
 namespace GregModmanager.Services;
 
 /// <summary>
-/// Infers MelonLoader / FrikaModFramework requirements from Steam tags and item description
+/// Infers MelonLoader / gregCoreModFramework requirements from Steam tags and item description
 /// (Workshop items do not expose uploader metadata.json).
 /// </summary>
 public static class WorkshopDependencyInference
@@ -17,14 +17,14 @@ public static class WorkshopDependencyInference
 			StringComparer.OrdinalIgnoreCase);
 		var desc = description ?? "";
 
-		var fmf = InferNeedsFmf(tagSet, desc);
-		var melon = !fmf && InferNeedsMelonLoaderOnly(tagSet, desc);
+		var greg = InferNeedsgreg(tagSet, desc);
+		var melon = !greg && InferNeedsMelonLoaderOnly(tagSet, desc);
 
 		var parts = new List<string>();
-		if (fmf)
+		if (greg)
 		{
 			parts.Add(S.Get("Mod_Dep_MelonLoader"));
-			parts.Add(S.Get("Mod_Dep_Fmf"));
+			parts.Add(S.Get("Mod_Dep_greg"));
 		}
 		else if (melon)
 		{
@@ -42,14 +42,14 @@ public static class WorkshopDependencyInference
 		return new DependencyHints(compact, block, true);
 	}
 
-	private static bool InferNeedsFmf(HashSet<string> tagSet, string desc)
+	private static bool InferNeedsgreg(HashSet<string> tagSet, string desc)
 	{
-		if (tagSet.Contains("fmf") || tagSet.Contains("frika-mod-framework"))
+		if (tagSet.Contains("greg") || tagSet.Contains("gregCore-mod-framework"))
 		{
 			return true;
 		}
 
-		if (desc.Contains("FrikaModFramework", StringComparison.OrdinalIgnoreCase))
+		if (desc.Contains("gregCoreModFramework", StringComparison.OrdinalIgnoreCase))
 		{
 			return true;
 		}

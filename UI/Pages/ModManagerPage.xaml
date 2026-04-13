@@ -86,7 +86,7 @@
                                 <x:String>vanilla</x:String>
                                 <x:String>modded</x:String>
                                 <x:String>melonloader</x:String>
-                                <x:String>fmf</x:String>
+                                <x:String>greg</x:String>
                                 <x:String>framework</x:String>
                             </x:Array>
                         </Picker.ItemsSource>

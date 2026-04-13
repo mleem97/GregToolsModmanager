@@ -124,11 +124,12 @@ public static class MauiProgram
 			builder.Services.AddSingleton<SteamWorkshopService>();
 			builder.Services.AddSingleton<WorkspaceService>();
 			builder.Services.AddSingleton<ModDependencyService>();
-			builder.Services.AddSingleton<FfmPluginChannelRegistry>(sp =>
+			builder.Services.AddSingleton<gregPluginChannelRegistry>(sp =>
 			{
-				var registry = new FfmPluginChannelRegistry();
+				var registry = new gregPluginChannelRegistry();
 				registry.Register(new StablePluginSource(sp.GetRequiredService<ModDependencyService>()));
 				registry.Register(new BetaPluginSource());
+				registry.Register(new GitHubModSource());
 				return registry;
 			});
 			builder.Services.AddSingleton<RalphSyncService>();

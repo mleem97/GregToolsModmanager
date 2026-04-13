@@ -103,7 +103,7 @@
                                         <Border
                                             Padding="6,2"
                                             BackgroundColor="{StaticResource SurfaceVariant}"
-                                            IsVisible="{Binding NeedsFmf}"
+                                            IsVisible="{Binding Needsgreg}"
                                             StrokeThickness="0">
                                             <Border.StrokeShape>
                                                 <RoundRectangle CornerRadius="4" />

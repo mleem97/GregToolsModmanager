@@ -106,7 +106,7 @@
                         <Picker.ItemsSource>
                             <x:Array Type="{x:Type x:String}">
                                 <x:String>standalone</x:String>
-                                <x:String>fmf</x:String>
+                                <x:String>greg</x:String>
                             </x:Array>
                         </Picker.ItemsSource>
                     </Picker>
