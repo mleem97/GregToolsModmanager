@@ -150,6 +150,7 @@ public static class MauiProgram
 			builder.Services.AddTransient<ItemDetailPage>();
 			builder.Services.AddSingleton<AppShell>();
 			builder.Services.AddSingleton<GitVerificationService>();
+			builder.Services.AddSingleton<BetterAuthService>();
 
 #if DEBUG
 			builder.Logging.AddDebug();
