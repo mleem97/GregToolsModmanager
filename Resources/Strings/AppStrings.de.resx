@@ -83,7 +83,7 @@
   <data name="Editor_WorkshopDepInvalidId" xml:space="preserve"><value>Bitte eine gültige numerische Steam-Workshop-Datei-ID eingeben.</value></data>
   <data name="Editor_WorkshopDepDuplicate" xml:space="preserve"><value>Diese Workshop-ID steht bereits in der Liste.</value></data>
   <data name="Editor_WorkshopDepSelf" xml:space="preserve"><value>Dieses Objekt kann nicht von sich selbst abhängen.</value></data>
-  <data name="Editor_GCFNotice" xml:space="preserve"><value>Dieses Objekt benötigt gregCore Framework – bitte im Steam Workshop oder über den GregTools Modmanager herunterladen!</value></data>
+  <data name="Editor_GCFNotice" xml:space="preserve"><value>Dieses Objekt benötigt gregCore Framework – bitte im Steam Workshop oder über den gregModmanager herunterladen!</value></data>
   <data name="Editor_ChangeNotes" xml:space="preserve"><value>Änderungshinweise</value></data>
   <data name="Editor_ChangeNotesHint" xml:space="preserve"><value>Beschreiben Sie, was sich geändert hat. Wird im Änderungsprotokoll-Tab von Steam angezeigt.</value></data>
   <data name="Editor_ChangeNotesPlaceholder" xml:space="preserve"><value>z. B. Absturz beim Start behoben...</value></data>
@@ -267,7 +267,7 @@
 
   <!-- SettingsPage -->
   <data name="Settings_Headline" xml:space="preserve"><value>Einstellungen</value></data>
-  <data name="Settings_Subtitle" xml:space="preserve"><value>Optionale Funktionen für den GregTools Modmanager konfigurieren.</value></data>
+  <data name="Settings_Subtitle" xml:space="preserve"><value>Optionale Funktionen für den gregModmanager konfigurieren.</value></data>
   <data name="Settings_ModStore" xml:space="preserve"><value>Mod-Store</value></data>
   <data name="Settings_ModStoreDesc" xml:space="preserve"><value>Aktivieren Sie den Mod-Store-Tab, um gregCore Framework-Mods im Steam Workshop zu durchsuchen, zu abonnieren und zu verwalten.</value></data>
   <data name="Settings_EnableModStore" xml:space="preserve"><value>Mod-Store aktivieren</value></data>

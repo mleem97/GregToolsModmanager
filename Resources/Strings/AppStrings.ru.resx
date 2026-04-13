@@ -267,7 +267,7 @@
 
   <!-- SettingsPage -->
   <data name="Settings_Headline" xml:space="preserve"><value>Параметры</value></data>
-  <data name="Settings_Subtitle" xml:space="preserve"><value>Настройте дополнительные возможности GregTools Modmanager.</value></data>
+  <data name="Settings_Subtitle" xml:space="preserve"><value>Настройте дополнительные возможности gregModmanager.</value></data>
   <data name="Settings_ModStore" xml:space="preserve"><value>Магазин модов</value></data>
   <data name="Settings_ModStoreDesc" xml:space="preserve"><value>Включите вкладку «Магазин модов», чтобы просматривать, подписываться и управлять модами gregCore Framework из Steam Workshop.</value></data>
   <data name="Settings_EnableModStore" xml:space="preserve"><value>Включить магазин модов</value></data>

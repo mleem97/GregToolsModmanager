@@ -83,7 +83,7 @@
   <data name="Editor_WorkshopDepInvalidId" xml:space="preserve"><value>Podaj prawidłowy numeryczny identyfikator pliku Steam Workshop.</value></data>
   <data name="Editor_WorkshopDepDuplicate" xml:space="preserve"><value>Ten identyfikator Workshop jest już na liście.</value></data>
   <data name="Editor_WorkshopDepSelf" xml:space="preserve"><value>Nie można dodać zależności od tego samego przedmiotu.</value></data>
-  <data name="Editor_GCFNotice" xml:space="preserve"><value>Ten przedmiot wymaga gregCore Framework — pobierz go ze Steam Workshop lub przez GregTools Modmanager!</value></data>
+  <data name="Editor_GCFNotice" xml:space="preserve"><value>Ten przedmiot wymaga gregCore Framework — pobierz go ze Steam Workshop lub przez gregModmanager!</value></data>
   <data name="Editor_ChangeNotes" xml:space="preserve"><value>Notatki ze zmian</value></data>
   <data name="Editor_ChangeNotesHint" xml:space="preserve"><value>Opisz, co się zmieniło. Widoczne w zakładce zmian Steam.</value></data>
   <data name="Editor_ChangeNotesPlaceholder" xml:space="preserve"><value>np. Naprawiono awarię przy starcie...</value></data>
@@ -267,7 +267,7 @@
 
   <!-- SettingsPage -->
   <data name="Settings_Headline" xml:space="preserve"><value>Ustawienia</value></data>
-  <data name="Settings_Subtitle" xml:space="preserve"><value>Skonfiguruj opcjonalne funkcje GregTools Modmanager.</value></data>
+  <data name="Settings_Subtitle" xml:space="preserve"><value>Skonfiguruj opcjonalne funkcje gregModmanager.</value></data>
   <data name="Settings_ModStore" xml:space="preserve"><value>Sklep z modami</value></data>
   <data name="Settings_ModStoreDesc" xml:space="preserve"><value>Włącz kartę Sklep z modami, aby przeglądać, subskrybować i zarządzać modami gregCore Framework ze Steam Workshop.</value></data>
   <data name="Settings_EnableModStore" xml:space="preserve"><value>Włącz sklep z modami</value></data>

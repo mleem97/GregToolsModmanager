@@ -83,7 +83,7 @@
   <data name="Editor_WorkshopDepInvalidId" xml:space="preserve"><value>有効な Steam Workshop ファイル ID（数値）を入力してください。</value></data>
   <data name="Editor_WorkshopDepDuplicate" xml:space="preserve"><value>この Workshop ID はすでにリストにあります。</value></data>
   <data name="Editor_WorkshopDepSelf" xml:space="preserve"><value>自分自身を依存関係に追加できません。</value></data>
-  <data name="Editor_GCFNotice" xml:space="preserve"><value>このアイテムには gregCore Framework が必要です。Steam Workshop または GregTools Modmanager からダウンロードしてください！</value></data>
+  <data name="Editor_GCFNotice" xml:space="preserve"><value>このアイテムには gregCore Framework が必要です。Steam Workshop または gregModmanager からダウンロードしてください！</value></data>
   <data name="Editor_ChangeNotes" xml:space="preserve"><value>変更メモ</value></data>
   <data name="Editor_ChangeNotesHint" xml:space="preserve"><value>変更内容を記載します。Steam の変更履歴タブに表示されます。</value></data>
   <data name="Editor_ChangeNotesPlaceholder" xml:space="preserve"><value>例：起動時のクラッシュを修正...</value></data>
@@ -267,7 +267,7 @@
 
   <!-- SettingsPage -->
   <data name="Settings_Headline" xml:space="preserve"><value>設定</value></data>
-  <data name="Settings_Subtitle" xml:space="preserve"><value>GregTools Modmanager のオプション機能を構成します。</value></data>
+  <data name="Settings_Subtitle" xml:space="preserve"><value>gregModmanager のオプション機能を構成します。</value></data>
   <data name="Settings_ModStore" xml:space="preserve"><value>Mod ストア</value></data>
   <data name="Settings_ModStoreDesc" xml:space="preserve"><value>Mod ストア タブを有効にして、Steam Workshop から gregCore Framework の Mod を閲覧・購読・管理します。</value></data>
   <data name="Settings_EnableModStore" xml:space="preserve"><value>Mod ストアを有効にする</value></data>

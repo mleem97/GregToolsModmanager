@@ -83,7 +83,7 @@
   <data name="Editor_WorkshopDepInvalidId" xml:space="preserve"><value>Enter a valid numeric Steam Workshop file ID.</value></data>
   <data name="Editor_WorkshopDepDuplicate" xml:space="preserve"><value>This Workshop ID is already in the list.</value></data>
   <data name="Editor_WorkshopDepSelf" xml:space="preserve"><value>You cannot add this item as a dependency of itself.</value></data>
-  <data name="Editor_GCFNotice" xml:space="preserve"><value>This Item needs the gregCore Framework, please download it from Steam Workshop or via the GregTools Modmanager!</value></data>
+  <data name="Editor_GCFNotice" xml:space="preserve"><value>This Item needs the gregCore Framework, please download it from Steam Workshop or via the gregModmanager!</value></data>
   <data name="Editor_ChangeNotes" xml:space="preserve"><value>Change notes</value></data>
   <data name="Editor_ChangeNotesHint" xml:space="preserve"><value>Describe what changed. Shown on Steam's changelog tab.</value></data>
   <data name="Editor_ChangeNotesPlaceholder" xml:space="preserve"><value>e.g. Fixed crash on startup...</value></data>
@@ -267,7 +267,7 @@
 
   <!-- SettingsPage -->
   <data name="Settings_Headline" xml:space="preserve"><value>Settings</value></data>
-  <data name="Settings_Subtitle" xml:space="preserve"><value>Configure optional features for GregTools Modmanager.</value></data>
+  <data name="Settings_Subtitle" xml:space="preserve"><value>Configure optional features for gregModmanager.</value></data>
   <data name="Settings_ModStore" xml:space="preserve"><value>Mod Store</value></data>
   <data name="Settings_ModStoreDesc" xml:space="preserve"><value>Enable the Mod Store tab to browse, subscribe to, and manage gregCore Framework mods from the Steam Workshop.</value></data>
   <data name="Settings_EnableModStore" xml:space="preserve"><value>Enable Mod Store</value></data>
