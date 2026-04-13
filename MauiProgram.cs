@@ -149,6 +149,7 @@ public static class MauiProgram
 				new NativeConfigEditorPage(sp.GetRequiredService<WorkspaceService>()));
 			builder.Services.AddTransient<ItemDetailPage>();
 			builder.Services.AddSingleton<AppShell>();
+			builder.Services.AddSingleton<GitVerificationService>();
 
 #if DEBUG
 			builder.Logging.AddDebug();
