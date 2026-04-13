@@ -21,3 +21,4 @@ public sealed class RalphSyncService
 		File.WriteAllText(path, JsonSerializer.Serialize(payload, JsonOptions));
 	}
 }
+

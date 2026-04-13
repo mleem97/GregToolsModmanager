@@ -93,3 +93,4 @@ foreach ($lnkPath in @($desktopLnk, $startMenuLnk)) {
 
 Write-Host ''
 Write-Host "[install-local] Fertig. Start: $exePath"
+

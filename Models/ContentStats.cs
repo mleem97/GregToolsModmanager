@@ -12,3 +12,4 @@ public sealed class ContentStats
 }
 
 public readonly record struct ContentFolderSize(string Name, long Bytes);
+

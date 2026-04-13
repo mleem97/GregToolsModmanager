@@ -43,3 +43,4 @@ public sealed class GitHubModSource : IgregPluginChannelSource
         // logic to download from https://github.com/{owner}/{repo}/releases/latest/download/{plugin.PluginId}.dll
     }
 }
+

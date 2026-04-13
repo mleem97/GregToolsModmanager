@@ -9,3 +9,4 @@ public sealed class PluginPackageInfo
 	public string? DownloadUrl { get; init; }
 	public string? Sha256 { get; init; }
 }
+

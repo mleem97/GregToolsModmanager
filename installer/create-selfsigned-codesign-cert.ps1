@@ -38,3 +38,4 @@ Write-Host "         `$env:CODE_SIGN_THUMBPRINT='$($cert.Thumbprint)'"
 Write-Host '         .\installer\sign-authenticode.ps1 -Path ".\installer\Output\gregModmanager-1.0.0-Setup.exe" -Thumbprint $env:CODE_SIGN_THUMBPRINT'
 Write-Host ''
 Write-Host '[selfsign] Hinweis: Auf ANDEREN PCs bleibt die Signatur „nicht vertrauenswürdig“, solange dieses Stammzertifikat nicht importiert wurde (normal für Self-Signed).'
+

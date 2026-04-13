@@ -50,7 +50,7 @@
   <data name="NewProject_CouldNotCreate" xml:space="preserve"><value>作成できませんでした</value></data>
   <data name="NewProject_Vanilla" xml:space="preserve"><value>バニラ（オブジェクト／装飾）</value></data>
   <data name="NewProject_Modded" xml:space="preserve"><value>Mod 導入（MelonLoader）</value></data>
-  <data name="NewProject_Fmf" xml:space="preserve"><value>Mod 導入（FrikaModFramework）</value></data>
+  <data name="NewProject_GCF" xml:space="preserve"><value>Mod 導入（gregCore Framework）</value></data>
 
   <!-- EditorPage -->
   <data name="Editor_Headline" xml:space="preserve"><value>ワークショップ アップロード</value></data>
@@ -65,9 +65,9 @@
   <data name="Editor_TabPublish" xml:space="preserve"><value>公開</value></data>
   <data name="Editor_Visibility" xml:space="preserve"><value>公開範囲</value></data>
   <data name="Editor_Tags" xml:space="preserve"><value>タグ</value></data>
-  <data name="Editor_TagsPlaceholder" xml:space="preserve"><value>vanilla, modded, fmf</value></data>
-  <data name="Editor_NeedsFmf" xml:space="preserve"><value>FrikaModFramework が必要</value></data>
-  <data name="Editor_NeedsFmfHint" xml:space="preserve"><value>このアイテムに FMF が必要である旨を説明に追記します。</value></data>
+  <data name="Editor_TagsPlaceholder" xml:space="preserve"><value>vanilla, modded, GCF</value></data>
+  <data name="Editor_NeedsGCF" xml:space="preserve"><value>gregCore Framework が必要</value></data>
+  <data name="Editor_NeedsGCFHint" xml:space="preserve"><value>このアイテムに GCF が必要である旨を説明に追記します。</value></data>
   <data name="Editor_NativeProfile" xml:space="preserve"><value>config.json プロファイル</value></data>
   <data name="Editor_NativeProfileHint" xml:space="preserve"><value>装飾: shop/static。コード: DLL のみ（コード Mod 用の shop/static はこのファイルでは扱いません）。</value></data>
   <data name="Editor_NeedsMelonLoader" xml:space="preserve"><value>MelonLoader が必要</value></data>
@@ -83,7 +83,7 @@
   <data name="Editor_WorkshopDepInvalidId" xml:space="preserve"><value>有効な Steam Workshop ファイル ID（数値）を入力してください。</value></data>
   <data name="Editor_WorkshopDepDuplicate" xml:space="preserve"><value>この Workshop ID はすでにリストにあります。</value></data>
   <data name="Editor_WorkshopDepSelf" xml:space="preserve"><value>自分自身を依存関係に追加できません。</value></data>
-  <data name="Editor_FmfNotice" xml:space="preserve"><value>このアイテムには FrikaModFramework が必要です。Steam Workshop または GregTools Modmanager からダウンロードしてください！</value></data>
+  <data name="Editor_GCFNotice" xml:space="preserve"><value>このアイテムには gregCore Framework が必要です。Steam Workshop または GregTools Modmanager からダウンロードしてください！</value></data>
   <data name="Editor_ChangeNotes" xml:space="preserve"><value>変更メモ</value></data>
   <data name="Editor_ChangeNotesHint" xml:space="preserve"><value>変更内容を記載します。Steam の変更履歴タブに表示されます。</value></data>
   <data name="Editor_ChangeNotesPlaceholder" xml:space="preserve"><value>例：起動時のクラッシュを修正...</value></data>
@@ -106,7 +106,7 @@
   <data name="NativeConfig_AddStaticItem" xml:space="preserve"><value>静的アイテムを追加</value></data>
   <data name="NativeConfig_Dlls" xml:space="preserve"><value>dlls（ネイティブプラグイン）</value></data>
   <data name="NativeConfig_AddDll" xml:space="preserve"><value>DLL エントリを追加</value></data>
-  <data name="NativeConfig_ModOptionsHint" xml:space="preserve"><value>任意。実行時オプション（MelonLoader/FMF）。バニラ資産には config.json が必須です。</value></data>
+  <data name="NativeConfig_ModOptionsHint" xml:space="preserve"><value>任意。実行時オプション（MelonLoader/GCF）。バニラ資産には config.json が必須です。</value></data>
   <data name="NativeConfig_SchemaVersion" xml:space="preserve"><value>schemaVersion</value></data>
   <data name="NativeConfig_ModKind" xml:space="preserve"><value>modKind</value></data>
   <data name="NativeConfig_OptionsNotes" xml:space="preserve"><value>notes</value></data>
@@ -174,9 +174,9 @@
 
   <!-- ModManagerPage -->
   <data name="Mod_Headline" xml:space="preserve"><value>Mod マネージャー</value></data>
-  <data name="Mod_Subtitle" xml:space="preserve"><value>FrikaModFramework 用の Mod を閲覧、インストール、管理します。</value></data>
+  <data name="Mod_Subtitle" xml:space="preserve"><value>gregCore Framework 用の Mod を閲覧、インストール、管理します。</value></data>
   <data name="Mod_Dep_MelonLoader" xml:space="preserve"><value>MelonLoader</value></data>
-  <data name="Mod_Dep_Fmf" xml:space="preserve"><value>FrikaModFramework</value></data>
+  <data name="Mod_Dep_GCF" xml:space="preserve"><value>gregCore Framework</value></data>
   <data name="Mod_StoreDepsLine" xml:space="preserve"><value>必要: {0}</value></data>
   <data name="Detail_DependenciesHeading" xml:space="preserve"><value>この Mod の依存関係：</value></data>
   <data name="Mod_Store" xml:space="preserve"><value>ストア</value></data>
@@ -209,7 +209,7 @@
   <data name="Mod_MelonLoader" xml:space="preserve"><value>MelonLoader</value></data>
   <data name="Mod_DownloadPage" xml:space="preserve"><value>ダウンロードページ</value></data>
   <data name="Mod_GameFolder" xml:space="preserve"><value>ゲーム フォルダ</value></data>
-  <data name="Mod_PluginChannel" xml:space="preserve"><value>FMF プラグイン チャンネル</value></data>
+  <data name="Mod_PluginChannel" xml:space="preserve"><value>GCF プラグイン チャンネル</value></data>
   <data name="Mod_Channel" xml:space="preserve"><value>チャンネル:</value></data>
   <data name="Mod_Stable" xml:space="preserve"><value>安定版</value></data>
   <data name="Mod_BetaExp" xml:space="preserve"><value>ベータ（実験的）</value></data>
@@ -269,7 +269,7 @@
   <data name="Settings_Headline" xml:space="preserve"><value>設定</value></data>
   <data name="Settings_Subtitle" xml:space="preserve"><value>GregTools Modmanager のオプション機能を構成します。</value></data>
   <data name="Settings_ModStore" xml:space="preserve"><value>Mod ストア</value></data>
-  <data name="Settings_ModStoreDesc" xml:space="preserve"><value>Mod ストア タブを有効にして、Steam Workshop から FrikaModFramework の Mod を閲覧・購読・管理します。</value></data>
+  <data name="Settings_ModStoreDesc" xml:space="preserve"><value>Mod ストア タブを有効にして、Steam Workshop から gregCore Framework の Mod を閲覧・購読・管理します。</value></data>
   <data name="Settings_EnableModStore" xml:space="preserve"><value>Mod ストアを有効にする</value></data>
   <data name="Settings_RestartRequired" xml:space="preserve"><value>この設定を変更した後は再起動が必要です。</value></data>
   <data name="Settings_RestartEffect" xml:space="preserve"><value>変更を反映するにはアプリを再起動してください。</value></data>
@@ -301,3 +301,4 @@
   <data name="Settings_ReproBundleCreateFailed" xml:space="preserve"><value>再現バンドルを作成できませんでした: {0}</value></data>
 
 </root>
+

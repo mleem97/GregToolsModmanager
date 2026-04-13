@@ -296,3 +296,4 @@ public partial class SettingsPage : ContentPage
 		return Preferences.Default.Get(ModStoreEnabledKey, false);
 	}
 }
+

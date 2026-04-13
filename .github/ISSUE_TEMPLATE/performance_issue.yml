@@ -36,3 +36,4 @@ body:
     attributes:
       label: App version
       placeholder: "e.g. 1.0.2"
+

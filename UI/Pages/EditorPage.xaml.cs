@@ -976,3 +976,4 @@ public partial class EditorPage : ContentPage
 
 	#endregion
 }
+

@@ -27,3 +27,4 @@ The desktop companion for the Greg Framework has been updated! **gregModmanager 
 :point_right: **[Download gregModmanager v1.0.3 on GitHub](https://github.com/mleem97/gregModmanager/releases/tag/v1.0.3)**
 
 — Your **teamGreg**
+

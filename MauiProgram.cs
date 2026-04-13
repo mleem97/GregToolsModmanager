@@ -195,3 +195,4 @@ public static class MauiProgram
 		}
 	}
 }
+

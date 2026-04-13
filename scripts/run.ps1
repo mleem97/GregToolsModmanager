@@ -4,3 +4,4 @@ $ErrorActionPreference = 'Stop'
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 Set-Location $repoRoot
 dotnet run -c Release -f net9.0-windows10.0.19041.0 @args
+

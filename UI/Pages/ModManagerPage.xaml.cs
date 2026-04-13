@@ -465,3 +465,4 @@ public partial class ModManagerPage : ContentPage
 
 	#endregion
 }
+

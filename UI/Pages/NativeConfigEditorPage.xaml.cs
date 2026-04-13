@@ -655,3 +655,4 @@ public partial class NativeConfigEditorPage : ContentPage
 		}
 	}
 }
+

@@ -79,3 +79,4 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 Write-Host "[linux-pack/windows] Done. Packages are in: $resolvedOutput"
+

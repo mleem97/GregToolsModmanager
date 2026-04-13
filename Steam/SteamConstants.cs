@@ -9,3 +9,4 @@ public static class SteamConstants
 
 	public const int MaxDescriptionLength = 8000;
 }
+

@@ -98,3 +98,4 @@ public sealed class SubscriptionPoller : IDisposable
 		_cts?.Dispose();
 	}
 }
+

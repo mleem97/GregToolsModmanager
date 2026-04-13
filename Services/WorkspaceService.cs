@@ -651,3 +651,4 @@ public sealed class WorkspaceService
 		File.WriteAllText(path, JsonSerializer.Serialize(metadata, JsonOptions));
 	}
 }
+

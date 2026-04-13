@@ -110,3 +110,4 @@ public readonly record struct WorkshopSyncEvent(string Kind, string Message)
 	public static WorkshopSyncEvent Warning(string msg) => new("warning", msg);
 	public static WorkshopSyncEvent Info(string msg) => new("info", msg);
 }
+

@@ -405,3 +405,4 @@ jobs:
 
           $note
           "@ | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
+

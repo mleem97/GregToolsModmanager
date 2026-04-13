@@ -65,3 +65,4 @@ public static class S
 		("zh", "中文"),
 	];
 }
+

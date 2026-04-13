@@ -28,3 +28,4 @@ public sealed class BetaPluginSource : IgregPluginChannelSource
 			$"Beta-Kanal: Backend-Anbindung noch nicht implementiert (URL: {url}).");
 	}
 }
+

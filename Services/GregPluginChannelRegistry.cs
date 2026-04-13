@@ -21,3 +21,4 @@ public sealed class gregPluginChannelRegistry
 
 	public IReadOnlyList<string> AvailableChannels => _sources.Keys.ToList();
 }
+

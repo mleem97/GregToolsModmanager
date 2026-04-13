@@ -7,3 +7,4 @@ public sealed class WorkshopBrowseResultVm
 	public int CurrentPage { get; init; }
 	public bool HasMorePages { get; init; }
 }
+

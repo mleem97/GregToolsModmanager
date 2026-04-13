@@ -78,3 +78,4 @@ When you are ready:
 ## Trademarks
 
 **Steam** is a trademark of Valve Corporation. **Data Center** and related assets are the property of their respective rights holders. This tool is a community modding utility and is not affiliated with or endorsed by Valve or the game publisher unless explicitly stated elsewhere.
+

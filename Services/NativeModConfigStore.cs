@@ -71,3 +71,4 @@ public static class NativeModConfigStore
 		File.WriteAllText(path, json);
 	}
 }
+

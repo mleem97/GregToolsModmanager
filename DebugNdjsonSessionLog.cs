@@ -38,3 +38,4 @@ internal static class DebugNdjsonSessionLog
 	}
 	#endregion
 }
+

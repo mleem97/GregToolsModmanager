@@ -11,3 +11,4 @@ public interface IgregPluginChannelSource
 	string ChannelName { get; }
 	IReadOnlyList<PluginPackageInfo> ListPlugins();
 }
+

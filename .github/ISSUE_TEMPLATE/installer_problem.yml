@@ -47,3 +47,4 @@ body:
       label: App logs after install
       description: Paste relevant lines from `%LOCALAPPDATA%\\gregModmanager\\logs`.
       render: shell
+

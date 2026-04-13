@@ -92,3 +92,4 @@ public sealed class NativeDllRef
 	[JsonPropertyName("entryClass")]
 	public string EntryClass { get; set; } = "";
 }
+

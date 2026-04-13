@@ -17,3 +17,4 @@ public sealed class DependencyCheckResult
 	/// <summary>Optional filesystem path the user can open for context.</summary>
 	public string? Path { get; init; }
 }
+

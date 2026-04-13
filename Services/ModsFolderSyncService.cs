@@ -113,3 +113,4 @@ public readonly record struct SyncResult(bool Success, string? DestinationPath, 
 }
 
 public readonly record struct SyncProgressArgs(ulong PublishedFileId, bool Success, string? DestinationPath);
+

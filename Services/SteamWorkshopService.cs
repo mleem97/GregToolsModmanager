@@ -906,3 +906,4 @@ public readonly record struct PublishOutcome(bool Success, ulong PublishedFileId
 
 	public static PublishOutcome Fail(string message) => new(false, 0, message);
 }
+

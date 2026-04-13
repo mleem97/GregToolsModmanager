@@ -194,3 +194,4 @@ public partial class MyUploadsPage : ContentPage
 		}
 	}
 }
+

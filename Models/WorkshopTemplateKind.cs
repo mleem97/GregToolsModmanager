@@ -12,3 +12,4 @@ public enum WorkshopTemplateKind
 	/// <summary>gregCoreModFramework — <c>content/ModFramework/greg/Plugins</c> mirrors <c>{GameRoot}/greg/Plugins</c>.</summary>
 	ModdedgregCoreModFramework,
 }
+

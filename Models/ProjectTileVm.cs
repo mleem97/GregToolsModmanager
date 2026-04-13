@@ -69,3 +69,4 @@ public sealed class ProjectTileVm
 	public string ReadinessText { get; }
 	public string ReadinessColor { get; }
 }
+

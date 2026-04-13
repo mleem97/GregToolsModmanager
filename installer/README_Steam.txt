@@ -37,3 +37,4 @@ On Linux and Steam Deck it runs through Steam's Proton compatibility layer.
   Steam Play docs      https://store.steampowered.com/steamplay
   Proton GE releases   https://github.com/GloriousEggroll/proton-ge-custom
   ProtonDB reports     https://www.protondb.com/
+

@@ -56,3 +56,4 @@ Everyone is absolutely welcome! If you want to be a part of the project, just sh
 
 ---
 *© 2026 teamGreg | [gregframework.eu](https://gregframework.eu)*
+

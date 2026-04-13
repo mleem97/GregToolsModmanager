@@ -43,3 +43,4 @@ public sealed class WorkshopMetadata
 	[JsonPropertyName("workshop_dependency")]
 	public List<ulong> WorkshopDependencyIds { get; set; } = new();
 }
+

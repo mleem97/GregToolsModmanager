@@ -10,3 +10,4 @@
   <!-- Preserve Steamworks internals accessed via reflection in SteamUgcPreviews -->
   <assembly fullname="Facepunch.Steamworks.Win64" preserve="all" />
 </linker>
+

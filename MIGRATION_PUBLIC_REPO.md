@@ -43,3 +43,4 @@ To **keep history** from the monorepo, use `git subtree split` or `git filter-re
 `scripts/Package-GregModmanagerRelease.ps1`, `Deploy-Release-ToDataCenter.ps1`, and `Deploy-Release-ToWorkshop.ps1` resolve the project via `scripts/Resolve-GregModmanagerMonorepoDir.ps1`: **`workshopuploader\GregModmanager.csproj` is preferred** (canonical layout); **`GregModmanager\`** is still accepted until `git mv` succeeds.
 
 `framework/gregCoreMF.csproj` excludes both `..\workshopuploader\**\*.cs` and `..\GregModmanager\**\*.cs` so the framework project does not compile MAUI sources.
+

@@ -109,3 +109,4 @@ jobs:
         run: |
           echo "## Daily Malicious Code Scan" >> "$GITHUB_STEP_SUMMARY"
           cat malicious-scan-summary.txt >> "$GITHUB_STEP_SUMMARY"
+

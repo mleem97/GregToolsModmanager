@@ -9,3 +9,4 @@ public sealed class PublishedWorkshopItemVm
 
 	public DateTime Updated { get; init; }
 }
+

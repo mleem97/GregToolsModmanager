@@ -50,7 +50,7 @@
   <data name="NewProject_CouldNotCreate" xml:space="preserve"><value>Не удалось создать</value></data>
   <data name="NewProject_Vanilla" xml:space="preserve"><value>Vanilla (Object/Decoration)</value></data>
   <data name="NewProject_Modded" xml:space="preserve"><value>С модами (MelonLoader)</value></data>
-  <data name="NewProject_Fmf" xml:space="preserve"><value>С модами (FrikaModFramework)</value></data>
+  <data name="NewProject_GCF" xml:space="preserve"><value>С модами (gregCore Framework)</value></data>
 
   <!-- EditorPage -->
   <data name="Editor_Headline" xml:space="preserve"><value>Загрузка в мастерскую</value></data>
@@ -65,9 +65,9 @@
   <data name="Editor_TabPublish" xml:space="preserve"><value>Публикация</value></data>
   <data name="Editor_Visibility" xml:space="preserve"><value>Видимость</value></data>
   <data name="Editor_Tags" xml:space="preserve"><value>Теги</value></data>
-  <data name="Editor_TagsPlaceholder" xml:space="preserve"><value>vanilla, modded, fmf</value></data>
-  <data name="Editor_NeedsFmf" xml:space="preserve"><value>Требуется FrikaModFramework</value></data>
-  <data name="Editor_NeedsFmfHint" xml:space="preserve"><value>Добавляет в описание пометку, что для этого объекта нужен FMF.</value></data>
+  <data name="Editor_TagsPlaceholder" xml:space="preserve"><value>vanilla, modded, GCF</value></data>
+  <data name="Editor_NeedsGCF" xml:space="preserve"><value>Требуется gregCore Framework</value></data>
+  <data name="Editor_NeedsGCFHint" xml:space="preserve"><value>Добавляет в описание пометку, что для этого объекта нужен GCF.</value></data>
   <data name="Editor_NativeProfile" xml:space="preserve"><value>Профиль config.json</value></data>
   <data name="Editor_NativeProfileHint" xml:space="preserve"><value>Декор: shop/static в config.json. Код: только записи DLL (без shop/static для код-модов в этом файле).</value></data>
   <data name="Editor_NeedsMelonLoader" xml:space="preserve"><value>Нужен MelonLoader</value></data>
@@ -83,7 +83,7 @@
   <data name="Editor_WorkshopDepInvalidId" xml:space="preserve"><value>Введите корректный числовой ID файла Steam Workshop.</value></data>
   <data name="Editor_WorkshopDepDuplicate" xml:space="preserve"><value>Этот ID Workshop уже в списке.</value></data>
   <data name="Editor_WorkshopDepSelf" xml:space="preserve"><value>Нельзя добавить зависимость от самого себя.</value></data>
-  <data name="Editor_FmfNotice" xml:space="preserve"><value>Этому объекту нужен FrikaModFramework — скачайте его в Steam Workshop или через менеджер модов GregTools!</value></data>
+  <data name="Editor_GCFNotice" xml:space="preserve"><value>Этому объекту нужен gregCore Framework — скачайте его в Steam Workshop или через менеджер модов GregTools!</value></data>
   <data name="Editor_ChangeNotes" xml:space="preserve"><value>Примечания к изменениям</value></data>
   <data name="Editor_ChangeNotesHint" xml:space="preserve"><value>Опишите, что изменилось. Отображается на вкладке истории изменений Steam.</value></data>
   <data name="Editor_ChangeNotesPlaceholder" xml:space="preserve"><value>напр., исправлен вылет при запуске...</value></data>
@@ -106,7 +106,7 @@
   <data name="NativeConfig_AddStaticItem" xml:space="preserve"><value>Добавить статический объект</value></data>
   <data name="NativeConfig_Dlls" xml:space="preserve"><value>dlls (нативный плагин)</value></data>
   <data name="NativeConfig_AddDll" xml:space="preserve"><value>Добавить запись DLL</value></data>
-  <data name="NativeConfig_ModOptionsHint" xml:space="preserve"><value>Необязательно. Параметры runtime (MelonLoader/FMF). config.json обязателен для vanilla-ассетов.</value></data>
+  <data name="NativeConfig_ModOptionsHint" xml:space="preserve"><value>Необязательно. Параметры runtime (MelonLoader/GCF). config.json обязателен для vanilla-ассетов.</value></data>
   <data name="NativeConfig_SchemaVersion" xml:space="preserve"><value>schemaVersion</value></data>
   <data name="NativeConfig_ModKind" xml:space="preserve"><value>modKind</value></data>
   <data name="NativeConfig_OptionsNotes" xml:space="preserve"><value>notes</value></data>
@@ -174,9 +174,9 @@
 
   <!-- ModManagerPage -->
   <data name="Mod_Headline" xml:space="preserve"><value>Менеджер модов</value></data>
-  <data name="Mod_Subtitle" xml:space="preserve"><value>Просматривайте, устанавливайте и управляйте модами для FrikaModFramework.</value></data>
+  <data name="Mod_Subtitle" xml:space="preserve"><value>Просматривайте, устанавливайте и управляйте модами для gregCore Framework.</value></data>
   <data name="Mod_Dep_MelonLoader" xml:space="preserve"><value>MelonLoader</value></data>
-  <data name="Mod_Dep_Fmf" xml:space="preserve"><value>FrikaModFramework</value></data>
+  <data name="Mod_Dep_GCF" xml:space="preserve"><value>gregCore Framework</value></data>
   <data name="Mod_StoreDepsLine" xml:space="preserve"><value>Требуется: {0}</value></data>
   <data name="Detail_DependenciesHeading" xml:space="preserve"><value>У этого мода следующие зависимости:</value></data>
   <data name="Mod_Store" xml:space="preserve"><value>Магазин</value></data>
@@ -209,7 +209,7 @@
   <data name="Mod_MelonLoader" xml:space="preserve"><value>MelonLoader</value></data>
   <data name="Mod_DownloadPage" xml:space="preserve"><value>Страница загрузки</value></data>
   <data name="Mod_GameFolder" xml:space="preserve"><value>Папка игры</value></data>
-  <data name="Mod_PluginChannel" xml:space="preserve"><value>Канал плагинов FMF</value></data>
+  <data name="Mod_PluginChannel" xml:space="preserve"><value>Канал плагинов GCF</value></data>
   <data name="Mod_Channel" xml:space="preserve"><value>Канал:</value></data>
   <data name="Mod_Stable" xml:space="preserve"><value>Стабильный</value></data>
   <data name="Mod_BetaExp" xml:space="preserve"><value>Бета (экспериментально)</value></data>
@@ -269,7 +269,7 @@
   <data name="Settings_Headline" xml:space="preserve"><value>Параметры</value></data>
   <data name="Settings_Subtitle" xml:space="preserve"><value>Настройте дополнительные возможности GregTools Modmanager.</value></data>
   <data name="Settings_ModStore" xml:space="preserve"><value>Магазин модов</value></data>
-  <data name="Settings_ModStoreDesc" xml:space="preserve"><value>Включите вкладку «Магазин модов», чтобы просматривать, подписываться и управлять модами FrikaModFramework из Steam Workshop.</value></data>
+  <data name="Settings_ModStoreDesc" xml:space="preserve"><value>Включите вкладку «Магазин модов», чтобы просматривать, подписываться и управлять модами gregCore Framework из Steam Workshop.</value></data>
   <data name="Settings_EnableModStore" xml:space="preserve"><value>Включить магазин модов</value></data>
   <data name="Settings_RestartRequired" xml:space="preserve"><value>После изменения этого параметра требуется перезапуск.</value></data>
   <data name="Settings_RestartEffect" xml:space="preserve"><value>Перезапустите приложение, чтобы изменения вступили в силу.</value></data>
@@ -301,3 +301,4 @@
   <data name="Settings_ReproBundleCreateFailed" xml:space="preserve"><value>Не удалось создать пакет: {0}</value></data>
 
 </root>
+

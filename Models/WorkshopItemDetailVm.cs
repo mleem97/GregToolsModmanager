@@ -59,3 +59,4 @@ public sealed class WorkshopItemDetailVm
 
 	public bool HasDependencyHints { get; init; }
 }
+

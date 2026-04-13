@@ -297,3 +297,4 @@ public partial class ItemDetailPage : ContentPage
 		};
 	}
 }
+

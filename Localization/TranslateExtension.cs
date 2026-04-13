@@ -12,3 +12,4 @@ public sealed class TranslateExtension : IMarkupExtension<string>
 	object IMarkupExtension.ProvideValue(IServiceProvider serviceProvider)
 		=> ProvideValue(serviceProvider);
 }
+

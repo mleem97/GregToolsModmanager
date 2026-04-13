@@ -114,3 +114,4 @@ Nimmt die **neueste** `gregModmanager-*-Setup.exe` unter `installer\Output\`, od
 - [Microsoft: SignTool](https://learn.microsoft.com/en-us/windows/win32/seccrypto/signtool)  
 - [DigiCert: Code Signing](https://www.digicert.com/code-signing/)  
 - [Azure Trusted Signing](https://learn.microsoft.com/en-us/azure/trusted-signing/) (Alternative: Signatur aus der Cloud ohne lokalen PFX)
+

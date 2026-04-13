@@ -50,7 +50,7 @@
   <data name="NewProject_CouldNotCreate" xml:space="preserve"><value>无法创建</value></data>
   <data name="NewProject_Vanilla" xml:space="preserve"><value>原版（物件/装饰）</value></data>
   <data name="NewProject_Modded" xml:space="preserve"><value>模组（MelonLoader）</value></data>
-  <data name="NewProject_Fmf" xml:space="preserve"><value>模组（FrikaModFramework）</value></data>
+  <data name="NewProject_GCF" xml:space="preserve"><value>模组（gregCore Framework）</value></data>
 
   <!-- EditorPage -->
   <data name="Editor_Headline" xml:space="preserve"><value>创意工坊上传</value></data>
@@ -65,9 +65,9 @@
   <data name="Editor_TabPublish" xml:space="preserve"><value>发布</value></data>
   <data name="Editor_Visibility" xml:space="preserve"><value>可见性</value></data>
   <data name="Editor_Tags" xml:space="preserve"><value>标签</value></data>
-  <data name="Editor_TagsPlaceholder" xml:space="preserve"><value>vanilla, modded, fmf</value></data>
-  <data name="Editor_NeedsFmf" xml:space="preserve"><value>需要 FrikaModFramework</value></data>
-  <data name="Editor_NeedsFmfHint" xml:space="preserve"><value>在描述中添加提示：此物品需要 FMF。</value></data>
+  <data name="Editor_TagsPlaceholder" xml:space="preserve"><value>vanilla, modded, GCF</value></data>
+  <data name="Editor_NeedsGCF" xml:space="preserve"><value>需要 gregCore Framework</value></data>
+  <data name="Editor_NeedsGCFHint" xml:space="preserve"><value>在描述中添加提示：此物品需要 GCF。</value></data>
   <data name="Editor_NativeProfile" xml:space="preserve"><value>config.json 配置文件</value></data>
   <data name="Editor_NativeProfileHint" xml:space="preserve"><value>装饰：shop/static。代码：仅 DLL 条目（代码 mod 不在此文件填写 shop/static）。</value></data>
   <data name="Editor_NeedsMelonLoader" xml:space="preserve"><value>需要 MelonLoader</value></data>
@@ -83,7 +83,7 @@
   <data name="Editor_WorkshopDepInvalidId" xml:space="preserve"><value>请输入有效的 Steam Workshop 文件 ID（数字）。</value></data>
   <data name="Editor_WorkshopDepDuplicate" xml:space="preserve"><value>该 Workshop ID 已在列表中。</value></data>
   <data name="Editor_WorkshopDepSelf" xml:space="preserve"><value>不能将自身添加为依赖。</value></data>
-  <data name="Editor_FmfNotice" xml:space="preserve"><value>此物品需要 FrikaModFramework，请从 Steam Workshop 或通过 GregTools Modmanager 下载！</value></data>
+  <data name="Editor_GCFNotice" xml:space="preserve"><value>此物品需要 gregCore Framework，请从 Steam Workshop 或通过 GregTools Modmanager 下载！</value></data>
   <data name="Editor_ChangeNotes" xml:space="preserve"><value>更新说明</value></data>
   <data name="Editor_ChangeNotesHint" xml:space="preserve"><value>说明变更内容。将显示在 Steam 的更新日志标签页。</value></data>
   <data name="Editor_ChangeNotesPlaceholder" xml:space="preserve"><value>例如：修复启动时崩溃...</value></data>
@@ -106,7 +106,7 @@
   <data name="NativeConfig_AddStaticItem" xml:space="preserve"><value>添加静态物件</value></data>
   <data name="NativeConfig_Dlls" xml:space="preserve"><value>dlls（原生插件）</value></data>
   <data name="NativeConfig_AddDll" xml:space="preserve"><value>添加 DLL 条目</value></data>
-  <data name="NativeConfig_ModOptionsHint" xml:space="preserve"><value>可选。运行时选项（MelonLoader/FMF）。原生资源仍需 config.json。</value></data>
+  <data name="NativeConfig_ModOptionsHint" xml:space="preserve"><value>可选。运行时选项（MelonLoader/GCF）。原生资源仍需 config.json。</value></data>
   <data name="NativeConfig_SchemaVersion" xml:space="preserve"><value>schemaVersion</value></data>
   <data name="NativeConfig_ModKind" xml:space="preserve"><value>modKind</value></data>
   <data name="NativeConfig_OptionsNotes" xml:space="preserve"><value>notes</value></data>
@@ -174,9 +174,9 @@
 
   <!-- ModManagerPage -->
   <data name="Mod_Headline" xml:space="preserve"><value>模组管理器</value></data>
-  <data name="Mod_Subtitle" xml:space="preserve"><value>浏览、安装并管理 FrikaModFramework 的模组。</value></data>
+  <data name="Mod_Subtitle" xml:space="preserve"><value>浏览、安装并管理 gregCore Framework 的模组。</value></data>
   <data name="Mod_Dep_MelonLoader" xml:space="preserve"><value>MelonLoader</value></data>
-  <data name="Mod_Dep_Fmf" xml:space="preserve"><value>FrikaModFramework</value></data>
+  <data name="Mod_Dep_GCF" xml:space="preserve"><value>gregCore Framework</value></data>
   <data name="Mod_StoreDepsLine" xml:space="preserve"><value>需要：{0}</value></data>
   <data name="Detail_DependenciesHeading" xml:space="preserve"><value>此模组依赖以下组件：</value></data>
   <data name="Mod_Store" xml:space="preserve"><value>商店</value></data>
@@ -209,7 +209,7 @@
   <data name="Mod_MelonLoader" xml:space="preserve"><value>MelonLoader</value></data>
   <data name="Mod_DownloadPage" xml:space="preserve"><value>下载页面</value></data>
   <data name="Mod_GameFolder" xml:space="preserve"><value>游戏文件夹</value></data>
-  <data name="Mod_PluginChannel" xml:space="preserve"><value>FMF 插件通道</value></data>
+  <data name="Mod_PluginChannel" xml:space="preserve"><value>GCF 插件通道</value></data>
   <data name="Mod_Channel" xml:space="preserve"><value>通道：</value></data>
   <data name="Mod_Stable" xml:space="preserve"><value>稳定版</value></data>
   <data name="Mod_BetaExp" xml:space="preserve"><value>测试版（实验性）</value></data>
@@ -269,7 +269,7 @@
   <data name="Settings_Headline" xml:space="preserve"><value>设置</value></data>
   <data name="Settings_Subtitle" xml:space="preserve"><value>配置 GregTools Modmanager 的可选功能。</value></data>
   <data name="Settings_ModStore" xml:space="preserve"><value>模组商店</value></data>
-  <data name="Settings_ModStoreDesc" xml:space="preserve"><value>启用“模组商店”标签页，以浏览、订阅并管理来自 Steam Workshop 的 FrikaModFramework 模组。</value></data>
+  <data name="Settings_ModStoreDesc" xml:space="preserve"><value>启用“模组商店”标签页，以浏览、订阅并管理来自 Steam Workshop 的 gregCore Framework 模组。</value></data>
   <data name="Settings_EnableModStore" xml:space="preserve"><value>启用模组商店</value></data>
   <data name="Settings_RestartRequired" xml:space="preserve"><value>更改此设置后需要重启应用。</value></data>
   <data name="Settings_RestartEffect" xml:space="preserve"><value>请重启应用以使更改生效。</value></data>
@@ -301,3 +301,4 @@
   <data name="Settings_ReproBundleCreateFailed" xml:space="preserve"><value>无法创建复现包：{0}</value></data>
 
 </root>
+

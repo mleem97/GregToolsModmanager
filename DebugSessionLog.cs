@@ -62,3 +62,4 @@ internal static class DebugSessionLog
 	public static void Write(string hypothesisId, string location, string message, object? data = null) { }
 #endif
 }
+

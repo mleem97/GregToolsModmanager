@@ -85,3 +85,4 @@ public readonly record struct DownloadResult(bool Success, string? LocalDirector
 	public static DownloadResult Ok(string directory, string title) => new(true, directory, title, null);
 	public static DownloadResult Fail(string error) => new(false, null, "", error);
 }
+

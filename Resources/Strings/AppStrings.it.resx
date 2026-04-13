@@ -50,7 +50,7 @@
   <data name="NewProject_CouldNotCreate" xml:space="preserve"><value>Impossibile creare</value></data>
   <data name="NewProject_Vanilla" xml:space="preserve"><value>Vanilla (Object/Decoration)</value></data>
   <data name="NewProject_Modded" xml:space="preserve"><value>Con mod (MelonLoader)</value></data>
-  <data name="NewProject_Fmf" xml:space="preserve"><value>Con mod (FrikaModFramework)</value></data>
+  <data name="NewProject_GCF" xml:space="preserve"><value>Con mod (gregCore Framework)</value></data>
 
   <!-- EditorPage -->
   <data name="Editor_Headline" xml:space="preserve"><value>Caricamento Workshop</value></data>
@@ -65,9 +65,9 @@
   <data name="Editor_TabPublish" xml:space="preserve"><value>Pubblica</value></data>
   <data name="Editor_Visibility" xml:space="preserve"><value>Visibilità</value></data>
   <data name="Editor_Tags" xml:space="preserve"><value>Tag</value></data>
-  <data name="Editor_TagsPlaceholder" xml:space="preserve"><value>vanilla, modded, fmf</value></data>
-  <data name="Editor_NeedsFmf" xml:space="preserve"><value>Richiede FrikaModFramework</value></data>
-  <data name="Editor_NeedsFmfHint" xml:space="preserve"><value>Aggiunge alla descrizione l’avviso che questo oggetto richiede FMF.</value></data>
+  <data name="Editor_TagsPlaceholder" xml:space="preserve"><value>vanilla, modded, GCF</value></data>
+  <data name="Editor_NeedsGCF" xml:space="preserve"><value>Richiede gregCore Framework</value></data>
+  <data name="Editor_NeedsGCFHint" xml:space="preserve"><value>Aggiunge alla descrizione l’avviso che questo oggetto richiede GCF.</value></data>
   <data name="Editor_NativeProfile" xml:space="preserve"><value>Profilo config.json</value></data>
   <data name="Editor_NativeProfileHint" xml:space="preserve"><value>Decorazione: shop/static in config.json. Codice: solo voci DLL (niente shop/static per mod di codice in questo file).</value></data>
   <data name="Editor_NeedsMelonLoader" xml:space="preserve"><value>Richiede MelonLoader</value></data>
@@ -83,7 +83,7 @@
   <data name="Editor_WorkshopDepInvalidId" xml:space="preserve"><value>Inserisci un ID file Workshop Steam numerico valido.</value></data>
   <data name="Editor_WorkshopDepDuplicate" xml:space="preserve"><value>Questo ID Workshop è già nell’elenco.</value></data>
   <data name="Editor_WorkshopDepSelf" xml:space="preserve"><value>Non puoi dipendere dall’oggetto stesso.</value></data>
-  <data name="Editor_FmfNotice" xml:space="preserve"><value>Questo oggetto richiede FrikaModFramework: scaricalo dallo Steam Workshop o tramite il mod manager GregTools!</value></data>
+  <data name="Editor_GCFNotice" xml:space="preserve"><value>Questo oggetto richiede gregCore Framework: scaricalo dallo Steam Workshop o tramite il mod manager GregTools!</value></data>
   <data name="Editor_ChangeNotes" xml:space="preserve"><value>Note di aggiornamento</value></data>
   <data name="Editor_ChangeNotesHint" xml:space="preserve"><value>Descrivi cosa è cambiato. Visibile nella scheda changelog di Steam.</value></data>
   <data name="Editor_ChangeNotesPlaceholder" xml:space="preserve"><value>es. risolto crash all’avvio...</value></data>
@@ -106,7 +106,7 @@
   <data name="NativeConfig_AddStaticItem" xml:space="preserve"><value>Aggiungi oggetto statico</value></data>
   <data name="NativeConfig_Dlls" xml:space="preserve"><value>dlls (plugin nativo)</value></data>
   <data name="NativeConfig_AddDll" xml:space="preserve"><value>Aggiungi voce DLL</value></data>
-  <data name="NativeConfig_ModOptionsHint" xml:space="preserve"><value>Opzionale. Opzioni runtime (MelonLoader/FMF). config.json resta obbligatorio per asset vanilla.</value></data>
+  <data name="NativeConfig_ModOptionsHint" xml:space="preserve"><value>Opzionale. Opzioni runtime (MelonLoader/GCF). config.json resta obbligatorio per asset vanilla.</value></data>
   <data name="NativeConfig_SchemaVersion" xml:space="preserve"><value>schemaVersion</value></data>
   <data name="NativeConfig_ModKind" xml:space="preserve"><value>modKind</value></data>
   <data name="NativeConfig_OptionsNotes" xml:space="preserve"><value>notes</value></data>
@@ -174,9 +174,9 @@
 
   <!-- ModManagerPage -->
   <data name="Mod_Headline" xml:space="preserve"><value>Gestore mod</value></data>
-  <data name="Mod_Subtitle" xml:space="preserve"><value>Sfoglia, installa e gestisci le mod per FrikaModFramework.</value></data>
+  <data name="Mod_Subtitle" xml:space="preserve"><value>Sfoglia, installa e gestisci le mod per gregCore Framework.</value></data>
   <data name="Mod_Dep_MelonLoader" xml:space="preserve"><value>MelonLoader</value></data>
-  <data name="Mod_Dep_Fmf" xml:space="preserve"><value>FrikaModFramework</value></data>
+  <data name="Mod_Dep_GCF" xml:space="preserve"><value>gregCore Framework</value></data>
   <data name="Mod_StoreDepsLine" xml:space="preserve"><value>Richiede: {0}</value></data>
   <data name="Detail_DependenciesHeading" xml:space="preserve"><value>Questa mod ha le seguenti dipendenze:</value></data>
   <data name="Mod_Store" xml:space="preserve"><value>Negozio</value></data>
@@ -209,7 +209,7 @@
   <data name="Mod_MelonLoader" xml:space="preserve"><value>MelonLoader</value></data>
   <data name="Mod_DownloadPage" xml:space="preserve"><value>Pagina di download</value></data>
   <data name="Mod_GameFolder" xml:space="preserve"><value>Cartella di gioco</value></data>
-  <data name="Mod_PluginChannel" xml:space="preserve"><value>Canale plugin FMF</value></data>
+  <data name="Mod_PluginChannel" xml:space="preserve"><value>Canale plugin GCF</value></data>
   <data name="Mod_Channel" xml:space="preserve"><value>Canale:</value></data>
   <data name="Mod_Stable" xml:space="preserve"><value>Stabile</value></data>
   <data name="Mod_BetaExp" xml:space="preserve"><value>Beta (sperimentale)</value></data>
@@ -269,7 +269,7 @@
   <data name="Settings_Headline" xml:space="preserve"><value>Impostazioni</value></data>
   <data name="Settings_Subtitle" xml:space="preserve"><value>Configura le funzioni opzionali di GregTools Modmanager.</value></data>
   <data name="Settings_ModStore" xml:space="preserve"><value>Negozio mod</value></data>
-  <data name="Settings_ModStoreDesc" xml:space="preserve"><value>Abilita la scheda Negozio mod per sfogliare, iscriverti e gestire le mod FrikaModFramework dallo Steam Workshop.</value></data>
+  <data name="Settings_ModStoreDesc" xml:space="preserve"><value>Abilita la scheda Negozio mod per sfogliare, iscriverti e gestire le mod gregCore Framework dallo Steam Workshop.</value></data>
   <data name="Settings_EnableModStore" xml:space="preserve"><value>Abilita negozio mod</value></data>
   <data name="Settings_RestartRequired" xml:space="preserve"><value>È necessario riavviare dopo aver modificato questa impostazione.</value></data>
   <data name="Settings_RestartEffect" xml:space="preserve"><value>Riavvia l’app per applicare la modifica.</value></data>
@@ -301,3 +301,4 @@
   <data name="Settings_ReproBundleCreateFailed" xml:space="preserve"><value>Impossibile creare il pacchetto: {0}</value></data>
 
 </root>
+

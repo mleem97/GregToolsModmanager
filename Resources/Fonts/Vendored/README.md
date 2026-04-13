@@ -10,3 +10,4 @@ Notes:
 
 - Keep only properly licensed font files in this directory.
 - Files in these folders are automatically included by the MAUI project configuration.
+

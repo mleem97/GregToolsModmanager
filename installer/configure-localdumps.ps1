@@ -81,3 +81,4 @@ Write-Host "     Scope:     $Scope"
 Write-Host "     DumpType:  $DumpType ($dumpTypeValue)"
 Write-Host "     DumpCount: $DumpCount"
 Write-Host "     Folder:    $DumpFolder"
+

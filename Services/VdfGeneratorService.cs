@@ -32,3 +32,4 @@ public sealed class VdfGeneratorService
 		return path.Replace('\\', '/').Replace("\"", "\\\"", StringComparison.Ordinal);
 	}
 }
+

@@ -21,3 +21,4 @@ public sealed class ModOptionsConfigFile
 	[JsonPropertyName("settings")]
 	public Dictionary<string, JsonElement> Settings { get; set; } = new();
 }
+

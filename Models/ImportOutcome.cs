@@ -6,3 +6,4 @@ public readonly record struct ImportOutcome(bool Success, string ProjectRoot, st
 
 	public static ImportOutcome Fail(string message) => new(false, string.Empty, message);
 }
+

@@ -150,3 +150,4 @@ public partial class ProjectsPage : ContentPage
 		}
 	}
 }
+

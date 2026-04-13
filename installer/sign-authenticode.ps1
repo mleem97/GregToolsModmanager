@@ -88,3 +88,4 @@ if ($LASTEXITCODE -ne 0) {
 
 $sig = Get-AuthenticodeSignature -FilePath $Path
 Write-Host "[sign] Signatur: Status=$($sig.Status) SignaturTyp=$($sig.SignerCertificate.Subject)"
+
