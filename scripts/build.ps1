@@ -32,7 +32,18 @@ function New-Sha256File {
         throw "Datei fuer SHA256 nicht gefunden: $TargetPath"
     }
 
-    $hash = (Get-FileHash -LiteralPath $TargetPath -Algorithm SHA256).Hash.ToLowerInvariant()
+    $hash = ""
+    if (Get-Command Get-FileHash -ErrorAction SilentlyContinue) {
+        $hash = (Get-FileHash -LiteralPath $TargetPath -Algorithm SHA256).Hash.ToLowerInvariant()
+    } else {
+        # Fallback to .NET for environments without Get-FileHash
+        $stream = [System.IO.File]::OpenRead($TargetPath)
+        $sha = [System.Security.Cryptography.SHA256]::Create()
+        $hashBytes = $sha.ComputeHash($stream)
+        $stream.Close()
+        $hash = (($hashBytes | ForEach-Object { "{0:x2}" -f $_ }) -join "")
+    }
+
     $leafName = [System.IO.Path]::GetFileName($TargetPath)
     $hashFile = "$TargetPath.sha256"
     Set-Content -LiteralPath $hashFile -Value "$hash *$leafName" -NoNewline -Encoding ascii
@@ -312,9 +323,9 @@ if ($SignOnly) {
 }
 
 $isccCandidates = @(
+    (Join-Path $env:LOCALAPPDATA 'Programs\Inno Setup 6\ISCC.exe'),
     (Join-Path ${env:ProgramFiles(x86)} 'Inno Setup 6\ISCC.exe'),
-    (Join-Path $env:ProgramFiles 'Inno Setup 6\ISCC.exe'),
-    (Join-Path $env:LOCALAPPDATA 'Programs\Inno Setup 6\ISCC.exe')
+    (Join-Path $env:ProgramFiles 'Inno Setup 6\ISCC.exe')
 )
 $iscc = $isccCandidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
 if (-not $iscc) {
@@ -415,9 +426,15 @@ if ($wantSign) {
 }
 
 Write-Host "[build] Inno Setup ($iscc) - Version $ver ..."
+$numericVer = $ver -replace '-.*$', ''
+if ($numericVer -notmatch '^\d+\.\d+\.\d+\.\d+$') {
+    if ($numericVer -match '^\d+\.\d+\.\d+$') { $numericVer += ".0" }
+    else { $numericVer = "1.0.0.0" }
+}
 $argList = @(
     $iss
     "/DMyAppVersion=$ver"
+    "/DMyAppNumericVersion=$numericVer"
 )
 & $iscc @argList
 if ($LASTEXITCODE -ne 0) {

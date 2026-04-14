@@ -6,6 +6,10 @@
 #define MyAppVersion "1.0.0"
 #endif
 
+#ifndef MyAppNumericVersion
+#define MyAppNumericVersion "1.0.0.0"
+#endif
+
 #define MyAppName "gregModmanager"
 #define MyAppPublisher "GregFramework"
 #define MyAppExeName "GregModmanager.exe"
@@ -40,7 +44,7 @@ DisableWelcomePage=no
 DisableProgramGroupPage=no
 UninstallDisplayIcon={app}\{#MyAppExeName}
 MinVersion=10.0.17763
-VersionInfoVersion={#MyAppVersion}
+VersionInfoVersion={#MyAppNumericVersion}
 VersionInfoCompany={#MyAppPublisher}
 VersionInfoDescription={#MyAppName} Setup
 VersionInfoProductName={#MyAppName}
@@ -54,7 +58,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 ; ignoreversion: Dateien immer durch die neue Version ersetzen (auch gleiche Versionsnummer).
-Source: "..\bin\Release\net9.0-windows10.0.19041.0\win10-x64\publish\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\bin\Release\net9.0-windows10.0.19041.0\win-x64\publish\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [InstallDelete]
 ; Wichtig für self-contained MAUI/WinAppSDK: alte Runtime-Dateien vor dem Kopieren entfernen,
