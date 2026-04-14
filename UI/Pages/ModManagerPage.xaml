@@ -44,9 +44,9 @@
         <!-- 3. TABS -->
         <Grid Grid.Row="2" Padding="32,24,32,16" ColumnDefinitions="*,*,*,*" ColumnSpacing="12">
             <Button x:Name="TabStore" Grid.Column="0" Text="STORE" Clicked="OnTabStore" />
-            <Button x:Name="TabInstalledBtn" Grid.Column="1" Text="INSTALLED" Style="{StaticResource SecondaryButton}" Clicked="OnTabInstalled" />
-            <Button x:Name="TabFavoritesBtn" Grid.Column="2" Text="FAVORITES" Style="{StaticResource SecondaryButton}" Clicked="OnTabFavorites" />
-            <Button x:Name="TabHealthBtn" Grid.Column="3" Text="DIAGNOSTICS" Style="{StaticResource SecondaryButton}" Clicked="OnTabHealth" />
+            <Button x:Name="TabInstalled" Grid.Column="1" Text="INSTALLED" Style="{StaticResource SecondaryButton}" Clicked="OnTabInstalled" />
+            <Button x:Name="TabFavorites" Grid.Column="2" Text="FAVORITES" Style="{StaticResource SecondaryButton}" Clicked="OnTabFavorites" />
+            <Button x:Name="TabHealth" Grid.Column="3" Text="DIAGNOSTICS" Style="{StaticResource SecondaryButton}" Clicked="OnTabHealth" />
         </Grid>
 
         <!-- 4. CONTENT -->
