@@ -11,7 +11,7 @@
     <AssemblyName>GregModmanager</AssemblyName>
     <ApplicationTitle>gregModmanager</ApplicationTitle>
     <ApplicationId>eu.gregframework.modmanager</ApplicationId>
-    <ApplicationDisplayVersion>1.1.0</ApplicationDisplayVersion>
+    <ApplicationDisplayVersion>1.0.0.30-pre</ApplicationDisplayVersion>
     <ApplicationVersion>4</ApplicationVersion>
     <Version>1.1.0</Version>
     <InformationalVersion>1.1.0</InformationalVersion>
