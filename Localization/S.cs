@@ -27,6 +27,7 @@ public static class S
 	/// </summary>
 	public static void ApplySavedCulture()
 	{
+#if WINDOWS || ANDROID || IOS || MACCATALYST
 		var saved = Preferences.Default.Get(LanguagePreferenceKey, "");
 		if (string.IsNullOrWhiteSpace(saved)) return;
 
@@ -42,15 +43,22 @@ public static class S
 		{
 			// invalid culture string — ignore, keep system default
 		}
+#endif
 	}
 
 	public static void SetLanguage(string cultureCode)
 	{
+#if WINDOWS || ANDROID || IOS || MACCATALYST
 		Preferences.Default.Set(LanguagePreferenceKey, cultureCode);
+#endif
 	}
 
 	public static string GetSavedLanguage()
+#if WINDOWS || ANDROID || IOS || MACCATALYST
 		=> Preferences.Default.Get(LanguagePreferenceKey, "");
+#else
+		=> "";
+#endif
 
 	public static readonly (string Code, string DisplayName)[] SupportedLanguages =
 	[

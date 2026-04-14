@@ -10,9 +10,11 @@ public sealed class WorkshopItemDetailVm
 	public ulong OwnerSteamId { get; init; }
 	public string PreviewImageUrl { get; init; } = "";
 
+#if WINDOWS || ANDROID || IOS || MACCATALYST
 	/// <summary>Bindable image source that resolves the preview URL for MAUI Image controls.</summary>
 	public ImageSource? PreviewImageSource =>
 		string.IsNullOrEmpty(PreviewImageUrl) ? null : ImageSource.FromUri(new Uri(PreviewImageUrl));
+#endif
 
 	public DateTime Created { get; init; }
 	public DateTime Updated { get; init; }

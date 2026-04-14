@@ -15,7 +15,11 @@ public sealed class BetaPluginSource : IgregPluginChannelSource
 
 	public IReadOnlyList<PluginPackageInfo> ListPlugins()
 	{
+#if WINDOWS || ANDROID || IOS || MACCATALYST
 		var url = Preferences.Default.Get(PrefKeyBetaServerUrl, string.Empty);
+#else
+		var url = "";
+#endif
 		if (string.IsNullOrWhiteSpace(url))
 		{
 			throw new NotImplementedException(

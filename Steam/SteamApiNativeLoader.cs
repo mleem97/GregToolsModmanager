@@ -11,7 +11,7 @@ namespace GregModmanager.Steam;
 /// </summary>
 public static class SteamApiNativeLoader
 {
-	private const string DllFileName = "steam_api64.dll";
+	private static readonly string DllFileName = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "steam_api64.dll" : "libsteam_api.so";
 	private const string UnityDataFolderName = "Data Center_Data";
 	private static IntPtr _module;
 
@@ -34,8 +34,7 @@ public static class SteamApiNativeLoader
 
 			try
 			{
-				_module = NativeLibrary.Load(path);
-				if (_module != IntPtr.Zero)
+				if (NativeLibrary.TryLoad(path, out _module))
 				{
 					return true;
 				}
@@ -48,8 +47,7 @@ public static class SteamApiNativeLoader
 
 		try
 		{
-			_module = NativeLibrary.Load(DllFileName);
-			return _module != IntPtr.Zero;
+			return NativeLibrary.TryLoad(DllFileName, out _module);
 		}
 		catch
 		{
@@ -62,7 +60,11 @@ public static class SteamApiNativeLoader
 		var envRoot = Environment.GetEnvironmentVariable("DATA_CENTER_GAME_DIR")?.Trim();
 		if (!string.IsNullOrEmpty(envRoot))
 		{
-			yield return Path.Combine(envRoot, UnityDataFolderName, "Plugins", "x86_64", DllFileName);
+			var nativeSubPath = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) 
+				? Path.Combine(UnityDataFolderName, "Plugins", "x86_64", DllFileName)
+				: Path.Combine(UnityDataFolderName, "Plugins", "x86_64", DllFileName); // Unity Linux paths usually match
+			
+			yield return Path.Combine(envRoot, nativeSubPath);
 		}
 
 		foreach (var path in EnumerateWalkingUpFrom(AppContext.BaseDirectory))
@@ -133,23 +135,32 @@ public static class SteamApiNativeLoader
 			}
 		}
 
-		try
+		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
 		{
-			using var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\WOW6432Node\Valve\Steam");
-			var installPath = key?.GetValue("InstallPath") as string;
-			if (!string.IsNullOrEmpty(installPath))
+			try
 			{
-				Add(Path.Combine(installPath, "steamapps", "common", "Data Center"));
+				using var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\WOW6432Node\Valve\Steam");
+				var installPath = key?.GetValue("InstallPath") as string;
+				if (!string.IsNullOrEmpty(installPath))
+				{
+					Add(Path.Combine(installPath, "steamapps", "common", "Data Center"));
+				}
 			}
-		}
-		catch
-		{
-			// ignored
-		}
+			catch
+			{
+				// ignored
+			}
 
-		Add(Path.Combine(
-			Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86),
-			"Steam", "steamapps", "common", "Data Center"));
+			Add(Path.Combine(
+				Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86),
+				"Steam", "steamapps", "common", "Data Center"));
+		}
+		else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+		{
+			var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+			Add(Path.Combine(home, ".local/share/Steam/steamapps/common/Data Center"));
+			Add(Path.Combine(home, ".steam/steam/steamapps/common/Data Center"));
+		}
 
 		foreach (var root in seen)
 		{

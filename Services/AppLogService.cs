@@ -14,8 +14,11 @@ public sealed class AppLogService
 	{
 		var line = $"{DateTime.Now:HH:mm:ss} {message}";
 		AppFileLog.Info(message);
+
+#if WINDOWS || ANDROID || IOS || MACCATALYST
 		MainThread.BeginInvokeOnMainThread(() =>
 		{
+#endif
 			Lines.Add(line);
 			while (Lines.Count > MaxLines)
 			{
@@ -23,7 +26,9 @@ public sealed class AppLogService
 			}
 
 			LineAppended?.Invoke(this, EventArgs.Empty);
+#if WINDOWS || ANDROID || IOS || MACCATALYST
 		});
+#endif
 	}
 }
 

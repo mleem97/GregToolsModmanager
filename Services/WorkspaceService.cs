@@ -43,12 +43,14 @@ public sealed class WorkspaceService
 				return _cachedWorkspaceRoot;
 			}
 
+#if WINDOWS || ANDROID || IOS || MACCATALYST
 			var custom = Preferences.Default.Get(CustomWorkspacePathKey, "");
 			if (!string.IsNullOrWhiteSpace(custom) && Directory.Exists(custom))
 			{
 				_cachedWorkspaceRoot = custom;
 				return _cachedWorkspaceRoot;
 			}
+#endif
 
 			_steam?.EnsureInitialized(null);
 			var fromGame = TryGetGameWorkshopDirectory();

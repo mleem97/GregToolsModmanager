@@ -33,7 +33,7 @@
     <Compile Remove="Program.cs" />
   </ItemGroup>
 
-  <!-- Linux Specific (Exclude EVERYTHING UI and Steam related for CLI core) -->
+  <!-- Linux / Headless Specific (Exclude ONLY UI and MAUI specific parts) -->
   <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
     <Compile Remove="**\*.xaml.cs" />
     <Compile Remove="App.xaml.cs" />
@@ -42,17 +42,6 @@
     <Compile Remove="Platforms\**\*.cs" />
     <Compile Remove="Localization\TranslateExtension.cs" />
     <Compile Remove="Models\ProjectTileVm.cs" />
-    <Compile Remove="Models\WorkshopItemDetailVm.cs" />
-    <Compile Remove="Models\WorkshopBrowseResultVm.cs" />
-    <Compile Remove="Services\SteamWorkshopService.cs" />
-    <Compile Remove="Services\ModDependencyService.cs" />
-    <Compile Remove="Services\SubscriptionPoller.cs" />
-    <Compile Remove="Services\WorkshopDownloadService.cs" />
-    <Compile Remove="Services\WorkshopSyncOrchestrator.cs" />
-    <Compile Remove="Services\WorkspaceService.cs" />
-    <Compile Remove="Services\BetaPluginSource.cs" />
-    <Compile Remove="Services\StablePluginSource.cs" />
-    <Compile Update="Services\GitHubModSource.cs" />
     <None Include="**\*.xaml" />
   </ItemGroup>
 
