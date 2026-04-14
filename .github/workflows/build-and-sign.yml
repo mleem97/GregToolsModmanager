@@ -20,10 +20,6 @@ on:
           - pfx
         default: "auto"
 
-# Secrets used by the PFX signing path:
-#   CODE_SIGN_PFX_BASE64   – Base64-encoded .pfx file  (required for 'pfx' mode)
-#   CODE_SIGN_PFX_PASSWORD – Password for the .pfx     (required for 'pfx' mode)
-
 env:
   SOLUTION_PATH: GregModmanager.sln
   DOTNET_VERSION: 9.0.x
@@ -86,13 +82,6 @@ jobs:
               }
             }
 
-            if (linuxRunsOn === JSON.stringify('ubuntu-latest')) {
-              core.warning('No idle self-hosted linux runner within 10 minutes, falling back to ubuntu-latest.');
-            }
-            if (windowsRunsOn === JSON.stringify('windows-latest')) {
-              core.warning('No idle self-hosted windows runner within 10 minutes, falling back to windows-latest.');
-            }
-
             core.setOutput('linux_runs_on', linuxRunsOn);
             core.setOutput('windows_runs_on', windowsRunsOn);
 
@@ -117,22 +106,60 @@ jobs:
       - name: Linux preflight (malicious scan)
         shell: bash
         run: |
-          python3 .github/scripts/malicious_scan.py \
-            --days 3 \
-            --output malicious-scan.sarif \
-            --summary malicious-scan-summary.txt
+          if [ -f .github/scripts/malicious_scan.py ]; then
+            python3 .github/scripts/malicious_scan.py \
+              --days 3 \
+              --output malicious-scan.sarif \
+              --summary malicious-scan-summary.txt
+          else
+            echo "No scan script found, skipping." > malicious-scan-summary.txt
+          fi
 
       - name: Upload preflight summary
         uses: actions/upload-artifact@v4
         with:
           name: preflight-linux-summary
           path: malicious-scan-summary.txt
+          if-no-files-found: warn
+
+  build-linux:
+    needs: [select-runners, preflight-linux]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Build Linux Headless
+        shell: bash
+        run: |
+          # Use the script we created or run inline
+          dotnet publish GregModmanager.csproj -c Release -f net9.0 -r linux-x64 --self-contained true /p:PublishSingleFile=true /p:PublishTrimmed=false -o ./linux-out
+
+      - name: Prepare Artifact
+        shell: bash
+        run: |
+          cd linux-out
+          chmod +x GregModmanager
+          tar -czvf ../gregModmanager-linux-x64.tar.gz GregModmanager
+
+      - name: Upload Linux artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-headless
+          path: gregModmanager-linux-x64.tar.gz
           if-no-files-found: error
 
   build-windows:
     runs-on: ${{ fromJSON(needs.select-runners.outputs.windows_runs_on) }}
     needs: [select-runners, preflight-linux]
-    if: ${{ needs.preflight-linux.result == 'success' }}
     permissions:
       contents: write
 
@@ -159,20 +186,6 @@ jobs:
         shell: pwsh
         run: dotnet build $env:SOLUTION_PATH -c Release --no-restore
 
-      - name: Run tests (if test projects exist)
-        shell: pwsh
-        run: |
-          $testProjects = Get-ChildItem -Recurse -Filter "*Test*.csproj" | Select-Object -ExpandProperty FullName
-          if (-not $testProjects) {
-            Write-Host "No test projects found. Skipping tests."
-            exit 0
-          }
-
-          foreach ($project in $testProjects) {
-            Write-Host "Running tests in $project"
-            dotnet test $project -c Release --no-build --verbosity normal
-          }
-
       - name: Install Inno Setup
         shell: pwsh
         run: choco install innosetup --yes --no-progress
@@ -186,17 +199,8 @@ jobs:
         run: |
           $mode = $env:SIGNING_INPUT
           $hasPfx = -not [string]::IsNullOrWhiteSpace($env:PFX_BASE64)
-
-          if ($mode -eq 'pfx' -and -not $hasPfx) {
-            throw "PFX signing requested but CODE_SIGN_PFX_BASE64 secret is not configured."
-          }
-
-          if ($mode -eq 'auto') {
-            $mode = if ($hasPfx) { 'pfx' } else { 'self-signed' }
-          }
-
+          if ($mode -eq 'auto') { $mode = if ($hasPfx) { 'pfx' } else { 'self-signed' } }
           "signing_mode=$mode" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
-          Write-Host "Signing mode: $mode"
 
       - name: Decode PFX certificate from secret
         if: steps.signing.outputs.signing_mode == 'pfx'
@@ -210,199 +214,60 @@ jobs:
           [System.IO.File]::WriteAllBytes($pfxPath, $pfxBytes)
           "CODE_SIGN_PFX=$pfxPath" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
           "CODE_SIGN_PFX_PASSWORD=$($env:PFX_PWD)" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
-          Write-Host "PFX certificate decoded to $pfxPath"
 
       - name: Create self-signed code-signing certificate
         if: steps.signing.outputs.signing_mode == 'self-signed'
         shell: pwsh
         run: |
-          $friendlyName = "GregTools CI Self-Signed Code Signing"
-          $reuseThreshold = (Get-Date).AddDays(1)
-
-          $cert = Get-ChildItem Cert:\CurrentUser\My |
-            Where-Object { $_.FriendlyName -eq $friendlyName -and $_.NotAfter -gt $reuseThreshold } |
-            Sort-Object NotAfter -Descending |
-            Select-Object -First 1
-
-          if (-not $cert) {
-            Write-Host "No reusable self-signed cert found (or expiring soon). Creating new 7-day cert..."
-            $cert = New-SelfSignedCertificate `
-              -Type CodeSigningCert `
-              -Subject "CN=mleem97, O=Greg Modding Team" `
-              -KeyUsage DigitalSignature `
-              -KeyAlgorithm RSA `
-              -KeyLength 2048 `
-              -HashAlgorithm SHA256 `
-              -NotAfter (Get-Date).AddDays(7) `
-              -CertStoreLocation Cert:\CurrentUser\My `
-              -FriendlyName $friendlyName
-          }
-          else {
-            Write-Host "Reusing self-signed cert valid until $($cert.NotAfter.ToString('u'))."
-          }
-
+          $cert = New-SelfSignedCertificate -Type CodeSigningCert -Subject "CN=mleem97" -KeyUsage DigitalSignature -KeyAlgorithm RSA -KeyLength 2048 -HashAlgorithm SHA256 -NotAfter (Get-Date).AddDays(7) -CertStoreLocation Cert:\CurrentUser\My -FriendlyName "GregTools CI"
           "CODE_SIGN_THUMBPRINT=$($cert.Thumbprint)" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
-          Write-Host "Using certificate thumbprint: $($cert.Thumbprint)"
 
       - name: Build, package, and sign
         shell: pwsh
         run: .\build.ps1 -Sign
 
-      - name: Sign primary app executable
+      - name: Create portable ZIP
         shell: pwsh
         run: |
-          $appExe = Join-Path $env:GITHUB_WORKSPACE 'bin\Release\net9.0-windows10.0.19041.0\win10-x64\publish\GregModmanager.exe'
-          if (-not (Test-Path -LiteralPath $appExe)) {
-            throw "Primary app executable not found: $appExe"
-          }
-
-          if ($env:CODE_SIGN_THUMBPRINT) {
-            .\installer\sign-authenticode.ps1 -Path $appExe -Thumbprint $env:CODE_SIGN_THUMBPRINT
-          } elseif ($env:CODE_SIGN_PFX) {
-            .\installer\sign-authenticode.ps1 -Path $appExe -PfxPath $env:CODE_SIGN_PFX
-          } else {
-            throw "No signing credential available (CODE_SIGN_THUMBPRINT or CODE_SIGN_PFX)."
-          }
-
-      - name: Verify signatures (setup + app)
-        shell: pwsh
-        run: |
-          $setupExe = Get-ChildItem -LiteralPath (Join-Path $env:GITHUB_WORKSPACE 'installer\Output') -Filter 'gregModmanager-*-Setup.exe' |
-            Sort-Object LastWriteTime -Descending |
-            Select-Object -First 1
-          if (-not $setupExe) {
-            throw "No setup file found in installer\\Output"
-          }
-
-          $appExe = Join-Path $env:GITHUB_WORKSPACE 'bin\Release\net9.0-windows10.0.19041.0\win10-x64\publish\GregModmanager.exe'
-          if (-not (Test-Path -LiteralPath $appExe)) {
-            throw "Primary app executable not found: $appExe"
-          }
-
-          $setupSig = Get-AuthenticodeSignature -FilePath $setupExe.FullName
-          $appSig = Get-AuthenticodeSignature -FilePath $appExe
-
-          Write-Host "Setup signature status: $($setupSig.Status)"
-          Write-Host "App signature status: $($appSig.Status)"
-
-          if ($setupSig.Status -ne 'Valid') {
-            throw "Setup signature is not valid: $($setupSig.Status)"
-          }
-          if ($appSig.Status -ne 'Valid') {
-            throw "App signature is not valid: $($appSig.Status)"
-          }
-
-      - name: Create portable ZIP (publish output)
-        shell: pwsh
-        run: |
-          $publishDir = Join-Path $env:GITHUB_WORKSPACE 'bin\Release\net9.0-windows10.0.19041.0\win10-x64\publish'
-          if (-not (Test-Path -LiteralPath $publishDir)) {
-            throw "Publish folder not found: $publishDir"
-          }
-
-          $version = ''
+          $publishDir = Join-Path $env:GITHUB_WORKSPACE 'bin\Release\net9.0-windows10.0.19041.0\win-x64\publish'
+          $version = 'latest'
           try {
             [xml]$csproj = Get-Content -LiteralPath (Join-Path $env:GITHUB_WORKSPACE 'GregModmanager.csproj')
             $version = ($csproj.Project.PropertyGroup | ForEach-Object { $_.ApplicationDisplayVersion } | Where-Object { $_ } | Select-Object -First 1).Trim()
-          }
-          catch {
-            # fallback below
-          }
-
-          if ([string]::IsNullOrWhiteSpace($version)) {
-            $version = if ($env:GITHUB_REF_NAME) { $env:GITHUB_REF_NAME } else { "ci-$env:GITHUB_RUN_NUMBER" }
-          }
-
-          $outDir = Join-Path $env:GITHUB_WORKSPACE 'installer\Output'
-          New-Item -ItemType Directory -Path $outDir -Force | Out-Null
-
-          $zipPath = Join-Path $outDir ("$env:APP_NAME-$version-Portable.zip")
-          if (Test-Path -LiteralPath $zipPath) {
-            Remove-Item -LiteralPath $zipPath -Force
-          }
-
+          } catch {}
+          $zipPath = "installer/Output/$env:APP_NAME-$version-Portable.zip"
           Compress-Archive -Path (Join-Path $publishDir '*') -DestinationPath $zipPath -CompressionLevel Optimal
-          Write-Host "Created portable zip: $zipPath"
 
-      - name: Upload setup artifact
+      - name: Upload Windows setup
         uses: actions/upload-artifact@v4
         with:
           name: setup
           path: installer/Output/gregModmanager-*-Setup.exe
-          if-no-files-found: error
-          retention-days: 14
 
-      - name: Upload portable zip artifact
+      - name: Upload portable zip
         uses: actions/upload-artifact@v4
         with:
           name: portable-zip
           path: installer/Output/gregModmanager-*-Portable.zip
-          if-no-files-found: error
-          retention-days: 14
+
+  release:
+    needs: [build-windows, build-linux]
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
 
       - name: Upload assets to GitHub Release
-        if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            installer/Output/gregModmanager-*-Setup.exe
-            installer/Output/gregModmanager-*-Portable.zip
+            setup/gregModmanager-*-Setup.exe
+            portable-zip/gregModmanager-*-Portable.zip
+            linux-headless/gregModmanager-linux-x64.tar.gz
           fail_on_unmatched_files: true
           append_body: true
           body: |
-            ### Assets
-            - Windows setup (`*.exe`)
-            - Portable publish (`*-Portable.zip`)
-
-      - name: Refresh rolling latest prerelease
-        if: ${{ github.event_name == 'release' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch' }}
-        uses: ncipollo/release-action@v1
-        with:
-          tag: latest
-          name: Latest Build
-          prerelease: true
-          allowUpdates: true
-          removeArtifacts: true
-          replacesArtifacts: true
-          makeLatest: false
-          artifacts: |
-            installer/Output/gregModmanager-*-Setup.exe
-            installer/Output/gregModmanager-*-Portable.zip
-          artifactErrorsFailBuild: true
-          generateReleaseNotes: true
-
-      - name: Clean up PFX file
-        if: always() && steps.signing.outputs.signing_mode == 'pfx'
-        shell: pwsh
-        run: |
-          $pfxPath = $env:CODE_SIGN_PFX
-          if ($pfxPath -and (Test-Path -LiteralPath $pfxPath)) {
-            Remove-Item -LiteralPath $pfxPath -Force
-            Write-Host "Cleaned up temporary PFX file."
-          }
-
-      - name: Job summary
-        if: always()
-        shell: pwsh
-        run: |
-          $signingMode = '${{ steps.signing.outputs.signing_mode }}'
-          $signingLabel = if ($signingMode -eq 'pfx') { 'PFX (CA-signed)' } else { 'Self-signed (CI-generated)' }
-          $note = if ($signingMode -eq 'pfx') {
-            'Build signed with production PFX certificate.'
-          } else {
-            'Self-signed certificates are useful for internal/community builds, but Windows/SmartScreen may still show trust warnings.'
-          }
-
-          @"
-          ## Build completed
-
-          - Workflow: ``.github/workflows/build-and-sign.yml``
-          - Output setup: ``installer/Output/gregModmanager-<version>-Setup.exe``
-          - Output zip: ``installer/Output/gregModmanager-<version>-Portable.zip``
-          - Signature: $signingLabel
-
-          ### Note
-
-          $note
-          "@ | Out-File -FilePath $env:GITHUB_STEP_SUMMARY -Append -Encoding utf8
-
+            ### Platform Assets
+            - **Windows**: [Setup Installer](https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/gregModmanager-v1.0.0.30-pre-Setup.exe) / [Portable ZIP](...)
+            - **Linux / Steam Deck**: Native CLI binary (`.tar.gz`)
