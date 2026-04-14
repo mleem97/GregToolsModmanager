@@ -1,10 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0-windows10.0.19041.0</TargetFramework>
+    <TargetFrameworks>net9.0-windows10.0.19041.0;net9.0</TargetFrameworks>
     <OutputType>Exe</OutputType>
     <RootNamespace>GregModmanager</RootNamespace>
-    <UseMaui>true</UseMaui>
+    <UseMaui Condition="'$(TargetFramework)' == 'net9.0-windows10.0.19041.0'">true</UseMaui>
     <SingleProject>true</SingleProject>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -15,57 +15,63 @@
     <ApplicationVersion>4</ApplicationVersion>
     <Version>1.1.0</Version>
     <InformationalVersion>1.1.0</InformationalVersion>
-    <WindowsPackageType>None</WindowsPackageType>
-    <!-- Ship Windows App SDK with the app (unpackaged); reduces Microsoft.UI.Xaml 0xc000027b when machine runtime mismatches. -->
-    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    
+    <WindowsPackageType Condition="'$(TargetFramework)' == 'net9.0-windows10.0.19041.0'">None</WindowsPackageType>
+    <WindowsAppSDKSelfContained Condition="'$(TargetFramework)' == 'net9.0-windows10.0.19041.0'">true</WindowsAppSDKSelfContained>
     <SelfContained>true</SelfContained>
-    <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
-
-    <!-- Size reduction: only ship the locales the app actually provides -->
+    <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
     <SatelliteResourceLanguages>en;de;es;it;ja;pl;ru;zh</SatelliteResourceLanguages>
-    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
-    <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
   </PropertyGroup>
 
-  <!-- Release: trim unused IL + strip debug symbols to reduce package size -->
+  <!-- Windows Specific -->
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net9.0-windows10.0.19041.0'">
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' != 'net9.0'">
+    <Compile Remove="Program.cs" />
+  </ItemGroup>
+
+  <!-- Linux Specific (Exclude EVERYTHING UI and Steam related for CLI core) -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+    <Compile Remove="**\*.xaml.cs" />
+    <Compile Remove="App.xaml.cs" />
+    <Compile Remove="AppShell.xaml.cs" />
+    <Compile Remove="MauiProgram.cs" />
+    <Compile Remove="Platforms\**\*.cs" />
+    <Compile Remove="Localization\TranslateExtension.cs" />
+    <Compile Remove="Models\ProjectTileVm.cs" />
+    <Compile Remove="Models\WorkshopItemDetailVm.cs" />
+    <Compile Remove="Models\WorkshopBrowseResultVm.cs" />
+    <Compile Remove="Services\SteamWorkshopService.cs" />
+    <Compile Remove="Services\ModDependencyService.cs" />
+    <Compile Remove="Services\SubscriptionPoller.cs" />
+    <Compile Remove="Services\WorkshopDownloadService.cs" />
+    <Compile Remove="Services\WorkshopSyncOrchestrator.cs" />
+    <Compile Remove="Services\WorkspaceService.cs" />
+    <Compile Remove="Services\BetaPluginSource.cs" />
+    <Compile Remove="Services\StablePluginSource.cs" />
+    <Compile Update="Services\GitHubModSource.cs" />
+    <None Include="**\*.xaml" />
+  </ItemGroup>
+
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <PublishTrimmed>false</PublishTrimmed>
     <DebugType>none</DebugType>
     <DebugSymbols>false</DebugSymbols>
-    <!-- Fewer built-in diagnostics assemblies pulled into the trimmed output -->
-    <HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
   </PropertyGroup>
 
-  <ItemGroup>
-    <TrimmerRootDescriptor Include="TrimmerRoots.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#001110" />
-    <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#001110" BaseSize="128,128" />
+  <ItemGroup Condition="'$(UseMaui)' == 'true'">
+    <MauiIcon Include="Resources\AppIcon\appicon.svg" Color="#001110" />
+    <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#001110" />
     <MauiFont Include="Resources\Fonts\Vendored\Inter\*.ttf" />
-    <MauiFont Include="Resources\Fonts\Vendored\InterTight\*.ttf" />
-    <MauiFont Include="Resources\Fonts\Vendored\Nexa\*.ttf" />
-    <MauiFont Include="Resources\Fonts\Vendored\Nexa\*.otf" />
     <MauiFont Include="Resources\Fonts\Vendored\SpaceGrotesk\*.ttf" />
     <MauiFont Include="Resources\Fonts\Vendored\JetBrainsMono\*.ttf" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="steam_appid.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="steam_api64.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="installer\README_Steam.txt" Link="README_Steam.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.90" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" Condition="'$(Configuration)' == 'Debug'" />
+    <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.90" Condition="'$(UseMaui)' == 'true'" />
     <PackageReference Include="Facepunch.Steamworks" Version="2.3.3" />
   </ItemGroup>
 
@@ -76,4 +82,3 @@
   </ItemGroup>
 
 </Project>
-
