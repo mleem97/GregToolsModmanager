@@ -127,7 +127,7 @@
                     </Border>
 
                     <Border Padding="20" BackgroundColor="{StaticResource SurfaceContainer}">
-                        <Border.StrokeShape><RoundRectangle CornerRectangle="12"/></Border.StrokeShape>
+                        <Border.StrokeShape><RoundRectangle CornerRadius="12"/></Border.StrokeShape>
                         <VerticalStackLayout Spacing="16">
                             <Label Text="PLUGIN DISTRIBUTION CHANNELS" Style="{StaticResource SectionTitle}" />
                             <Picker x:Name="ChannelPicker" Title="Select active channel" />
