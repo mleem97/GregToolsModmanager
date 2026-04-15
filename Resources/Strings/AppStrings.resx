@@ -51,6 +51,10 @@
   <data name="NewProject_Vanilla" xml:space="preserve"><value>Vanilla (Object/Decoration)</value></data>
   <data name="NewProject_Modded" xml:space="preserve"><value>Modded (MelonLoader)</value></data>
   <data name="NewProject_GCF" xml:space="preserve"><value>Modded (gregCore Framework)</value></data>
+  <data name="NewProject_Uxml" xml:space="preserve"><value>UXML UI Override</value></data>
+  <data name="NewProject_Model" xml:space="preserve"><value>Asset: Standalone 3D Model</value></data>
+  <data name="NewProject_Texture" xml:space="preserve"><value>Asset: Standalone Texture</value></data>
+  <data name="NewProject_Audio" xml:space="preserve"><value>Asset: Standalone Audio</value></data>
 
   <!-- EditorPage -->
   <data name="Editor_Headline" xml:space="preserve"><value>Workshop upload</value></data>

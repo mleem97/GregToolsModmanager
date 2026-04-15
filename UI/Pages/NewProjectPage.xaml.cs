@@ -18,7 +18,11 @@ public partial class NewProjectPage : ContentPage
 		{
 			S.Get("NewProject_Vanilla"),
 			S.Get("NewProject_Modded"),
-			S.Get("NewProject_greg"),
+			S.Get("NewProject_GCF"),
+			S.Get("NewProject_Uxml"),
+			S.Get("NewProject_Model"),
+			S.Get("NewProject_Texture"),
+			S.Get("NewProject_Audio"),
 		};
 		TemplateKindPicker.SelectedIndex = 0;
 		NewProjectNameEntry.Text = "MyWorkshopMod";

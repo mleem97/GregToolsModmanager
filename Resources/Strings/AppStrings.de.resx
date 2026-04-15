@@ -50,7 +50,11 @@
   <data name="NewProject_CouldNotCreate" xml:space="preserve"><value>Konnte nicht erstellt werden</value></data>
   <data name="NewProject_Vanilla" xml:space="preserve"><value>Vanilla (Objekt/Dekoration)</value></data>
   <data name="NewProject_Modded" xml:space="preserve"><value>Mit Mods (MelonLoader)</value></data>
-  <data name="NewProject_GCF" xml:space="preserve"><value>Mit Mods (gregCore Framework)</value></data>
+  <data name="NewProject_GCF" xml:space="preserve"><value>Modifiziert (gregCore Framework)</value></data>
+  <data name="NewProject_Uxml" xml:space="preserve"><value>UXML UI-Überschreibung</value></data>
+  <data name="NewProject_Model" xml:space="preserve"><value>Asset: Eigenständiges 3D-Modell</value></data>
+  <data name="NewProject_Texture" xml:space="preserve"><value>Asset: Eigenständige Textur</value></data>
+  <data name="NewProject_Audio" xml:space="preserve"><value>Asset: Eigenständiges Audio</value></data>
 
   <!-- EditorPage -->
   <data name="Editor_Headline" xml:space="preserve"><value>Workshop-Upload</value></data>

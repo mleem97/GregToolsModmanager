@@ -273,6 +273,18 @@ public sealed class WorkspaceService
 				CreategregCoreModFrameworkTemplate(content);
 				CreateSourceTemplates(root, dirName, isGreg: true);
 				break;
+			case WorkshopTemplateKind.UxmlUiOverride:
+				CreateUxmlTemplate(content, root, dirName);
+				break;
+			case WorkshopTemplateKind.Standalone3DModel:
+				CreateStandaloneAssetTemplate(content, "model");
+				break;
+			case WorkshopTemplateKind.StandaloneTexture:
+				CreateStandaloneAssetTemplate(content, "texture");
+				break;
+			case WorkshopTemplateKind.StandaloneAudio:
+				CreateStandaloneAssetTemplate(content, "audio");
+				break;
 			default:
 				throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
 		}
@@ -476,6 +488,28 @@ public sealed class WorkspaceService
 				meta.NativeConfigProfile = "code";
 				meta.NeedsMelonLoader = true;
 				meta.Needsgreg = true;
+				break;
+			case WorkshopTemplateKind.UxmlUiOverride:
+				meta.Description = "[h1]UXML UI Override[/h1]\nReplaces game interfaces with custom UI Toolkit (UXML) designs.";
+				meta.Tags.AddRange(new[] { "modded", "ui", "uxml" });
+				meta.NativeConfigProfile = "code";
+				meta.NeedsMelonLoader = true;
+				meta.Needsgreg = true;
+				break;
+			case WorkshopTemplateKind.Standalone3DModel:
+				meta.Description = "[h1]Standalone 3D Model[/h1]\nA high-quality 3D asset for use in other mods or game scenes.";
+				meta.Tags.AddRange(new[] { "asset", "model", "visual" });
+				meta.NativeConfigProfile = "decoration";
+				break;
+			case WorkshopTemplateKind.StandaloneTexture:
+				meta.Description = "[h1]Standalone Texture[/h1]\nA high-resolution texture or material pack.";
+				meta.Tags.AddRange(new[] { "asset", "texture", "material" });
+				meta.NativeConfigProfile = "decoration";
+				break;
+			case WorkshopTemplateKind.StandaloneAudio:
+				meta.Description = "[h1]Standalone Audio[/h1]\nA music track or sound effect collection.";
+				meta.Tags.AddRange(new[] { "asset", "audio", "radio" });
+				meta.NativeConfigProfile = "decoration";
 				break;
 		}
 
@@ -787,6 +821,109 @@ public sealed class WorkspaceService
 
 		var path = Path.Combine(projectRoot, "metadata.json");
 		File.WriteAllText(path, JsonSerializer.Serialize(metadata, JsonOptions));
+	}
+
+	private static void CreateUxmlTemplate(string contentRoot, string root, string dirName)
+	{
+		CreateModdedGameMirrorLayout(contentRoot);
+
+		// Source template for UXML registration
+		var srcDir = Path.Combine(root, "src");
+		Directory.CreateDirectory(srcDir);
+
+		string csproj = $"""
+			<Project Sdk="Microsoft.NET.Sdk">
+			  <PropertyGroup>
+			    <TargetFramework>net6.0</TargetFramework>
+			    <AssemblyName>{dirName}</AssemblyName>
+			    <RootNamespace>{dirName}</RootNamespace>
+			    <LangVersion>10.0</LangVersion>
+			  </PropertyGroup>
+
+			  <ItemGroup>
+			    <Reference Include="gregCore">
+			      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Data Center\Mods\gregCore.dll</HintPath>
+			      <Private>false</Private>
+			    </Reference>
+			    <Reference Include="MelonLoader">
+			      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Data Center\MelonLoader\MelonLoader.dll</HintPath>
+			      <Private>false</Private>
+			    </Reference>
+			    <Reference Include="UnityEngine.CoreModule">
+			      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Data Center\Data Center_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+			      <Private>false</Private>
+			    </Reference>
+			    <Reference Include="UnityEngine.UIElementsModule">
+			      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Data Center\Data Center_Data\Managed\UnityEngine.UIElementsModule.dll</HintPath>
+			      <Private>false</Private>
+			    </Reference>
+			  </ItemGroup>
+			</Project>
+			""";
+
+		string mainCs = $"""
+			using MelonLoader;
+			using UnityEngine;
+			using UnityEngine.UIElements;
+			using greg.Core;
+			using greg.Sdk.Services;
+
+			[assembly: MelonInfo(typeof({dirName}.Main), "{dirName}", "1.0.0", "Author")]
+			[assembly: MelonGame("Waseku", "Data Center")]
+
+			namespace {dirName};
+
+			public class Main : greg.Core.Plugins.gregModBase
+			{
+			    public override void OnInitializeMod()
+			    {
+			        // Load your AssetBundle containing UXML/USS
+			        // var bundle = AssetBundle.LoadFromFile(Path.Combine(AppContext.BaseDirectory, "Mods", "{dirName}.bundle"));
+			        // var uxml = bundle.LoadAsset<VisualTreeAsset>("MyMenu.uxml");
+			        
+			        // Register override for MainMenu
+			        // GregUxmlService.RegisterOverride("MainMenu", () => {
+			        //    GregUxmlService.CreateInterface("CustomMenu", uxml);
+			        // });
+
+			        MelonLogger.Msg("{dirName} (UXML UI) initialized!");
+			    }
+			}
+			""";
+
+		File.WriteAllText(Path.Combine(srcDir, $"{dirName}.csproj"), csproj.Trim());
+		File.WriteAllText(Path.Combine(srcDir, "Main.cs"), mainCs.Trim());
+
+		// UXML/USS Assets folder in content
+		var assets = Path.Combine(contentRoot, "Assets", "UI");
+		Directory.CreateDirectory(assets);
+		File.WriteAllText(Path.Combine(assets, "Sample.uxml"), "<ui:UXML xmlns:ui=\"UnityEngine.UIElements\" xmlns:uie=\"UnityEditor.UIElements\" editor-extension-mode=\"False\">\n  <ui:Label text=\"Hello from UXML!\" />\n</ui:UXML>");
+	}
+
+	private static void CreateStandaloneAssetTemplate(string contentRoot, string type)
+	{
+		Directory.CreateDirectory(contentRoot);
+		var assetDir = Path.Combine(contentRoot, "Assets", type);
+		Directory.CreateDirectory(assetDir);
+
+		string readme = type switch
+		{
+			"model" => "Place your .obj or .fbx models here. Include .mtl and textures in the same folder.",
+			"texture" => "Place your .png or .jpg textures here.",
+			"audio" => "Place your .wav or .ogg audio files here.",
+			_ => "Place your assets here."
+		};
+
+		File.WriteAllText(Path.Combine(assetDir, "README.txt"), readme);
+
+		// ModStore metadata for Asset Store indexing
+		var modstoreMeta = new
+		{
+			assetType = type,
+			tags = new[] { "asset", type },
+			isStandalone = true
+		};
+		File.WriteAllText(Path.Combine(contentRoot, "modstore.meta.json"), JsonSerializer.Serialize(modstoreMeta, JsonOptions));
 	}
 }
 

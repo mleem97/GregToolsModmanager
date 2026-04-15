@@ -11,5 +11,16 @@ public enum WorkshopTemplateKind
 
 	/// <summary>gregCoreModFramework — <c>content/ModFramework/greg/Plugins</c> mirrors <c>{GameRoot}/greg/Plugins</c>.</summary>
 	ModdedgregCoreModFramework,
-}
 
+	/// <summary>UXML UI Override — uses GregUxmlService to replace game interfaces.</summary>
+	UxmlUiOverride,
+
+	/// <summary>Standalone 3D Model (Asset Store / ModStore focused).</summary>
+	Standalone3DModel,
+
+	/// <summary>Standalone Texture/Material (Asset Store / ModStore focused).</summary>
+	StandaloneTexture,
+
+	/// <summary>Standalone Audio/Music (Asset Store / ModStore focused).</summary>
+	StandaloneAudio,
+}
