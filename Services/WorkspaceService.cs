@@ -267,9 +267,11 @@ public sealed class WorkspaceService
 				break;
 			case WorkshopTemplateKind.ModdedMelonLoader:
 				CreateMelonLoaderTemplate(content);
+				CreateSourceTemplates(root, dirName, isGreg: false);
 				break;
 			case WorkshopTemplateKind.ModdedgregCoreModFramework:
 				CreategregCoreModFrameworkTemplate(content);
+				CreateSourceTemplates(root, dirName, isGreg: true);
 				break;
 			default:
 				throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
@@ -277,7 +279,141 @@ public sealed class WorkspaceService
 
 		var meta = BuildMetadataForTemplate(dirName, kind);
 		SaveMetadata(root, meta);
+		CreateProjectGitignore(root);
 		return root;
+	}
+
+	private static void CreateProjectGitignore(string root)
+	{
+		const string gitignore = """
+			bin/
+			obj/
+			*.user
+			.vs/
+			.vscode/
+			""";
+		File.WriteAllText(Path.Combine(root, ".gitignore"), gitignore.Trim());
+	}
+
+	private static void CreateSourceTemplates(string root, string projectName, bool isGreg)
+	{
+		var srcDir = Path.Combine(root, "src");
+		Directory.CreateDirectory(srcDir);
+
+		string csproj;
+		string mainCs;
+
+		if (isGreg)
+		{
+			csproj = $"""
+				<Project Sdk="Microsoft.NET.Sdk">
+				  <PropertyGroup>
+				    <TargetFramework>net6.0</TargetFramework>
+				    <AssemblyName>{projectName}</AssemblyName>
+				    <RootNamespace>{projectName}</RootNamespace>
+				    <LangVersion>10.0</LangVersion>
+				  </PropertyGroup>
+
+				  <ItemGroup>
+				    <!-- Reference gregCore.dll from game Mods folder or local path -->
+				    <Reference Include="gregCore">
+				      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Data Center\Mods\gregCore.dll</HintPath>
+				      <Private>false</Private>
+				    </Reference>
+				    <Reference Include="MelonLoader">
+				      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Data Center\MelonLoader\MelonLoader.dll</HintPath>
+				      <Private>false</Private>
+				    </Reference>
+				    <Reference Include="UnityEngine.CoreModule">
+				      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Data Center\Data Center_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+				      <Private>false</Private>
+				    </Reference>
+				  </ItemGroup>
+				</Project>
+				""";
+
+			mainCs = $"""
+				using MelonLoader;
+				using UnityEngine;
+				using greg.Core;
+				using greg.Sdk.Services;
+
+				[assembly: MelonInfo(typeof({projectName}.Main), "{projectName}", "1.0.0", "Author")]
+				[assembly: MelonGame("Waseku", "Data Center")]
+
+				namespace {projectName};
+
+				public class Main : greg.Core.Plugins.gregModBase
+				{
+				    public override void OnInitializeMod()
+				    {
+				        MelonLogger.Msg("{projectName} initialized via gregCore!");
+				        GregModRegistry.Register("{projectName}", "1.0.0");
+				    }
+
+				    public override void OnUpdateMod()
+				    {
+				        if (Input.GetKeyDown(KeyCode.F5))
+				        {
+				            MelonLogger.Msg("F5 pressed in {projectName}");
+				        }
+				    }
+				}
+				""";
+		}
+		else
+		{
+			csproj = $"""
+				<Project Sdk="Microsoft.NET.Sdk">
+				  <PropertyGroup>
+				    <TargetFramework>net6.0</TargetFramework>
+				    <AssemblyName>{projectName}</AssemblyName>
+				    <RootNamespace>{projectName}</RootNamespace>
+				    <LangVersion>10.0</LangVersion>
+				  </PropertyGroup>
+
+				  <ItemGroup>
+				    <Reference Include="MelonLoader">
+				      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Data Center\MelonLoader\MelonLoader.dll</HintPath>
+				      <Private>false</Private>
+				    </Reference>
+				    <Reference Include="UnityEngine.CoreModule">
+				      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Data Center\Data Center_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+				      <Private>false</Private>
+				    </Reference>
+				  </ItemGroup>
+				</Project>
+				""";
+
+			mainCs = $"""
+				using MelonLoader;
+				using UnityEngine;
+
+				[assembly: MelonInfo(typeof({projectName}.Main), "{projectName}", "1.0.0", "Author")]
+				[assembly: MelonGame("Waseku", "Data Center")]
+
+				namespace {projectName};
+
+				public class Main : MelonMod
+				{
+				    public override void OnInitializeMelon()
+				    {
+				        MelonLogger.Msg("{projectName} (Vanilla) initialized!");
+				    }
+
+				    public override void OnUpdate()
+				    {
+				        if (Input.GetKeyDown(KeyCode.F5))
+				        {
+				            MelonLogger.Msg("F5 pressed in {projectName}");
+				        }
+				    }
+				}
+				""";
+		}
+
+		File.WriteAllText(Path.Combine(srcDir, $"{projectName}.csproj"), csproj.Trim());
+		File.WriteAllText(Path.Combine(srcDir, "Main.cs"), mainCs.Trim());
 	}
 
 	private static WorkshopMetadata BuildMetadataForTemplate(string title, WorkshopTemplateKind kind)
