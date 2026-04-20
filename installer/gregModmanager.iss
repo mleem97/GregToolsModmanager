@@ -74,3 +74,9 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; WorkingDi
 ; runasoriginaluser: App als normaler Benutzer starten (nicht vererbt „Als Administrator“ vom Setup).
 Filename: "{app}\{#MyAppExeName}"; WorkingDir: "{app}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent runasoriginaluser
 
+
+[Registry]
+Root: HKCU; Subkey: "Software\Classes\greg"; ValueType: string; ValueName: ""; ValueData: "URL:greg Protocol"; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Classes\greg"; ValueType: string; ValueName: "URL Protocol"; ValueData: ""; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Classes\greg\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#MyAppExeName},0"; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Classes\greg\shell\open\command"; ValueType: string; ValueName: ""; ValueData: ""{app}\{#MyAppExeName}" "%1""; Flags: uninsdeletekey

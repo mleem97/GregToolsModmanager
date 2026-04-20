@@ -15,7 +15,7 @@
     <ApplicationVersion>4</ApplicationVersion>
     <Version>1.1.0</Version>
     <InformationalVersion>1.1.0</InformationalVersion>
-    
+
     <WindowsPackageType Condition="'$(TargetFramework)' == 'net9.0-windows10.0.19041.0'">None</WindowsPackageType>
     <WindowsAppSDKSelfContained Condition="'$(TargetFramework)' == 'net9.0-windows10.0.19041.0'">true</WindowsAppSDKSelfContained>
     <SelfContained>true</SelfContained>

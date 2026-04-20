@@ -7,46 +7,33 @@
     xmlns:l="clr-namespace:GregModmanager.Localization"
     Title="{l:Translate Key=Mod_Headline}">
 
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Styles/Styles.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-            
-            <LinearGradientBrush x:Key="SignatureGradient" StartPoint="0,0" EndPoint="1,1">
-                <GradientStop Color="#61F4D8" Offset="0.0" />
-                <GradientStop Color="#08C1A6" Offset="1.0" />
-            </LinearGradientBrush>
-        </ResourceDictionary>
-    </ContentPage.Resources>
-
-    <Grid RowDefinitions="Auto,Auto,Auto,*" BackgroundColor="{StaticResource Surface}">
+    <Grid RowDefinitions="Auto,Auto,Auto,*" BackgroundColor="{DynamicResource Surface}">
 
         <!-- 1. HEADER -->
-        <Grid Grid.Row="0" Padding="32,40,32,24" ColumnDefinitions="*,Auto" BackgroundColor="{StaticResource SurfaceContainerLow}">
+        <Grid Grid.Row="0" Padding="32,40,32,24" ColumnDefinitions="*,Auto" BackgroundColor="{DynamicResource SurfaceContainerLow}">
             <VerticalStackLayout Grid.Column="0" Spacing="8">
-                <Label Text="ECOSYSTEM OVERVIEW" TextColor="{StaticResource Primary}" FontSize="10" FontFamily="SpaceGrotesk-Bold" CharacterSpacing="2.5" />
-                <Label Style="{StaticResource Headline}" Text="{l:Translate Key=Mod_Headline}" FontSize="32" />
-                <Label Text="{l:Translate Key=Mod_Subtitle}" TextColor="{StaticResource OnSurfaceVariant}" FontSize="14" />
+                <Label Text="ECOSYSTEM OVERVIEW" TextColor="{DynamicResource Primary}" FontSize="10" FontFamily="SpaceGrotesk-Bold" CharacterSpacing="2.5" />
+                <Label Style="{DynamicResource Headline}" Text="{l:Translate Key=Mod_Headline}" FontSize="32" />
+                <Label Text="{l:Translate Key=Mod_Subtitle}" TextColor="{DynamicResource OnSurfaceVariant}" FontSize="14" />
             </VerticalStackLayout>
-            <Button Grid.Column="1" Clicked="OnRefreshCurrentTab" Background="{StaticResource SignatureGradient}" Text="REFRESH CORE" HeightRequest="48" Padding="24,0" VerticalOptions="Center" />
+            <Button Grid.Column="1" Clicked="OnRefreshCurrentTab" Background="{DynamicResource SignatureGradient}" Text="REFRESH CORE" HeightRequest="48" Padding="24,0" VerticalOptions="Center" />
         </Grid>
 
         <!-- 2. STATUS BAR -->
-        <Border x:Name="SyncStatusBar" Grid.Row="1" Padding="20,12" Margin="32,16,32,0" BackgroundColor="{StaticResource GlassBackground}" StrokeThickness="0" IsVisible="False">
+        <Border x:Name="SyncStatusBar" Grid.Row="1" Padding="20,12" Margin="32,16,32,0" BackgroundColor="{DynamicResource GlassBackground}" StrokeThickness="0" IsVisible="False">
             <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
             <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
-                <Ellipse WidthRequest="10" HeightRequest="10" Fill="{StaticResource Primary}" />
-                <Label x:Name="SyncStatusLabel" FontFamily="JetBrainsMono-Regular" FontSize="12" TextColor="{StaticResource OnSurface}" />
+                <Ellipse WidthRequest="10" HeightRequest="10" Fill="{DynamicResource Primary}" />
+                <Label x:Name="SyncStatusLabel" FontFamily="JetBrainsMono-Regular" FontSize="12" TextColor="{DynamicResource OnSurface}" />
             </HorizontalStackLayout>
         </Border>
 
         <!-- 3. TABS -->
         <Grid Grid.Row="2" Padding="32,24,32,16" ColumnDefinitions="*,*,*,*" ColumnSpacing="12">
             <Button x:Name="TabStore" Grid.Column="0" Text="STORE" Clicked="OnTabStore" />
-            <Button x:Name="TabInstalled" Grid.Column="1" Text="INSTALLED" Style="{StaticResource SecondaryButton}" Clicked="OnTabInstalled" />
-            <Button x:Name="TabFavorites" Grid.Column="2" Text="FAVORITES" Style="{StaticResource SecondaryButton}" Clicked="OnTabFavorites" />
-            <Button x:Name="TabHealth" Grid.Column="3" Text="DIAGNOSTICS" Style="{StaticResource SecondaryButton}" Clicked="OnTabHealth" />
+            <Button x:Name="TabInstalled" Grid.Column="1" Text="INSTALLED" Style="{DynamicResource SecondaryButton}" Clicked="OnTabInstalled" />
+            <Button x:Name="TabFavorites" Grid.Column="2" Text="FAVORITES" Style="{DynamicResource SecondaryButton}" Clicked="OnTabFavorites" />
+            <Button x:Name="TabHealth" Grid.Column="3" Text="DIAGNOSTICS" Style="{DynamicResource SecondaryButton}" Clicked="OnTabHealth" />
         </Grid>
 
         <!-- 4. CONTENT -->
@@ -55,12 +42,12 @@
             <!-- STORE VIEW -->
             <Grid x:Name="StoreView" RowDefinitions="Auto,*,Auto" RowSpacing="20">
                 <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="12">
-                    <Border Padding="12,0" BackgroundColor="{StaticResource SurfaceContainer}" StrokeThickness="0">
+                    <Border Padding="12,0" BackgroundColor="{DynamicResource SurfaceContainer}" StrokeThickness="0">
                         <Border.StrokeShape><RoundRectangle CornerRadius="8"/></Border.StrokeShape>
-                        <Entry x:Name="SearchEntry" Placeholder="Search mods..." BackgroundColor="Transparent" TextColor="{StaticResource OnSurface}" />
+                        <Entry x:Name="SearchEntry" Placeholder="Search mods..." BackgroundColor="Transparent" TextColor="{DynamicResource OnSurface}" />
                     </Border>
-                    <Picker x:Name="TagFilter" Grid.Column="1" Title="Tags" WidthRequest="150" BackgroundColor="{StaticResource SurfaceContainer}" />
-                    <Picker x:Name="SortPicker" Grid.Column="2" Title="Sort" WidthRequest="150" BackgroundColor="{StaticResource SurfaceContainer}" />
+                    <Picker x:Name="TagFilter" Grid.Column="1" Title="Tags" WidthRequest="150" BackgroundColor="{DynamicResource SurfaceContainer}" />
+                    <Picker x:Name="SortPicker" Grid.Column="2" Title="Sort" WidthRequest="150" BackgroundColor="{DynamicResource SurfaceContainer}" />
                     <Button Grid.Column="3" Text="GO" Clicked="OnSearchSubmit" WidthRequest="60" />
                 </Grid>
 
@@ -70,13 +57,13 @@
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:WorkshopItemDetailVm">
-                            <Border BackgroundColor="{StaticResource SurfaceContainer}" StrokeThickness="0" Padding="0">
+                            <Border BackgroundColor="{DynamicResource SurfaceContainer}" StrokeThickness="0" Padding="0">
                                 <Border.StrokeShape><RoundRectangle CornerRadius="12"/></Border.StrokeShape>
                                 <Grid RowDefinitions="140, *">
                                     <Image Source="{Binding PreviewImageSource}" Aspect="AspectFill" />
                                     <VerticalStackLayout Padding="16" Spacing="4">
-                                        <Label Text="{Binding Title}" Style="{StaticResource SectionTitle}" MaxLines="1" />
-                                        <Label Text="{Binding OwnerName}" FontSize="11" TextColor="{StaticResource OnSurfaceVariant}" />
+                                        <Label Text="{Binding Title}" Style="{DynamicResource SectionTitle}" MaxLines="1" />
+                                        <Label Text="{Binding OwnerName}" FontSize="11" TextColor="{DynamicResource OnSurfaceVariant}" />
                                         <Button Text="DETAILS" Clicked="OnQuickSubscribe" Margin="0,8,0,0" HeightRequest="36" Padding="0" Scale="0.9" HorizontalOptions="End" />
                                     </VerticalStackLayout>
                                 </Grid>
@@ -89,7 +76,7 @@
                     <Button x:Name="StorePrevBtn" Text="&lt;" Clicked="OnStorePrev" IsEnabled="False" WidthRequest="44" />
                     <Label x:Name="StorePageLabel" Text="PAGE 1" VerticalOptions="Center" FontFamily="JetBrainsMono-Bold" />
                     <Button x:Name="StoreNextBtn" Text="&gt;" Clicked="OnStoreNext" IsEnabled="False" WidthRequest="44" />
-                    <Label x:Name="StoreStatusLabel" TextColor="{StaticResource OnSurfaceVariant}" VerticalOptions="Center" Margin="20,0,0,0" />
+                    <Label x:Name="StoreStatusLabel" TextColor="{DynamicResource OnSurfaceVariant}" VerticalOptions="Center" Margin="20,0,0,0" />
                 </HorizontalStackLayout>
             </Grid>
 
@@ -118,28 +105,28 @@
             <!-- HEALTH / DIAGNOSTICS VIEW -->
             <ScrollView x:Name="HealthView" IsVisible="False">
                 <VerticalStackLayout Spacing="24">
-                    <Border Padding="20" BackgroundColor="{StaticResource SurfaceContainer}">
+                    <Border Padding="20" BackgroundColor="{DynamicResource SurfaceContainer}">
                         <Border.StrokeShape><RoundRectangle CornerRadius="12"/></Border.StrokeShape>
                         <VerticalStackLayout Spacing="12">
-                            <Label Text="MELONLOADER STATUS" Style="{StaticResource SectionTitle}" />
+                            <Label Text="MELONLOADER STATUS" Style="{DynamicResource SectionTitle}" />
                             <Label x:Name="MelonStatusLabel" Text="Scanning environment..." />
                         </VerticalStackLayout>
                     </Border>
 
-                    <Border Padding="20" BackgroundColor="{StaticResource SurfaceContainer}">
+                    <Border Padding="20" BackgroundColor="{DynamicResource SurfaceContainer}">
                         <Border.StrokeShape><RoundRectangle CornerRadius="12"/></Border.StrokeShape>
                         <VerticalStackLayout Spacing="16">
-                            <Label Text="PLUGIN DISTRIBUTION CHANNELS" Style="{StaticResource SectionTitle}" />
+                            <Label Text="PLUGIN DISTRIBUTION CHANNELS" Style="{DynamicResource SectionTitle}" />
                             <Picker x:Name="ChannelPicker" Title="Select active channel" />
-                            <Label x:Name="ChannelInfoLabel" TextColor="{StaticResource OnSurfaceVariant}" />
+                            <Label x:Name="ChannelInfoLabel" TextColor="{DynamicResource OnSurfaceVariant}" />
                             <CollectionView x:Name="PluginsList" HeightRequest="200" />
                         </VerticalStackLayout>
                     </Border>
 
-                    <Border Padding="20" BackgroundColor="{StaticResource SurfaceContainer}">
+                    <Border Padding="20" BackgroundColor="{DynamicResource SurfaceContainer}">
                         <Border.StrokeShape><RoundRectangle CornerRadius="12"/></Border.StrokeShape>
                         <VerticalStackLayout Spacing="12">
-                            <Label Text="DEPENDENCY AUDIT" Style="{StaticResource SectionTitle}" />
+                            <Label Text="DEPENDENCY AUDIT" Style="{DynamicResource SectionTitle}" />
                             <CollectionView x:Name="ChecksList" />
                         </VerticalStackLayout>
                     </Border>
@@ -149,3 +136,5 @@
         </Grid>
     </Grid>
 </ContentPage>
+
+

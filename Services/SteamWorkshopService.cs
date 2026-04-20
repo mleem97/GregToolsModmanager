@@ -27,7 +27,15 @@ public sealed class SteamWorkshopService
 
 			try
 			{
-				SteamApiNativeLoader.TryPreload();
+				var preloaded = SteamApiNativeLoader.TryPreload();
+				if (!preloaded)
+				{
+					var paths = string.Join("; ", SteamApiNativeLoader.GetAttemptedPaths());
+					LastSteamConnectionHint = $"steam_api64.dll nicht gefunden. Gesucht: {paths}";
+					log?.Report(LastSteamConnectionHint);
+					return false;
+				}
+
 				SteamClient.Init(SteamConstants.DataCenterAppId, true);
 				_initialized = true;
 				LastSteamConnectionHint = string.Empty;

@@ -17,13 +17,13 @@ public sealed class BetterAuthService
         {
             var payload = new { email, password };
             var response = await _http.PostAsJsonAsync($"{BaseUrl}/sign-in/email", payload);
-            
+
             if (response.IsSuccessStatusCode)
             {
                 return await response.Content.ReadFromJsonAsync<AuthResponse>();
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // Log error
         }
@@ -36,7 +36,7 @@ public sealed class BetterAuthService
         {
             var request = new HttpRequestMessage(HttpMethod.Get, $"{BaseUrl}/get-session");
             request.Headers.Add("Authorization", $"Bearer {token}");
-            
+
             var response = await _http.SendAsync(request);
             return response.IsSuccessStatusCode;
         }

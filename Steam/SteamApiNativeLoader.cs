@@ -18,11 +18,42 @@ public static class SteamApiNativeLoader
 	/// <summary>
 	/// Idempotent: loads the first existing candidate. Returns true if a module handle was obtained.
 	/// </summary>
+	private static string? _customGameRoot;
+
+	public static void SetGameRoot(string? gameRoot)
+	{
+		_customGameRoot = gameRoot;
+	}
+
+	private static string? ResolveAutoGameRoot()
+	{
+		var candidates = new[]
+		{
+			Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Steam", "steamapps", "common", "Data Center"),
+			Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Steam", "steamapps", "common", "Data Center"),
+		};
+
+		foreach (var candidate in candidates)
+		{
+			if (Directory.Exists(candidate))
+			{
+				return candidate;
+			}
+		}
+
+		return null;
+	}
+
 	public static bool TryPreload()
 	{
 		if (_module != IntPtr.Zero)
 		{
 			return true;
+		}
+
+		if (string.IsNullOrEmpty(_customGameRoot))
+		{
+			_customGameRoot = ResolveAutoGameRoot();
 		}
 
 		foreach (var path in EnumerateCandidatePaths())
@@ -55,8 +86,34 @@ public static class SteamApiNativeLoader
 		}
 	}
 
+	private static readonly List<string> _attemptedPaths = new();
+
+	public static IReadOnlyList<string> GetAttemptedPaths() => _attemptedPaths;
+
 	private static IEnumerable<string> EnumerateCandidatePaths()
 	{
+		_attemptedPaths.Clear();
+
+		if (!string.IsNullOrEmpty(_customGameRoot))
+		{
+			var path1 = Path.Combine(_customGameRoot, UnityDataFolderName, "Plugins", "x86_64", DllFileName);
+			var path2 = Path.Combine(_customGameRoot, "Plugins", "x86_64", DllFileName);
+			_attemptedPaths.Add(path1);
+			_attemptedPaths.Add(path2);
+			yield return path1;
+			yield return path2;
+		}
+
+		var steamCommonPath = Path.Combine(
+			Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86),
+			"Steam", "steamapps", "common", "Data Center");
+		if (Directory.Exists(steamCommonPath))
+		{
+			var path = Path.Combine(steamCommonPath, UnityDataFolderName, "Plugins", "x86_64", DllFileName);
+			_attemptedPaths.Add(path);
+			yield return path;
+		}
+
 		var envRoot = Environment.GetEnvironmentVariable("DATA_CENTER_GAME_DIR")?.Trim();
 		if (!string.IsNullOrEmpty(envRoot))
 		{

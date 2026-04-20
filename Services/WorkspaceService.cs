@@ -254,7 +254,7 @@ public sealed class WorkspaceService
 		var root = Path.Combine(WorkspaceRoot, dirName);
 		if (Directory.Exists(root))
 		{
-			throw new InvalidOperationException($"A project folder named \"{dirName}\" already exists.");
+			throw new InvalidOperationException($"A project folder named \"{{dirName}}\" already exists.");
 		}
 
 		var content = Path.Combine(root, "content");
@@ -317,12 +317,12 @@ public sealed class WorkspaceService
 
 		if (isGreg)
 		{
-			csproj = $"""
+			csproj = $$"""
 				<Project Sdk="Microsoft.NET.Sdk">
 				  <PropertyGroup>
 				    <TargetFramework>net6.0</TargetFramework>
-				    <AssemblyName>{projectName}</AssemblyName>
-				    <RootNamespace>{projectName}</RootNamespace>
+				    <AssemblyName>{{projectName}}</AssemblyName>
+				    <RootNamespace>{{projectName}}</RootNamespace>
 				    <LangVersion>10.0</LangVersion>
 				  </PropertyGroup>
 
@@ -344,30 +344,30 @@ public sealed class WorkspaceService
 				</Project>
 				""";
 
-			mainCs = $"""
+			mainCs = $$"""
 				using MelonLoader;
 				using UnityEngine;
 				using greg.Core;
 				using greg.Sdk.Services;
 
-				[assembly: MelonInfo(typeof({projectName}.Main), "{projectName}", "1.0.0", "Author")]
+				[assembly: MelonInfo(typeof({{projectName}}.Main), "{{projectName}}", "1.0.0", "Author")]
 				[assembly: MelonGame("Waseku", "Data Center")]
 
-				namespace {projectName};
+				namespace {{projectName}};
 
 				public class Main : greg.Core.Plugins.gregModBase
 				{
 				    public override void OnInitializeMod()
 				    {
-				        MelonLogger.Msg("{projectName} initialized via gregCore!");
-				        GregModRegistry.Register("{projectName}", "1.0.0");
+				        MelonLogger.Msg("{{projectName}} initialized via gregCore!");
+				        GregModRegistry.Register("{{projectName}}", "1.0.0");
 				    }
 
 				    public override void OnUpdateMod()
 				    {
 				        if (Input.GetKeyDown(KeyCode.F5))
 				        {
-				            MelonLogger.Msg("F5 pressed in {projectName}");
+				            MelonLogger.Msg("F5 pressed in {{projectName}}");
 				        }
 				    }
 				}
@@ -375,12 +375,12 @@ public sealed class WorkspaceService
 		}
 		else
 		{
-			csproj = $"""
+			csproj = $$"""
 				<Project Sdk="Microsoft.NET.Sdk">
 				  <PropertyGroup>
 				    <TargetFramework>net6.0</TargetFramework>
-				    <AssemblyName>{projectName}</AssemblyName>
-				    <RootNamespace>{projectName}</RootNamespace>
+				    <AssemblyName>{{projectName}}</AssemblyName>
+				    <RootNamespace>{{projectName}}</RootNamespace>
 				    <LangVersion>10.0</LangVersion>
 				  </PropertyGroup>
 
@@ -397,34 +397,34 @@ public sealed class WorkspaceService
 				</Project>
 				""";
 
-			mainCs = $"""
+			mainCs = $$"""
 				using MelonLoader;
 				using UnityEngine;
 
-				[assembly: MelonInfo(typeof({projectName}.Main), "{projectName}", "1.0.0", "Author")]
+				[assembly: MelonInfo(typeof({{projectName}}.Main), "{{projectName}}", "1.0.0", "Author")]
 				[assembly: MelonGame("Waseku", "Data Center")]
 
-				namespace {projectName};
+				namespace {{projectName}};
 
 				public class Main : MelonMod
 				{
 				    public override void OnInitializeMelon()
 				    {
-				        MelonLogger.Msg("{projectName} (Vanilla) initialized!");
+				        MelonLogger.Msg("{{projectName}} (Vanilla) initialized!");
 				    }
 
 				    public override void OnUpdate()
 				    {
 				        if (Input.GetKeyDown(KeyCode.F5))
 				        {
-				            MelonLogger.Msg("F5 pressed in {projectName}");
+				            MelonLogger.Msg("F5 pressed in {{projectName}}");
 				        }
 				    }
 				}
 				""";
 		}
 
-		File.WriteAllText(Path.Combine(srcDir, $"{projectName}.csproj"), csproj.Trim());
+		File.WriteAllText(Path.Combine(srcDir, $"{{projectName}}.csproj"), csproj.Trim());
 		File.WriteAllText(Path.Combine(srcDir, "Main.cs"), mainCs.Trim());
 	}
 
@@ -831,12 +831,12 @@ public sealed class WorkspaceService
 		var srcDir = Path.Combine(root, "src");
 		Directory.CreateDirectory(srcDir);
 
-		string csproj = $"""
+		string csproj = $$"""
 			<Project Sdk="Microsoft.NET.Sdk">
 			  <PropertyGroup>
 			    <TargetFramework>net6.0</TargetFramework>
-			    <AssemblyName>{dirName}</AssemblyName>
-			    <RootNamespace>{dirName}</RootNamespace>
+			    <AssemblyName>{{dirName}}</AssemblyName>
+			    <RootNamespace>{{dirName}}</RootNamespace>
 			    <LangVersion>10.0</LangVersion>
 			  </PropertyGroup>
 
@@ -861,24 +861,24 @@ public sealed class WorkspaceService
 			</Project>
 			""";
 
-		string mainCs = $"""
+		string mainCs = $$"""
 			using MelonLoader;
 			using UnityEngine;
 			using UnityEngine.UIElements;
 			using greg.Core;
 			using greg.Sdk.Services;
 
-			[assembly: MelonInfo(typeof({dirName}.Main), "{dirName}", "1.0.0", "Author")]
+			[assembly: MelonInfo(typeof({{dirName}}.Main), "{{dirName}}", "1.0.0", "Author")]
 			[assembly: MelonGame("Waseku", "Data Center")]
 
-			namespace {dirName};
+			namespace {{dirName}};
 
 			public class Main : greg.Core.Plugins.gregModBase
 			{
 			    public override void OnInitializeMod()
 			    {
 			        // Load your AssetBundle containing UXML/USS
-			        // var bundle = AssetBundle.LoadFromFile(Path.Combine(AppContext.BaseDirectory, "Mods", "{dirName}.bundle"));
+			        // var bundle = AssetBundle.LoadFromFile(Path.Combine(AppContext.BaseDirectory, "Mods", "{{dirName}}.bundle"));
 			        // var uxml = bundle.LoadAsset<VisualTreeAsset>("MyMenu.uxml");
 			        
 			        // Register override for MainMenu
@@ -886,12 +886,12 @@ public sealed class WorkspaceService
 			        //    GregUxmlService.CreateInterface("CustomMenu", uxml);
 			        // });
 
-			        MelonLogger.Msg("{dirName} (UXML UI) initialized!");
+			        MelonLogger.Msg("{{dirName}} (UXML UI) initialized!");
 			    }
 			}
 			""";
 
-		File.WriteAllText(Path.Combine(srcDir, $"{dirName}.csproj"), csproj.Trim());
+		File.WriteAllText(Path.Combine(srcDir, $"{{dirName}}.csproj"), csproj.Trim());
 		File.WriteAllText(Path.Combine(srcDir, "Main.cs"), mainCs.Trim());
 
 		// UXML/USS Assets folder in content
@@ -926,4 +926,5 @@ public sealed class WorkspaceService
 		File.WriteAllText(Path.Combine(contentRoot, "modstore.meta.json"), JsonSerializer.Serialize(modstoreMeta, JsonOptions));
 	}
 }
+
 

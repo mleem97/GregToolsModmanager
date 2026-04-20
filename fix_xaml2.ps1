@@ -1,0 +1,1 @@
+$files = Get-ChildItem -Path .\UI\Pages\*.xaml -Recurse; foreach ($f in $files) { $content = Get-Content $f.FullName -Raw; $content = $content -replace "Source=`"/Resources/", "Source=`"Resources/"; Set-Content $f.FullName -Value $content }

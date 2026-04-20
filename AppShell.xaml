@@ -7,7 +7,7 @@
     Title="gregModmanager"
     FlyoutBehavior="Locked"
     FlyoutWidth="220"
-    FlyoutBackgroundColor="{StaticResource SurfaceContainerLow}">
+    FlyoutBackgroundColor="{DynamicResource SurfaceContainerLow}">
 
     <Shell.FlyoutHeader>
         <VerticalStackLayout Padding="20,24,20,16" Spacing="8">
@@ -15,13 +15,13 @@
                 Text="gregModmanager"
                 FontFamily="SpaceGrotesk-Bold"
                 FontSize="18"
-                TextColor="{StaticResource Primary}"
+                TextColor="{DynamicResource Primary}"
                 CharacterSpacing="0.4" />
             <Label
                 Text="Workshop Manager"
                 FontFamily="SpaceGrotesk-Regular"
                 FontSize="11"
-                TextColor="{StaticResource OnSurfaceVariant}" />
+                TextColor="{DynamicResource OnSurfaceVariant}" />
         </VerticalStackLayout>
     </Shell.FlyoutHeader>
 
@@ -30,7 +30,7 @@
             <Border
                 x:Name="SteamLogoTile"
                 Padding="10,6"
-                BackgroundColor="{StaticResource SurfaceVariant}"
+                BackgroundColor="{DynamicResource SurfaceVariant}"
                 StrokeThickness="0">
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="6" />
@@ -47,7 +47,38 @@
                         FontSize="11"
                         LineBreakMode="NoWrap"
                         Text="{l:Translate Key=Steam_Connecting}"
-                        TextColor="{StaticResource OnSurfaceDim}"
+                        TextColor="{DynamicResource OnSurfaceDim}"
+                        VerticalOptions="Center" />
+                </HorizontalStackLayout>
+            </Border>
+
+            <!-- AUTH ACCOUNT TILE -->
+            <Border
+                x:Name="AuthLogoTile"
+                Padding="10,6"
+                Margin="0,8,0,0"
+                BackgroundColor="{DynamicResource SurfaceVariant}"
+                StrokeThickness="0">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="6" />
+                </Border.StrokeShape>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnAuthTileTapped" />
+                </Border.GestureRecognizers>
+                <HorizontalStackLayout Spacing="6" VerticalOptions="Center">
+                    <Ellipse
+                        x:Name="AuthStatusLed"
+                        WidthRequest="8"
+                        HeightRequest="8"
+                        VerticalOptions="Center"
+                        Fill="{DynamicResource OnSurfaceDim}" />
+                    <Label
+                        x:Name="AuthStatusText"
+                        FontFamily="SpaceGrotesk-Regular"
+                        FontSize="11"
+                        LineBreakMode="NoWrap"
+                        Text="Log into gregFramework"
+                        TextColor="{DynamicResource OnSurfaceDim}"
                         VerticalOptions="Center" />
                 </HorizontalStackLayout>
             </Border>
@@ -63,7 +94,7 @@
                 <BoxView
                     Grid.Column="0"
                     WidthRequest="4"
-                    Color="{StaticResource Primary}"
+                    Color="{DynamicResource Primary}"
                     CornerRadius="2"
                     VerticalOptions="Center"
                     HeightRequest="24"
@@ -73,7 +104,7 @@
                     Text="{Binding Title}"
                     FontFamily="SpaceGrotesk-Medium"
                     FontSize="13"
-                    TextColor="{StaticResource OnSurface}"
+                    TextColor="{DynamicResource OnSurface}"
                     VerticalTextAlignment="Center"
                     Padding="12,0,0,0" />
             </Grid>
@@ -81,4 +112,9 @@
     </Shell.ItemTemplate>
 
 </Shell>
+
+
+
+
+
 

@@ -65,14 +65,14 @@ function Test-ZipArchiveExtractable {
     New-Item -ItemType Directory -Path $tempRoot -Force | Out-Null
 
     try {
-        Expand-Archive -LiteralPath $ZipPath -DestinationPath $tempRoot -Force    
+        Expand-Archive -LiteralPath $ZipPath -DestinationPath $tempRoot -Force
         $anyFile = Get-ChildItem -LiteralPath $tempRoot -Recurse -File | Select-Object -First 1
         if (-not $anyFile) {
             throw "ZIP ist leer oder konnte nicht korrekt entpackt werden: $ZipPath"
         }
 
         if (-not [string]::IsNullOrWhiteSpace($ExpectedRelativePath)) {
-            $expectedLeaf = [System.IO.Path]::GetFileName($ExpectedRelativePath)  
+            $expectedLeaf = [System.IO.Path]::GetFileName($ExpectedRelativePath)
             $found = Get-ChildItem -LiteralPath $tempRoot -Recurse -File | Where-Object { $_.Name -ieq $expectedLeaf } | Select-Object -First 1
             if (-not $found) {
                 throw "Erwartete Datei '$ExpectedRelativePath' fehlt im Archiv: $ZipPath"
@@ -124,7 +124,7 @@ function Get-CodeSigningCertificate {
         )
 
         foreach ($certPath in $candidatePaths) {
-            $cert = Get-Item -LiteralPath $certPath -ErrorAction SilentlyContinue 
+            $cert = Get-Item -LiteralPath $certPath -ErrorAction SilentlyContinue
             if ($cert -and $cert.HasPrivateKey) {
                 return $cert
             }
@@ -150,7 +150,7 @@ function New-DetachedArtifactSignature {
     param([Parameter(Mandatory)][string]$TargetPath)
 
     if (-not (Test-Path -LiteralPath $TargetPath)) {
-        throw "Artefakt fuer Detached-Signatur nicht gefunden: $TargetPath"       
+        throw "Artefakt fuer Detached-Signatur nicht gefunden: $TargetPath"
     }
 
     $cert = Get-CodeSigningCertificate
@@ -165,7 +165,7 @@ function New-DetachedArtifactSignature {
         $rsa = [System.Security.Cryptography.RSACryptoServiceProvider]$cert.PrivateKey
     }
 
-    if (-not $rsa -and $cert.PrivateKey -is [System.Security.Cryptography.RSA]) { 
+    if (-not $rsa -and $cert.PrivateKey -is [System.Security.Cryptography.RSA]) {
         $rsa = [System.Security.Cryptography.RSA]$cert.PrivateKey
     }
     if (-not $rsa) {
@@ -187,7 +187,7 @@ function New-DetachedArtifactSignature {
 function Invoke-SignWindowsPayloadBinaries {
     param([Parameter(Mandatory)][string]$PublishDirectory)
 
-    $files = Get-ChildItem -LiteralPath $PublishDirectory -Recurse -File |        
+    $files = Get-ChildItem -LiteralPath $PublishDirectory -Recurse -File |
         Where-Object { $_.Extension -in @('.exe', '.dll') } |
         Sort-Object FullName
 
@@ -249,7 +249,7 @@ function New-EphemeralCodeSignThumbprint {
         return $script:AutoSignThumbprint
     }
 
-    $subject = "CN=GregTools Local Build " + (Get-Date -Format 'yyyyMMdd-HHmmss') 
+    $subject = "CN=GregTools Local Build " + (Get-Date -Format 'yyyyMMdd-HHmmss')
     $notAfter = (Get-Date).AddDays(7)
     Write-Host "[build] Erzeuge temporaeres Self-Signed-Code-Signing-Zertifikat: $subject"
 
@@ -290,7 +290,7 @@ function Invoke-BuildSign {
     if (-not [string]::IsNullOrWhiteSpace($thumb)) {
         $t = $thumb.Trim()
         if ($t -match '<|>') {
-            throw "CODE_SIGN_THUMBPRINT ist noch ein Platzhalter - den echten 40-stelligen Hex-Thumbprint aus create-selfsigned-codesign-cert.ps1 einsetzen."     
+            throw "CODE_SIGN_THUMBPRINT ist noch ein Platzhalter - den echten 40-stelligen Hex-Thumbprint aus create-selfsigned-codesign-cert.ps1 einsetzen."
         }
         & $signScript -Path $TargetPath -Thumbprint $t
     } else {
@@ -360,7 +360,7 @@ $publishDir = Join-Path $repoRoot 'bin\Release\net9.0-windows10.0.19041.0\win-x6
 $iss = Join-Path $repoRoot 'installer\gregModmanager.iss'
 $outDir = Join-Path $repoRoot 'installer\Output'
 $linuxRequested = $LinuxDistros.Count -gt 0
-$wantSign = $Sign -or $env:CODE_SIGN_THUMBPRINT -or $env:CODE_SIGN_PFX
+$wantSign = $false
 
 if (-not $isWindowsHost) {
     if ($Sign) {
@@ -380,7 +380,7 @@ if (-not $isWindowsHost) {
     }
 
     New-LinuxSourceBundle -Version $ver -OutputDirectory $outDir -Distros $LinuxDistros
-    Write-Host '[build] Linux-Source-Bundles erstellt (inkl. SHA256-Dateien).'    
+    Write-Host '[build] Linux-Source-Bundles erstellt (inkl. SHA256-Dateien).'
     exit 0
 }
 

@@ -101,6 +101,11 @@ public static class MauiProgram
 			DebugNdjsonSessionLog.Write("H4", "MauiProgram.CreateMauiApp", "after_steam_preload", new { steamOk });
 			// #endregion
 
+			if (GregModmanager.Services.Auth.ProtocolSingleInstance.ShouldForwardAndExitAsync(Environment.GetCommandLineArgs()).GetAwaiter().GetResult())
+			{
+					Environment.Exit(0);
+			}
+
 			if (HeadlessRunner.TryHandle(Environment.GetCommandLineArgs(), out var exitCode))
 			{
 				// #region agent log
@@ -122,6 +127,7 @@ public static class MauiProgram
 			builder.Services.AddSingleton<AppLogService>();
 			builder.Services.AddSingleton<ReproBundleService>();
 			builder.Services.AddSingleton<SteamWorkshopService>();
+			GregModmanager.Steam.SteamApiNativeLoader.SetGameRoot(SettingsPage.GetGameRootPath());
 			builder.Services.AddSingleton<WorkspaceService>();
 			builder.Services.AddSingleton<ModDependencyService>();
 			builder.Services.AddSingleton<gregPluginChannelRegistry>(sp =>
@@ -149,12 +155,15 @@ public static class MauiProgram
 				new NativeConfigEditorPage(sp.GetRequiredService<WorkspaceService>()));
 			builder.Services.AddTransient<ItemDetailPage>();
 			builder.Services.AddSingleton<AppShell>();
-			builder.Services.AddSingleton<GitVerificationService>();
-			builder.Services.AddSingleton<BetterAuthService>();
+                        builder.Services.AddSingleton<GitVerificationService>();
+                        builder.Services.AddSingleton<BetterAuthService>();
 
-#if DEBUG
-			builder.Logging.AddDebug();
-#endif
+                        // Auth / Session
+                        builder.Services.AddSingleton<GregModmanager.Services.Auth.IAuthApiClient, GregModmanager.Services.Auth.AuthApiClient>();
+                        builder.Services.AddSingleton<GregModmanager.Services.Auth.ISessionManager, GregModmanager.Services.Auth.SessionManager>();
+                        builder.Services.AddSingleton<GregModmanager.Services.Install.IInstallIntentClient, GregModmanager.Services.Install.InstallIntentClient>();
+
+
 
 			// #region agent log
 			DebugNdjsonSessionLog.Write("H1", "MauiProgram.CreateMauiApp", "before_build", null);
@@ -197,4 +206,5 @@ public static class MauiProgram
 		}
 	}
 }
+
 

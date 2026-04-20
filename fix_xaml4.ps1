@@ -1,0 +1,7 @@
+$files = Get-ChildItem -Path .\UI\Pages\*.xaml -Recurse
+foreach ($f in $files) {
+    $content = Get-Content $f.FullName -Raw
+    $content = $content -replace "(?i)(?s)<ContentPage\.Resources>.*?</ContentPage\.Resources>\s*", ""
+    $content = $content -replace "StaticResource ", "DynamicResource "
+    Set-Content $f.FullName -Value $content
+}
