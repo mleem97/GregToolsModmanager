@@ -557,14 +557,7 @@ public sealed class SteamWorkshopService
 	public void OpenItemInBrowser(ulong fileId)
 	{
 		var url = $"https://steamcommunity.com/sharedfiles/filedetails/?id={fileId}";
-		try
-		{
-			Process.Start(new ProcessStartInfo { FileName = url, UseShellExecute = true });
-		}
-		catch
-		{
-			// ignored
-		}
+		_ = SafeProcess.OpenUrlAsync(url);
 	}
 
 	#endregion

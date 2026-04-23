@@ -31,6 +31,7 @@ jobs:
     timeout-minutes: 12
     permissions:
       actions: read
+      administration: read
     outputs:
       linux_runs_on: ${{ steps.select.outputs.linux_runs_on }}
       windows_runs_on: ${{ steps.select.outputs.windows_runs_on }}
@@ -51,12 +52,17 @@ jobs:
             }
 
             async function findIdle(labels) {
-              const res = await github.rest.actions.listSelfHostedRunnersForRepo({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                per_page: 100,
-              });
-              return (res.data.runners || []).find(r => r.status === 'online' && !r.busy && hasLabels(r, labels));
+              try {
+                const res = await github.rest.actions.listSelfHostedRunnersForRepo({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  per_page: 100,
+                });
+                return (res.data.runners || []).find(r => r.status === 'online' && !r.busy && hasLabels(r, labels));
+              } catch (e) {
+                console.warn(`Failed to list runners: ${e.message}`);
+                return null;
+              }
             }
 
             let linuxRunsOn = JSON.stringify('ubuntu-latest');
