@@ -192,23 +192,11 @@ public partial class SettingsPage : ContentPage
 
 	#region Community links
 
-	private void OnOpenDiscord(object? sender, EventArgs e) => OpenUrl(DiscordInviteUrl);
+	private void OnOpenDiscord(object? sender, EventArgs e) => _ = SafeProcess.OpenUrlAsync(DiscordInviteUrl);
 
-	private void OnOpenModdingChannel(object? sender, EventArgs e) => OpenUrl(WasekuDCUrl);
+	private void OnOpenModdingChannel(object? sender, EventArgs e) => _ = SafeProcess.OpenUrlAsync(WasekuDCUrl);
 
-	private void OnOpenWebsite(object? sender, EventArgs e) => OpenUrl(WebsiteUrl);
-
-	private static void OpenUrl(string url)
-	{
-		try
-		{
-			Process.Start(new ProcessStartInfo { FileName = url, UseShellExecute = true });
-		}
-		catch
-		{
-			// ignored
-		}
-	}
+	private void OnOpenWebsite(object? sender, EventArgs e) => _ = SafeProcess.OpenUrlAsync(WebsiteUrl);
 
 	private async void OnOpenLogs(object? sender, EventArgs e)
 	{
@@ -222,11 +210,7 @@ public partial class SettingsPage : ContentPage
 			}
 
 			Directory.CreateDirectory(logDirectory);
-			Process.Start(new ProcessStartInfo
-			{
-				FileName = logDirectory,
-				UseShellExecute = true
-			});
+			SafeProcess.OpenFolder(logDirectory);
 		}
 		catch (Exception ex)
 		{
@@ -243,23 +227,14 @@ public partial class SettingsPage : ContentPage
 
 			if (OperatingSystem.IsWindows())
 			{
-				Process.Start(new ProcessStartInfo
-				{
-					FileName = "explorer.exe",
-					Arguments = $"/select,\"{zipPath}\"",
-					UseShellExecute = true
-				});
+				SafeProcess.OpenExplorerAndSelect(zipPath);
 			}
 			else
 			{
 				var dir = Path.GetDirectoryName(zipPath);
 				if (!string.IsNullOrWhiteSpace(dir))
 				{
-					Process.Start(new ProcessStartInfo
-					{
-						FileName = dir,
-						UseShellExecute = true
-					});
+					SafeProcess.OpenFolder(dir);
 				}
 			}
 
@@ -281,11 +256,7 @@ public partial class SettingsPage : ContentPage
 		var exe = Environment.ProcessPath;
 		if (string.IsNullOrEmpty(exe)) return;
 
-		Process.Start(new ProcessStartInfo
-		{
-			FileName = exe,
-			UseShellExecute = true
-		});
+		SafeProcess.LaunchApp(exe);
 		Application.Current?.Quit();
 	}
 

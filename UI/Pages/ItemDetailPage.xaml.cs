@@ -262,29 +262,13 @@ public partial class ItemDetailPage : ContentPage
 	private void OnOpenChangelog(object? sender, EventArgs e)
 	{
 		if (_item is not null && !string.IsNullOrEmpty(_item.ChangelogUrl))
-			OpenUrl(_item.ChangelogUrl);
+			_ = SafeProcess.OpenUrlAsync(_item.ChangelogUrl);
 	}
 
 	private void OnOpenComments(object? sender, EventArgs e)
 	{
 		if (_item is not null && !string.IsNullOrEmpty(_item.CommentsUrl))
-			OpenUrl(_item.CommentsUrl);
-	}
-
-	private static void OpenUrl(string url)
-	{
-		try
-		{
-			System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-			{
-				FileName = url,
-				UseShellExecute = true,
-			});
-		}
-		catch
-		{
-			// ignored
-		}
+			_ = SafeProcess.OpenUrlAsync(_item.CommentsUrl);
 	}
 
 	private static string FormatNumber(ulong n)

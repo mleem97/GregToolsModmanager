@@ -379,52 +379,31 @@ public partial class ModManagerPage : ContentPage
 	private void OnOpenFolder(object? sender, EventArgs e)
 	{
 		var path = (sender as Button)?.CommandParameter as string;
-		if (string.IsNullOrEmpty(path) || !OperatingSystem.IsWindows()) return;
+		if (string.IsNullOrEmpty(path)) return;
 
-		try
+		if (File.Exists(path))
+			path = Path.GetDirectoryName(path) ?? path;
+		if (!Directory.Exists(path))
 		{
-			if (File.Exists(path))
-				path = Path.GetDirectoryName(path) ?? path;
-			if (!Directory.Exists(path))
-			{
-				var parent = Path.GetDirectoryName(path);
-				if (!string.IsNullOrEmpty(parent) && Directory.Exists(parent))
-					path = parent;
-			}
+			var parent = Path.GetDirectoryName(path);
+			if (!string.IsNullOrEmpty(parent) && Directory.Exists(parent))
+				path = parent;
+		}
 
-			Process.Start(new ProcessStartInfo("explorer.exe", $"\"{path}\"") { UseShellExecute = true });
-		}
-		catch (Exception ex)
-		{
-			_log.Append($"Could not open folder: {ex.Message}");
-		}
+		SafeProcess.OpenFolder(path);
 	}
 
 	private void OnMelonLoaderDownload(object? sender, EventArgs e)
 	{
-		try
-		{
-			Process.Start(new ProcessStartInfo("https://github.com/LavaGang/MelonLoader/releases") { UseShellExecute = true });
-		}
-		catch (Exception ex)
-		{
-			_log.Append($"Could not open browser: {ex.Message}");
-		}
+		_ = SafeProcess.OpenUrlAsync("https://github.com/LavaGang/MelonLoader/releases");
 	}
 
 	private void OnOpenGameFolder(object? sender, EventArgs e)
 	{
 		var root = _deps.GameRoot;
-		if (string.IsNullOrEmpty(root) || !Directory.Exists(root) || !OperatingSystem.IsWindows()) return;
+		if (string.IsNullOrEmpty(root) || !Directory.Exists(root)) return;
 
-		try
-		{
-			Process.Start(new ProcessStartInfo("explorer.exe", $"\"{root}\"") { UseShellExecute = true });
-		}
-		catch (Exception ex)
-		{
-			_log.Append($"Could not open game folder: {ex.Message}");
-		}
+		SafeProcess.OpenFolder(root);
 	}
 
 	private void OnChannelChanged(object? sender, EventArgs e) => RefreshPluginList();

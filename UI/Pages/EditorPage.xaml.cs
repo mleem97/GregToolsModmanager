@@ -760,20 +760,8 @@ public partial class EditorPage : ContentPage
 
 	private async void OnOpenInExplorer(object? sender, EventArgs e)
 	{
-		if (!OperatingSystem.IsWindows())
-		{
-			await DisplayAlert(S.Get("Editor_Explorer"), S.Get("Editor_OnlyWindows"), S.Get("OK"));
-			return;
-		}
-
-		try
-		{
-			Process.Start(new ProcessStartInfo { FileName = "explorer.exe", Arguments = $"\"{_projectRoot}\"", UseShellExecute = true });
-		}
-		catch (Exception ex)
-		{
-			await DisplayAlert(S.Get("Error"), ex.Message, S.Get("OK"));
-		}
+		if (string.IsNullOrEmpty(_projectRoot)) return;
+		SafeProcess.OpenFolder(_projectRoot);
 	}
 
 	private async void OnOpenNativeConfigEditor(object? sender, EventArgs e)
