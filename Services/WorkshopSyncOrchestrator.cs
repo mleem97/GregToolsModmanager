@@ -43,12 +43,27 @@ public sealed class WorkshopSyncOrchestrator : IDisposable
 		StatusChanged?.Invoke(WorkshopSyncEvent.PollerStopped());
 	}
 
+	private static string? GetNonGuiGameRoot()
+	{
+		var args = Environment.GetCommandLineArgs();
+		for (var i = 0; i < args.Length - 1; i++)
+		{
+			if (string.Equals(args[i], "--game-root", StringComparison.OrdinalIgnoreCase) ||
+			    string.Equals(args[i], "-g", StringComparison.OrdinalIgnoreCase))
+			{
+				return args[i + 1];
+			}
+		}
+
+		return Steam.SteamApiNativeLoader.GetGameRoot();
+	}
+
 	private async void OnNewSubscriptions(IReadOnlyList<ulong> newIds)
 	{
 #if WINDOWS || ANDROID || IOS || MACCATALYST
 		var gameRoot = SettingsPage.GetGameRootPath();
 #else
-		var gameRoot = ""; // TODO: Pass from CLI args or detect via SteamApiNativeLoader
+		var gameRoot = GetNonGuiGameRoot();
 #endif
 		if (string.IsNullOrEmpty(gameRoot))
 		{
@@ -87,7 +102,7 @@ public sealed class WorkshopSyncOrchestrator : IDisposable
 #if WINDOWS || ANDROID || IOS || MACCATALYST
 		var gameRoot = SettingsPage.GetGameRootPath();
 #else
-		var gameRoot = "";
+		var gameRoot = GetNonGuiGameRoot();
 #endif
 		if (string.IsNullOrEmpty(gameRoot)) return;
 

@@ -25,6 +25,36 @@ public static class SteamApiNativeLoader
 		_customGameRoot = gameRoot;
 	}
 
+	public static string? GetGameRoot()
+	{
+		if (!string.IsNullOrEmpty(_customGameRoot))
+		{
+			return _customGameRoot;
+		}
+
+		var autoRoot = ResolveAutoGameRoot();
+		if (!string.IsNullOrEmpty(autoRoot))
+		{
+			return autoRoot;
+		}
+
+		var envRoot = Environment.GetEnvironmentVariable("DATA_CENTER_GAME_DIR")?.Trim();
+		if (!string.IsNullOrEmpty(envRoot) && Directory.Exists(envRoot))
+		{
+			return envRoot;
+		}
+
+		foreach (var heuristicRoot in EnumerateHeuristicGameRoots())
+		{
+			if (Directory.Exists(heuristicRoot))
+			{
+				return heuristicRoot;
+			}
+		}
+
+		return null;
+	}
+
 	private static string? ResolveAutoGameRoot()
 	{
 		var candidates = new[]
