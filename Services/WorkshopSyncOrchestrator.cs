@@ -45,11 +45,7 @@ public sealed class WorkshopSyncOrchestrator : IDisposable
 
 	private async void OnNewSubscriptions(IReadOnlyList<ulong> newIds)
 	{
-#if WINDOWS || ANDROID || IOS || MACCATALYST
-		var gameRoot = SettingsPage.GetGameRootPath();
-#else
-		var gameRoot = ""; // TODO: Pass from CLI args or detect via SteamApiNativeLoader
-#endif
+		var gameRoot = GetGameRoot();
 		if (string.IsNullOrEmpty(gameRoot))
 		{
 			StatusChanged?.Invoke(WorkshopSyncEvent.Warning(
@@ -84,11 +80,7 @@ public sealed class WorkshopSyncOrchestrator : IDisposable
 
 	private void OnUnsubscriptions(IReadOnlyList<ulong> removedIds)
 	{
-#if WINDOWS || ANDROID || IOS || MACCATALYST
-		var gameRoot = SettingsPage.GetGameRootPath();
-#else
-		var gameRoot = "";
-#endif
+		var gameRoot = GetGameRoot();
 		if (string.IsNullOrEmpty(gameRoot)) return;
 
 		foreach (var id in removedIds)
@@ -97,6 +89,18 @@ public sealed class WorkshopSyncOrchestrator : IDisposable
 		}
 
 		StatusChanged?.Invoke(WorkshopSyncEvent.Removed(removedIds.Count));
+	}
+
+	private string? GetGameRoot()
+	{
+#if WINDOWS || ANDROID || IOS || MACCATALYST
+		var gameRoot = SettingsPage.GetGameRootPath();
+		if (!string.IsNullOrEmpty(gameRoot))
+		{
+			return gameRoot;
+		}
+#endif
+		return Steam.SteamApiNativeLoader.GetGameRoot();
 	}
 
 	public void Dispose()
